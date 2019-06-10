@@ -6,6 +6,8 @@ import com.google.common.base.CaseFormat;
 import com.sun.xml.bind.api.impl.NameConverter;
 import io.elastic.soap.AppConstants;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.json.JsonObject;
 import javax.json.JsonString;
+
+import io.elastic.soap.exceptions.ComponentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,7 +86,31 @@ public final class Utils {
    * @return String representation of the WSDL URL.
    */
   public static String getWsdlUrl(final JsonObject config) {
-    return Utils.getConfigParam(config, AppConstants.WSDL_CONFIG_NAME);
+    final String wsdl = Utils.getConfigParam(config, AppConstants.WSDL_CONFIG_NAME);
+
+    if (!isBasicAuth(config)) {
+      return wsdl;
+    }
+    final String username = Utils.getUsername(config);
+    final String password = Utils.getPassword(config);
+    return addAuthToURL(wsdl, username, password);
+  }
+
+  /**
+   * Add auth to URL in form of https://username:password@example.com
+   * @param source source of resource.
+   * @param username username.
+   * @param password password.
+   * @return URI with username and password.
+   */
+  public static String addAuthToURL(final String source, final String username, final String password) {
+    try {
+      final URI uri = new URI(source);
+      return new URI(uri.getScheme(), username + ":" + password, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment()).toString();
+    } catch (URISyntaxException e) {
+      throw new ComponentException("Invalid URI: " + source, e);
+    }
+
   }
 
   /**

@@ -16,6 +16,19 @@ repositories {
     mavenCentral()
     mavenLocal()
 }
+sourceSets {
+    integrationTest {
+        java.outputDir = file('build/classes/integrationtest')
+        java { srcDir file('src/integration-test/java') }
+        resources { srcDir file('src/integration-test/resources') }
+    }
+    main {
+        java.outputDir = file('build/classes/main')
+    }
+    test {
+        java.outputDir = file('build/classes/test')
+    }
+}
 
 dependencies {
     compile files("lib/tools.jar")

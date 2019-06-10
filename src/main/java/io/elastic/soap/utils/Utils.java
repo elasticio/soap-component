@@ -131,14 +131,14 @@ public final class Utils {
   /**
    * Retrieves username from the credentials object
    */
-  protected static String getUsername(JsonObject config) {
+  public static String getUsername(JsonObject config) {
     return config.getJsonObject("auth").getJsonObject("basic").getString("username");
   }
 
   /**
    * Retrieves password from the credentials object
    */
-  protected static String getPassword(JsonObject config) {
+  public static String getPassword(JsonObject config) {
     return config.getJsonObject("auth").getJsonObject("basic").getString("password");
   }
 
@@ -184,7 +184,9 @@ public final class Utils {
    */
   public static HttpGet createGet(final JsonObject config) {
     final HttpGet get = new HttpGet(getWsdlUrl(config));
-    get.addHeader("Authorization", getBasicAuthHeader(config));
+    if (isBasicAuth(config)) {
+      get.addHeader("Authorization", getBasicAuthHeader(config));
+    }
     return get;
   }
 

@@ -10,6 +10,8 @@ import com.google.gson.JsonParser;
 import io.elastic.api.DynamicMetadataProvider;
 import io.elastic.soap.compilers.JaxbCompiler;
 import io.elastic.soap.compilers.model.SoapBodyDescriptor;
+import io.elastic.soap.services.WSDLService;
+import io.elastic.soap.services.impls.HttpWSDLService;
 import io.elastic.soap.utils.Utils;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,6 +29,7 @@ import org.slf4j.LoggerFactory;
 public class BodyMetaProvider implements DynamicMetadataProvider {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(BodyMetaProvider.class);
+  private WSDLService wsdlService = new HttpWSDLService();
 
   private JsonSchema inSchema;
   private JsonSchema outSchema;
@@ -39,7 +42,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
     String operation;
 
     try {
-      wsdlUrl = Utils.getWsdlUrl(configuration);
+      wsdlUrl = Utils.addAuthToURL(Utils.getWsdlUrl(configuration), Utils.getUsername(configuration), Utils.getPassword(configuration));
       binding = Utils.getBinding(configuration);
       operation = Utils.getOperation(configuration);
     } catch (NullPointerException npe) {
@@ -139,5 +142,13 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         JsonReader reader = Json.createReader(bais)) {
       return reader.readObject();
     }
+  }
+
+  public WSDLService getWsdlService() {
+    return wsdlService;
+  }
+
+  public void setWsdlService(final WSDLService wsdlService) {
+    this.wsdlService = wsdlService;
   }
 }

@@ -10,9 +10,14 @@ import com.predic8.wsdl.WSDLParser;
 import io.elastic.soap.AppConstants;
 import javax.json.Json;
 import javax.json.JsonObject;
+
+import io.elastic.soap.services.WSDLService;
+import io.elastic.soap.services.impls.HttpWSDLService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
+
+import java.io.IOException;
 
 public class BindingModelProviderTest {
 
@@ -22,13 +27,17 @@ public class BindingModelProviderTest {
   private static BindingModelProvider providersUt1 = spy(new BindingModelProvider());
   @Spy
   private static BindingModelProvider providersUt2 = spy(new BindingModelProvider());
+  @Spy
+  private static WSDLService wsdlService1 = spy(new HttpWSDLService());
+  @Spy
+  private static WSDLService wsdlService2 = spy(new HttpWSDLService());
   private static Definitions definitionsUt1;
   private static Definitions definitionsUt2;
   private static JsonObject config1;
   private static JsonObject config2;
 
   @BeforeAll
-  public static void initConfig() {
+  public static void initConfig() throws IOException {
 
     config1 = Json.createObjectBuilder()
         .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
@@ -53,12 +62,13 @@ public class BindingModelProviderTest {
                     .build())
         )
         .build();
-
+    providersUt1.setWsdlService(wsdlService1);
+    providersUt2.setWsdlService(wsdlService2);
     definitionsUt1 = BindingModelProviderTest.getDefinitions(WSDL_URL_1);
-    doReturn(definitionsUt1).when(providersUt1).getDefinitionsFromWsdl(any(String.class));
+    doReturn(definitionsUt1).when(wsdlService1).getWSDL(any(JsonObject.class));
 
     definitionsUt2 = BindingModelProviderTest.getDefinitions(WSDL_URL_2);
-    doReturn(definitionsUt2).when(providersUt2).getDefinitionsFromWsdl(any(String.class));
+    doReturn(definitionsUt2).when(wsdlService2).getWSDL(any(JsonObject.class));
 
   }
 

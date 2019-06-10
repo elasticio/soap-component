@@ -9,11 +9,16 @@ import static org.mockito.Mockito.spy;
 import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
 import io.elastic.soap.AppConstants;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonObject;
+
+import io.elastic.soap.services.WSDLService;
+import io.elastic.soap.services.impls.HttpWSDLService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
@@ -28,7 +33,10 @@ public class OperationModelProviderTest {
 
   private final static String WSDL_URL_1 = "src/test/resources/xcurrencies.wsdl";
   private final static String WSDL_URL_2 = "src/test/resources/BLZService.wsdl";
-
+  @Spy
+  private static WSDLService wsdlService1 = spy(new HttpWSDLService());
+  @Spy
+  private static WSDLService wsdlService2 = spy(new HttpWSDLService());
   private static Definitions definitionsUt1;
   private static Definitions definitionsUt2;
   private static JsonObject config1;
@@ -36,14 +44,13 @@ public class OperationModelProviderTest {
   private static Set<String> operations;
 
   @BeforeAll
-  public static void initConfig() {
-
+  public static void initConfig() throws IOException {
+    providerUt1.setWsdlService(wsdlService1);
+    providerUt2.setWsdlService(wsdlService2);
     definitionsUt1 = OperationModelProviderTest.getDefinitions(WSDL_URL_1);
-    doReturn(definitionsUt1).when(providerUt1).getDefinitionsFromWsdl(any(String.class));
-
+    doReturn(definitionsUt1).when(wsdlService1).getWSDL(any(JsonObject.class));
     definitionsUt2 = OperationModelProviderTest.getDefinitions(WSDL_URL_2);
-    doReturn(definitionsUt2).when(providerUt2).getDefinitionsFromWsdl(any(String.class));
-
+    doReturn(definitionsUt2).when(wsdlService2).getWSDL(any(JsonObject.class));
     config1 = Json.createObjectBuilder()
         .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
         .add(AppConstants.OPERATION_CONFIG_NAME, "GetCurrencyIntradayChartCustom")

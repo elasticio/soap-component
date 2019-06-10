@@ -6,6 +6,8 @@ import com.predic8.wsdl.WSDLParser;
 import io.elastic.api.JSON;
 import io.elastic.api.SelectModelProvider;
 import io.elastic.soap.exceptions.ComponentException;
+import io.elastic.soap.services.WSDLService;
+import io.elastic.soap.services.impls.HttpWSDLService;
 import io.elastic.soap.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,7 @@ import javax.json.JsonObjectBuilder;
 public class OperationModelProvider implements SelectModelProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationModelProvider.class);
+    private WSDLService wsdlService = new HttpWSDLService();
 
     @Override
     public JsonObject getSelectModel(final JsonObject configuration) {
@@ -29,7 +32,7 @@ public class OperationModelProvider implements SelectModelProvider {
             LOGGER.info("Input model configuration: {}", JSON.stringify(configuration));
             final String bindingName = Utils.getBinding(configuration);
             final String wsdlUrl = Utils.getWsdlUrl(configuration);
-            final Definitions wsdl = getDefinitionsFromWsdl(wsdlUrl);
+            final Definitions wsdl = wsdlService.getWSDL(configuration);
             final Binding binding = wsdl.getBinding(bindingName);
             final JsonObjectBuilder builder = Json.createObjectBuilder();
             binding.getOperations().forEach(o -> builder.add(o.getName(), o.getName()));
@@ -50,13 +53,12 @@ public class OperationModelProvider implements SelectModelProvider {
         }
     }
 
-    /**
-     * Method calls external WSDL by its URL and parses it
-     *
-     * @return {@link Definitions} object
-     */
-    public Definitions getDefinitionsFromWsdl(final String wsdlUrl) {
-        final WSDLParser parser = new WSDLParser();
-        return parser.parse(wsdlUrl);
+    public WSDLService getWsdlService() {
+        return wsdlService;
     }
+
+    public void setWsdlService(final WSDLService wsdlService) {
+        this.wsdlService = wsdlService;
+}
+
 }

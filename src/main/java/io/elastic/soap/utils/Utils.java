@@ -17,6 +17,7 @@ import javax.json.JsonObject;
 import javax.json.JsonString;
 
 import io.elastic.soap.exceptions.ComponentException;
+import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,14 +87,7 @@ public final class Utils {
    * @return String representation of the WSDL URL.
    */
   public static String getWsdlUrl(final JsonObject config) {
-    final String wsdl = Utils.getConfigParam(config, AppConstants.WSDL_CONFIG_NAME);
-
-    if (!isBasicAuth(config)) {
-      return wsdl;
-    }
-    final String username = Utils.getUsername(config);
-    final String password = Utils.getPassword(config);
-    return addAuthToURL(wsdl, username, password);
+    return Utils.getConfigParam(config, AppConstants.WSDL_CONFIG_NAME);
   }
 
   /**
@@ -183,5 +177,16 @@ public final class Utils {
     final NameConverter nameConverter = new NameConverter.Standard();
     return nameConverter.toPackageName(xmlNamespace);
   }
+
+  /**
+   * Create GET request for URI, username, password.
+   * @return get request.
+   */
+  public static HttpGet createGet(final JsonObject config) {
+    final HttpGet get = new HttpGet(getWsdlUrl(config));
+    get.addHeader("Authorization", getBasicAuthHeader(config));
+    return get;
+  }
+
 }
 

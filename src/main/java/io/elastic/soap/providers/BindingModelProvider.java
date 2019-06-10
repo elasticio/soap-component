@@ -1,12 +1,11 @@
 package io.elastic.soap.providers;
 
 import com.predic8.wsdl.Binding;
-import com.predic8.wsdl.Definitions;
-import com.predic8.wsdl.WSDLParser;
 import io.elastic.api.JSON;
 import io.elastic.api.SelectModelProvider;
 import io.elastic.soap.exceptions.ComponentException;
-import io.elastic.soap.utils.Utils;
+import io.elastic.soap.services.WSDLService;
+import io.elastic.soap.services.impls.HttpWSDLService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,13 +24,13 @@ import static io.elastic.soap.AppConstants.SOAP12_PROTOCOL_NAME;
 public class BindingModelProvider implements SelectModelProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BindingModelProvider.class);
+    private WSDLService wsdlService = new HttpWSDLService();
 
     @Override
     public JsonObject getSelectModel(final JsonObject configuration) {
         try {
-            LOGGER.info("Input model configuration: {}", JSON.stringify(configuration));
-            final String wsdlUrl = Utils.getWsdlUrl(configuration);
-            final List<Binding> bindings = getDefinitionsFromWsdl(wsdlUrl).getBindings();
+            LOGGER.trace("Input model configuration: {}", JSON.stringify(configuration));
+            final List<Binding> bindings =  wsdlService.getWSDL(configuration).getBindings();
             final JsonObjectBuilder builder = Json.createObjectBuilder();
             bindings.stream()
                     .filter(this::isSupportedSOAPVersion)
@@ -54,18 +53,17 @@ public class BindingModelProvider implements SelectModelProvider {
         }
     }
 
-    /**
-     * Method calls external WSDL by its URL and parses it
-     *
-     * @return {@link Definitions} object
-     */
-    public Definitions getDefinitionsFromWsdl(final String wsdlUrl) {
-        final WSDLParser parser = new WSDLParser();
-        return parser.parse(wsdlUrl);
-    }
 
     private boolean isSupportedSOAPVersion(final Binding binding) {
         final Object version = binding.getProtocol();
         return SOAP11_PROTOCOL_NAME.equals(version) || SOAP12_PROTOCOL_NAME.equals(version);
+    }
+
+    public WSDLService getWsdlService() {
+        return wsdlService;
+    }
+
+    public void setWsdlService(final WSDLService wsdlService) {
+        this.wsdlService = wsdlService;
     }
 }

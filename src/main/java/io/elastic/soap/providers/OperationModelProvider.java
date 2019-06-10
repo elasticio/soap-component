@@ -5,14 +5,14 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
 import io.elastic.api.JSON;
 import io.elastic.api.SelectModelProvider;
+import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.utils.Utils;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides data for input Operation select box.
@@ -21,42 +21,42 @@ import org.slf4j.LoggerFactory;
 
 public class OperationModelProvider implements SelectModelProvider {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(OperationModelProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationModelProvider.class);
 
-  @Override
-  public JsonObject getSelectModel(final JsonObject configuration) {
-
-    LOGGER.info("Input model configuration: {}", JSON.stringify(configuration));
-    String wsdlUrl;
-    String bindingName;
-    try {
-      bindingName = Utils.getBinding(configuration);
-      wsdlUrl = Utils.getWsdlUrl(configuration);
-    } catch (NullPointerException npe) {
-      throw new RuntimeException("WSDL URL and Binding Name can not be empty");
+    @Override
+    public JsonObject getSelectModel(final JsonObject configuration) {
+        try {
+            LOGGER.info("Input model configuration: {}", JSON.stringify(configuration));
+            final String bindingName = Utils.getBinding(configuration);
+            final String wsdlUrl = Utils.getWsdlUrl(configuration);
+            final Definitions wsdl = getDefinitionsFromWsdl(wsdlUrl);
+            final Binding binding = wsdl.getBinding(bindingName);
+            final JsonObjectBuilder builder = Json.createObjectBuilder();
+            binding.getOperations().forEach(o -> builder.add(o.getName(), o.getName()));
+            final JsonObject result = builder.build();
+            if (result.keySet().size() == 0) {
+                throw new ComponentException(String.format("No operations where found for binding: %s, in wsdl.", bindingName));
+            }
+            LOGGER.trace("Result operation list {}", result);
+            LOGGER.info("Finish creating operation list");
+            LOGGER.info("Input wsdl url: {}, binding: {}", wsdlUrl, bindingName);
+            return result;
+        } catch (ComponentException e) {
+            LOGGER.error("Exception while creating operation list for component", e);
+            throw e;
+        } catch (Exception e) {
+            LOGGER.error("Unexpected exception while creating operation list for component", e);
+            throw new ComponentException("Unexpected exception while creating operation list for component", e);
+        }
     }
-    LOGGER.info("Input wsdl url: {}, binding: {}", wsdlUrl, bindingName);
 
-    final List<Binding> bindingList = getDefinitionsFromWsdl(wsdlUrl).getBindings();
-    final JsonObjectBuilder builder = Json.createObjectBuilder();
-    final String finalBindingName = bindingName;
-    bindingList.stream()
-        .filter(binding -> binding.getName().equals(finalBindingName))
-        .collect(Collectors.toList())
-        .forEach(binding -> binding.getOperations()
-            .forEach(
-                bindingOperation -> builder
-                    .add(bindingOperation.getName(), bindingOperation.getName())));
-    return builder.build();
-  }
-
-  /**
-   * Method calls external WSDL by its URL and parses it
-   *
-   * @return {@link Definitions} object
-   */
-  public Definitions getDefinitionsFromWsdl(final String wsdlUrl) {
-    final WSDLParser parser = new WSDLParser();
-    return parser.parse(wsdlUrl);
-  }
+    /**
+     * Method calls external WSDL by its URL and parses it
+     *
+     * @return {@link Definitions} object
+     */
+    public Definitions getDefinitionsFromWsdl(final String wsdlUrl) {
+        final WSDLParser parser = new WSDLParser();
+        return parser.parse(wsdlUrl);
+    }
 }

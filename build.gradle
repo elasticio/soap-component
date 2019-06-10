@@ -1,11 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'idea'
-apply plugin: 'eclipse'
 apply plugin: 'java-library-distribution'
 
 group = 'io.elastic'
-version = '1.0.0'
+version = '1.1.0'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -51,6 +50,6 @@ uploadArchives {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+wrapper {
+    gradleVersion = '5.4.1'
 }

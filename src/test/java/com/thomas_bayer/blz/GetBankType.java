@@ -1,4 +1,3 @@
-
 package com.thomas_bayer.blz;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -9,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for getBankType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="getBankType">
  *   &lt;complexContent>
@@ -23,12 +22,10 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getBankType", propOrder = {
-    "blz"
+        "blz"
 })
 public class GetBankType {
 
@@ -37,11 +34,9 @@ public class GetBankType {
 
     /**
      * Gets the value of the blz property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getBlz() {
         return blz;
@@ -49,11 +44,9 @@ public class GetBankType {
 
     /**
      * Sets the value of the blz property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setBlz(String value) {
         this.blz = value;

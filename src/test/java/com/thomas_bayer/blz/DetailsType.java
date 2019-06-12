@@ -1,4 +1,3 @@
-
 package com.thomas_bayer.blz;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,9 +7,9 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>Java class for detailsType complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="detailsType">
  *   &lt;complexContent>
@@ -25,15 +24,13 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "detailsType", propOrder = {
-    "bezeichnung",
-    "bic",
-    "ort",
-    "plz"
+        "bezeichnung",
+        "bic",
+        "ort",
+        "plz"
 })
 public class DetailsType {
 
@@ -44,11 +41,9 @@ public class DetailsType {
 
     /**
      * Gets the value of the bezeichnung property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getBezeichnung() {
         return bezeichnung;
@@ -56,11 +51,9 @@ public class DetailsType {
 
     /**
      * Sets the value of the bezeichnung property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setBezeichnung(String value) {
         this.bezeichnung = value;
@@ -68,11 +61,9 @@ public class DetailsType {
 
     /**
      * Gets the value of the bic property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getBic() {
         return bic;
@@ -80,11 +71,9 @@ public class DetailsType {
 
     /**
      * Sets the value of the bic property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setBic(String value) {
         this.bic = value;
@@ -92,11 +81,9 @@ public class DetailsType {
 
     /**
      * Gets the value of the ort property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getOrt() {
         return ort;
@@ -104,11 +91,9 @@ public class DetailsType {
 
     /**
      * Sets the value of the ort property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setOrt(String value) {
         this.ort = value;
@@ -116,11 +101,9 @@ public class DetailsType {
 
     /**
      * Gets the value of the plz property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     *
+     * @return possible object is
+     * {@link String }
      */
     public String getPlz() {
         return plz;
@@ -128,11 +111,9 @@ public class DetailsType {
 
     /**
      * Sets the value of the plz property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPlz(String value) {
         this.plz = value;

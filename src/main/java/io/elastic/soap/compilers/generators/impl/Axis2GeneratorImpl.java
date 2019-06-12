@@ -3,17 +3,15 @@ package io.elastic.soap.compilers.generators.impl;
 import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.generators.IJaxbGenerator;
 import io.elastic.soap.utils.Utils;
+import org.apache.axis2.wsdl.WSDL2Java;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.axis2.wsdl.WSDL2Java;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Axis2GeneratorImpl implements IJaxbGenerator {
 
@@ -36,8 +34,7 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
     @Override
     public String generateJaxbClasses(final String wsdlUrl,
                                       final Map<String, String> wsdlCompiledClassesCacheMap) throws Exception {
-        LOGGER.info(
-                "About to start generating JAXB structure. javax.xml.accessExternalSchema will be enabled...");
+        LOGGER.info("About to start generating JAXB structure. javax.xml.accessExternalSchema will be enabled...");
         System.setProperty("javax.xml.accessExternalSchema", "all");
         String path = wsdlCompiledClassesCacheMap.get(wsdlUrl);
         if (path == null) {

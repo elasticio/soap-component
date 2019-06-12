@@ -2,7 +2,6 @@ package io.elastic.soap.providers;
 
 import com.predic8.wsdl.Binding;
 import com.predic8.wsdl.Definitions;
-import com.predic8.wsdl.WSDLParser;
 import io.elastic.api.JSON;
 import io.elastic.api.SelectModelProvider;
 import io.elastic.soap.exceptions.ComponentException;
@@ -58,6 +57,6 @@ public class OperationModelProvider implements SelectModelProvider {
 
     public void setWsdlService(final WSDLService wsdlService) {
         this.wsdlService = wsdlService;
-}
+    }
 
 }

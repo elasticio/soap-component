@@ -3,46 +3,58 @@ package io.elastic.soap.triggers;
 import io.elastic.api.ExecutionParameters;
 import io.elastic.api.Message;
 import io.elastic.api.Module;
+import io.elastic.soap.actions.CallAction;
+import io.elastic.soap.compilers.model.SoapBodyDescriptor;
+import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.services.SoapCallService;
-import javax.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.json.JsonObject;
+import javax.xml.ws.soap.SOAPFaultException;
+
+import static io.elastic.soap.utils.Utils.callSOAPService;
+import static io.elastic.soap.utils.Utils.createSOAPFaultLogString;
+import static io.elastic.soap.utils.Utils.loadClasses;
 
 /**
  * Trigger to get pets by status.
  */
 public class CallTrigger implements Module {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CallTrigger.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CallAction.class);
+    private SoapBodyDescriptor soapBodyDescriptor;
 
-  /**
-   * Executes the io.elastic.soap.actions's logic by sending a request to the SOAP Service and
-   * emitting response to the platform.
-   *
-   * @param parameters execution parameters
-   */
-  @Override
-  public void execute(final ExecutionParameters parameters) {
-    final Message message = parameters.getMessage();
-    LOGGER.info("Input message: {}", message);
-
-    final JsonObject body = message.getBody();
-    final JsonObject configuration = parameters.getConfiguration();
-
-    JsonObject outputBody;
-    final SoapCallService soapCallService = new SoapCallService();
-    try {
-      outputBody = soapCallService.call(body, configuration);
-    } catch (Throwable throwable) {
-      LOGGER.error("Unexpected internal component error: {}", throwable.getMessage());
-      throw new RuntimeException(throwable);
-      //throw new RuntimeException("Unexpected internal component error: " + throwable.getMessage());
+    @Override
+    public void init(JsonObject configuration) {
+        LOGGER.info("On init started");
+        soapBodyDescriptor = loadClasses(configuration, soapBodyDescriptor);
+        LOGGER.info("On init finished");
     }
 
-    final Message data = new Message.Builder().body(outputBody).build();
-    LOGGER.info("Emitting data: {}", outputBody);
-
-    // emitting the message to the platform
-    parameters.getEventEmitter().emitData(data);
-  }
+    /**
+     * Executes the io.elastic.soap.actions's logic by sending a request to the SOAP Service and
+     * emitting response to the platform.
+     *
+     * @param parameters execution parameters
+     */
+    @Override
+    public void execute(final ExecutionParameters parameters) {
+        try {
+            LOGGER.info("Start processing new call to SOAP trigger");
+            final Message message = parameters.getMessage();
+            LOGGER.trace("Input message: {}", message);
+            Message data = callSOAPService(message, parameters, soapBodyDescriptor);
+            LOGGER.trace("Emitting data: {}", data);
+            parameters.getEventEmitter().emitData(data);
+            LOGGER.info("Finish processing call to SOAP trigger");
+        } catch (SOAPFaultException soapFaultException) {
+            String exceptionText = createSOAPFaultLogString(soapFaultException);
+            LOGGER.error(exceptionText, soapFaultException);
+            throw new ComponentException(exceptionText, soapFaultException);
+        } catch (Throwable throwable) {
+            LOGGER.error("Unexpected internal component error.", throwable);
+            throw new ComponentException(throwable);
+        }
+    }
 }

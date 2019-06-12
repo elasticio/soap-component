@@ -31,7 +31,7 @@ public class BindingModelProvider implements SelectModelProvider {
         try {
             LOGGER.info("Start creating bindings list");
             LOGGER.trace("Input model configuration: {}", JSON.stringify(configuration));
-            final List<Binding> bindings =  wsdlService.getWSDL(configuration).getBindings();
+            final List<Binding> bindings = wsdlService.getWSDL(configuration).getBindings();
             final JsonObjectBuilder builder = Json.createObjectBuilder();
             bindings.stream()
                     .filter(this::isSupportedSOAPVersion)

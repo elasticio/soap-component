@@ -21,10 +21,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-
 import java.util.Iterator;
 import java.util.Map;
 
+import static io.elastic.soap.utils.Utils.getElementName;
 import static io.elastic.soap.utils.Utils.isBasicAuth;
 
 /**
@@ -41,7 +41,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         try {
             final JsonNodeFactory factory = JsonNodeFactory.instance;
             final ObjectMapper objectMapper = Utils.getConfiguredObjectMapper();
-            final String elementName = message.getParts().get(0).getElement().getName();
+            final String elementName = getElementName(message);
             final String className = JaxbCompiler.getClassName(message, elementName);
             final JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(objectMapper);
             final ObjectNode schema = objectMapper.valueToTree(schemaGen.generateSchema(Class.forName(className)));

@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import javax.json.Json;
 import javax.json.JsonObject;
 
+import static io.elastic.soap.utils.Utils.isBasicAuth;
+
 /**
  * Provides dynamically generated fields set representing correlated XSD schema for given WSDL, its
  * binding and operation.
@@ -61,7 +63,10 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         try {
             LOGGER.info("Start creating meta data for component");
             LOGGER.trace("Got configuration: {}", configuration.toString());
-            final String wsdlUrl = Utils.addAuthToURL(Utils.getWsdlUrl(configuration), Utils.getUsername(configuration), Utils.getPassword(configuration));
+            String wsdlUrl = Utils.getWsdlUrl(configuration);
+            if (isBasicAuth(configuration)) {
+                wsdlUrl = Utils.addAuthToURL(Utils.getWsdlUrl(configuration), Utils.getUsername(configuration), Utils.getPassword(configuration));
+            }
             final String bindingName = Utils.getBinding(configuration);
             final String operationName = Utils.getOperation(configuration);
             final Definitions wsdl = wsdlService.getWSDL(configuration);

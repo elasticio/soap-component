@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.json.JsonObject;
 import javax.json.JsonString;
@@ -113,7 +114,9 @@ public final class Utils {
   public static boolean isBasicAuth(JsonObject config) {
     final String authType = config.getJsonObject("auth").getJsonString("type").getString();
     boolean isBasicAuth = false;
-    if (AppConstants.BASIC_AUTH_CONFIG_NAME.equals(authType)) {
+    final String username = Optional.ofNullable(getUsername(config)).orElse("");
+    final String password =  Optional.ofNullable(getPassword(config)).orElse("");
+    if (AppConstants.BASIC_AUTH_CONFIG_NAME.equals(authType) && !username.equals("") && !password.equals("")) {
       isBasicAuth = true;
     }
     return isBasicAuth;

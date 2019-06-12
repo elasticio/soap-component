@@ -164,7 +164,7 @@ public class JaxbCompiler {
    * into classloader in order to be accessible
    */
   public static void loadClassesInDirToClassloader()
-      throws ClassNotFoundException, MalformedURLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+      throws MalformedURLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     LOGGER.info("About to start loading generated JAXB classes into class loader");
     final File file = new File(AppConstants.GENERATED_RESOURCES_DIR);
     final URL url = file.toURI().toURL();
@@ -203,6 +203,10 @@ public class JaxbCompiler {
   public static Definitions getDefinitionsFromWsdl(final String wsdlUrl) {
     final WSDLParser parser = new WSDLParser();
     return parser.parse(wsdlUrl);
+  }
+
+  public static void putToCache(final String url, final String path) {
+    isWsdlCompiledMap.put(url, path);
   }
 
   public static void main(String[] args) {

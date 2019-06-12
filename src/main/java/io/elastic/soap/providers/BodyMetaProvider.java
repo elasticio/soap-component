@@ -3,6 +3,7 @@ package io.elastic.soap.providers;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
@@ -20,6 +21,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+
+import java.util.Iterator;
+import java.util.Map;
 
 import static io.elastic.soap.utils.Utils.isBasicAuth;
 
@@ -47,6 +51,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             propertiesType.set("properties", properties);
             final JsonNode classNameNode = factory.objectNode().set(elementName, propertiesType);
             final JsonNode result = schema.set("properties", classNameNode);
+            deepRemoveKey(result.fields(), "id");
             return objectMapper.convertValue(result, JsonObject.class);
         } catch (JsonMappingException e) {
             LOGGER.error("Could not map the Json to deserialize schema", e);
@@ -99,5 +104,34 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
 
     public void setWsdlService(final WSDLService wsdlService) {
         this.wsdlService = wsdlService;
+    }
+
+    public static void deepRemoveKey(Iterator<Map.Entry<String, JsonNode>> iter, final String keyRemove) {
+        while (iter.hasNext()) {
+            final Map.Entry<String, JsonNode> entry = iter.next();
+            final String name = entry.getKey();
+            final JsonNode node = entry.getValue();
+            if (node.isObject()) {
+                deepRemoveKey(node.fields(), keyRemove);
+            }
+            if (node.isArray()) {
+                ArrayNode arr = (ArrayNode) node;
+                iterateOverArray(arr, keyRemove);
+            }
+            if (name != null && name.equals(keyRemove)) {
+                iter.remove();
+            }
+        }
+    }
+
+    public static void iterateOverArray(final ArrayNode node, final String remove) {
+        node.forEach(i -> {
+            if (i.isArray()) {
+                iterateOverArray(node, remove);
+            }
+            if (i.isObject()) {
+                deepRemoveKey(node.fields(), remove);
+            }
+        });
     }
 }

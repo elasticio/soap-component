@@ -7,3 +7,4 @@ build
 *.iws
 out
 src/com
+src/main/generated-java

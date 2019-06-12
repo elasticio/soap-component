@@ -117,7 +117,6 @@ public class ResponseHandlerTest {
 
     @Test
     public void getJsonObjectTest() {
-        try {
             final JsonObject responseJsonObject = responseHandler
                     .getJsonObject(responseObject, soapBodyDescriptor);
             final JsonObject details = responseJsonObject.getJsonObject("getBankResponse")
@@ -135,9 +134,6 @@ public class ResponseHandlerTest {
             assertEquals(detailsObject.getPlz(), details.getString("plz"),
                     String.format("expected is %s but actual is %s", detailsObject.getPlz(),
                             details.getString("plz")));
-        } catch (IOException e) {
-            logger.error("getJsonObjectTest error", e);
-        }
     }
 }
 

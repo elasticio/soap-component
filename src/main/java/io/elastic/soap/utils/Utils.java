@@ -2,6 +2,7 @@ package io.elastic.soap.utils;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
 import com.google.common.base.CaseFormat;
 import com.sun.xml.bind.api.impl.NameConverter;
 import io.elastic.soap.AppConstants;
@@ -37,11 +38,8 @@ public final class Utils {
    */
   public static ObjectMapper getConfiguredObjectMapper() {
     final ObjectMapper objectMapper = new ObjectMapper();
-
     objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-
-    // Possible features are coming if needed...
-
+    objectMapper.registerModule(new JSR353Module());
     return objectMapper;
   }
 

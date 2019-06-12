@@ -29,9 +29,9 @@ public class OperationModelProvider implements SelectModelProvider {
     @Override
     public JsonObject getSelectModel(final JsonObject configuration) {
         try {
-            LOGGER.info("Input model configuration: {}", JSON.stringify(configuration));
+            LOGGER.info("Start creating operation list");
+            LOGGER.trace("Input model configuration: {}", JSON.stringify(configuration));
             final String bindingName = Utils.getBinding(configuration);
-            final String wsdlUrl = Utils.getWsdlUrl(configuration);
             final Definitions wsdl = wsdlService.getWSDL(configuration);
             final Binding binding = wsdl.getBinding(bindingName);
             final JsonObjectBuilder builder = Json.createObjectBuilder();
@@ -42,7 +42,6 @@ public class OperationModelProvider implements SelectModelProvider {
             }
             LOGGER.trace("Result operation list {}", result);
             LOGGER.info("Finish creating operation list");
-            LOGGER.info("Input wsdl url: {}, binding: {}", wsdlUrl, bindingName);
             return result;
         } catch (ComponentException e) {
             LOGGER.error("Exception while creating operation list for component", e);

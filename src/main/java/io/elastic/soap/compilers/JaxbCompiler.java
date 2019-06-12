@@ -184,7 +184,7 @@ public class JaxbCompiler {
    * @param elementName The name of the element which type or element name should be retieved
    * @return Element or type name
    */
-  private static String getClassName(final Message msg, final String elementName) {
+  public static String getClassName(final Message msg, final String elementName) {
     String className;
     if (msg.getParts().get(0).getElement().getType() == null) {
       className = Utils.convertStringToUpperCamelCase(elementName);

@@ -32,7 +32,6 @@ sourceSets {
 
 dependencies {
     compile files("lib/tools.jar")
-    compile "com.google.code.gson:gson:2.8.0"
     compile "com.sun.xml.bind:jaxb-xjc:2.1.6"
     compile "com.sun.xml.ws:jaxws-tools:2.2.1"
     compile "io.elastic:sailor-jvm:2.1.0"
@@ -45,9 +44,7 @@ dependencies {
         exclude group: "javax.annotation"
     }
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jsonSchema', version: '2.9.6'
-
-
-    compile group: 'com.google.inject', name: 'guice', version: '4.2.0'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr353', version: '2.9.6'
 
     // JUnit 5 is used in the project. Junit 4.12 is needed to fix
     // some ClassNotFound exceptions in one of transitive dependencies

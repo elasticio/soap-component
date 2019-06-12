@@ -18,7 +18,7 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
    * Parses WSDL and generates compiled JAXB structure using Apache Axis2 tool. {@link
    * WsImportGeneratorImpl} may also be used instead of this implementation, but it has some
    * limitations. In JAX-WS RPC/encoded is not supported as a messaging mode. In JAX-WS the
-   * “encoded” encoding style isn’t supported and only the “literal” encoding style used. In general
+   * "encoded" encoding style isn’t supported and only the "literal" encoding style used. In general
    * case using {@link Axis2GeneratorImpl} is preferred.
    *
    * @param wsdlUrl WSDL URL

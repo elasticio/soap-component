@@ -14,7 +14,7 @@ public class WsImportGeneratorImpl implements IJaxbGenerator {
   /**
    * Parses WSDL and generates compiled JAXB structure using {@link WsImport} tool. It has some
    * limitations. In JAX-WS RPC/encoded is not supported as a messaging mode. In JAX-WS the
-   * “encoded” encoding style isn’t supported and only the “literal” encoding style used. In this
+   * "encoded" encoding style isn’t supported and only the "literal" encoding style used. In this
    * case using {@link Axis2GeneratorImpl} is preferred.
    *
    * @param wsdlUrl WSDL URL

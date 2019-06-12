@@ -16,6 +16,11 @@ public class CallAction implements Module {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CallAction.class);
 
+  @Override
+  public void init(JsonObject configuration) {
+
+  }
+
   /**
    * Executes the io.elastic.soap.actions's logic by sending a request to the SOAP Service and
    * emitting response to the platform.

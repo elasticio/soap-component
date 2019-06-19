@@ -122,13 +122,12 @@ public final class Utils {
      */
     public static boolean isBasicAuth(JsonObject config) {
         final String authType = config.getJsonObject("auth").getJsonString("type").getString();
-        boolean isBasicAuth = false;
+        if (!AppConstants.BASIC_AUTH_CONFIG_NAME.equals(authType)) {
+            return false;
+        }
         final String username = Optional.ofNullable(getUsername(config)).orElse("");
         final String password = Optional.ofNullable(getPassword(config)).orElse("");
-        if (AppConstants.BASIC_AUTH_CONFIG_NAME.equals(authType) && !username.equals("") && !password.equals("")) {
-            isBasicAuth = true;
-        }
-        return isBasicAuth;
+        return !username.equals("") && !password.equals("");
     }
 
     /**
@@ -207,7 +206,6 @@ public final class Utils {
 
     public static SoapBodyDescriptor loadClasses(final JsonObject configuration, final SoapBodyDescriptor soapBodyDescriptor) {
         try {
-
             String wsdlUrl = getWsdlUrl(configuration);
             if (isBasicAuth(configuration)) {
                 wsdlUrl = addAuthToURL(wsdlUrl, getUsername(configuration), getPassword(configuration));
@@ -226,7 +224,7 @@ public final class Utils {
             LOGGER.error("WSDL URL, Binding and Operation can not be empty.");
             throw new ComponentException("WSDL URL, Binding and Operation can not be empty.", npe);
         } catch (Throwable throwable) {
-            LOGGER.error("Unexpected error in startup method", throwable);
+            LOGGER.error("Unexpected error in init method", throwable);
             throw new ComponentException(String.format("Can not generate Jaxb classes for wsdl. Exception: %s",
                     throwable.getMessage()), throwable);
         }

@@ -14,6 +14,8 @@ import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPMessage;
 import java.net.URL;
 
+import static io.elastic.soap.utils.Utils.isBasicAuth;
+
 /**
  * The class which controls all the process of retrieving input data, input configuration, its
  * unmarshalling to Java object and its marshalling to XML afterwards. As well as the opposite
@@ -29,8 +31,10 @@ public class SoapCallService {
         final Class requestClass = Class.forName(soapBodyDescriptor.getRequestBodyClassName());
         final Object requestObject = requestHandler.getRequestObject(inputJsonObject, soapBodyDescriptor, requestClass);
         final SOAPMessage requestSoapMessage = requestHandler.getSoapRequestMessage(requestObject, soapBodyDescriptor, requestClass);
-        final String encodedAuthHeader = Utils.getBasicAuthHeader(configuration);
-        requestSoapMessage.getMimeHeaders().addHeader(AppConstants.AUTH_KEYWORD, encodedAuthHeader);
+        if (isBasicAuth(configuration)) {
+            final String encodedAuthHeader = Utils.getBasicAuthHeader(configuration);
+            requestSoapMessage.getMimeHeaders().addHeader(AppConstants.AUTH_KEYWORD, encodedAuthHeader);
+        }
         return callSOAP(requestSoapMessage, soapBodyDescriptor);
     }
 

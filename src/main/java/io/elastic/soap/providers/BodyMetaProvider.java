@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.predic8.wsdl.Definitions;
@@ -35,11 +36,10 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BodyMetaProvider.class);
     private WSDLService wsdlService = new HttpWSDLService();
-
+    private static final JsonNodeFactory factory = JsonNodeFactory.instance;
 
     private JsonObject generateSchema(final Message message) throws ComponentException {
         try {
-            final JsonNodeFactory factory = JsonNodeFactory.instance;
             final ObjectMapper objectMapper = Utils.getConfiguredObjectMapper();
             final String elementName = getElementName(message);
             final String className = JaxbCompiler.getClassName(message, elementName);
@@ -128,7 +128,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
     public static void deepRemoveNull(Iterator<Map.Entry<String, JsonNode>> iter) {
         while (iter.hasNext()) {
             final Map.Entry<String, JsonNode> entry = iter.next();
-            final JsonNode node = entry.getValue();
+            JsonNode node = entry.getValue();
             if (node.isObject()) {
                 deepRemoveNull(node.fields());
             }
@@ -137,7 +137,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
                 iterateOverArray(arr, null,false);
             }
             if (node.isNull()) {
-                iter.remove();
+                entry.setValue(factory.objectNode());
             }
         }
     }

@@ -1,4 +1,6 @@
-# soap-component
+[![CircleCI](https://circleci.com/gh/elasticio/sapbydesign-component.svg?style=svg&circle-token=4388a6db1735b10db7b3d6551f37a92374e61bb3)](https://circleci.com/gh/elasticio/sapbydesign-component)
+# SOAP Component
+
 ## Description
 The SOAP Component provides the SOAP Web Services work opportunity within a open integration hub flow.
 

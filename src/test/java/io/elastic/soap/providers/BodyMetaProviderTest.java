@@ -29,7 +29,7 @@ public class BodyMetaProviderTest {
         Definitions definitions = getDefinitions(WSDL_URL);
         config = Json.createObjectBuilder()
                 .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
-                .add(AppConstants.OPERATION_CONFIG_NAME, "GetCurrencyIntradayChartCustom")
+                .add(AppConstants.OPERATION_CONFIG_NAME, "ListCurrencies")
                 .add(AppConstants.WSDL_CONFIG_NAME, "http://www.xignite.com/xcurrencies.asmx?WSDL")
                 .add("auth",
                         Json.createObjectBuilder().add("type", "No Auth")

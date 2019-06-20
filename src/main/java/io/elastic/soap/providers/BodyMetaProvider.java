@@ -52,6 +52,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             final JsonNode classNameNode = factory.objectNode().set(elementName, propertiesType);
             final JsonNode result = schema.set("properties", classNameNode);
             deepRemoveKey(result.fields(), "id");
+            deepRemoveNull(result.fields());
             return objectMapper.convertValue(result, JsonObject.class);
         } catch (JsonMappingException e) {
             LOGGER.error("Could not map the Json to deserialize schema", e);
@@ -116,7 +117,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             }
             if (node.isArray()) {
                 ArrayNode arr = (ArrayNode) node;
-                iterateOverArray(arr, keyRemove);
+                iterateOverArray(arr, keyRemove, true);
             }
             if (name != null && name.equals(keyRemove)) {
                 iter.remove();
@@ -124,13 +125,34 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         }
     }
 
-    public static void iterateOverArray(final ArrayNode node, final String remove) {
+    public static void deepRemoveNull(Iterator<Map.Entry<String, JsonNode>> iter) {
+        while (iter.hasNext()) {
+            final Map.Entry<String, JsonNode> entry = iter.next();
+            final JsonNode node = entry.getValue();
+            if (node.isObject()) {
+                deepRemoveNull(node.fields());
+            }
+            if (node.isArray()) {
+                ArrayNode arr = (ArrayNode) node;
+                iterateOverArray(arr, null,false);
+            }
+            if (node.isNull()) {
+                iter.remove();
+            }
+        }
+    }
+
+    public static void iterateOverArray(final ArrayNode node, final String remove, boolean isKey) {
         node.forEach(i -> {
             if (i.isArray()) {
-                iterateOverArray(node, remove);
+                iterateOverArray(node, remove, isKey);
             }
             if (i.isObject()) {
-                deepRemoveKey(node.fields(), remove);
+                if (isKey) {
+                    deepRemoveKey(node.fields(), remove);
+                } else {
+                    deepRemoveNull(node.fields());
+                }
             }
         });
     }

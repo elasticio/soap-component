@@ -1,4 +1,4 @@
 v 1.1.0 - 2019-06-20
 
 Optimize memory consumptions, refactor code and tests.
-Add project to circleci. 
+Add circle ci status badge.

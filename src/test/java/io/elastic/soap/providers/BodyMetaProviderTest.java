@@ -25,7 +25,7 @@ public class BodyMetaProviderTest {
     private final static String WSDL_URL = "src/test/resources/xcurrencies.wsdl";
 
     @BeforeAll
-    public static void beforeAll() throws IOException {
+    public static void beforeAll() throws Throwable {
         Definitions definitions = getDefinitions(WSDL_URL);
         config = Json.createObjectBuilder()
                 .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
@@ -43,6 +43,7 @@ public class BodyMetaProviderTest {
         WSDLService service = spy(new HttpWSDLService());
         provider.setWsdlService(service);
         doReturn(definitions).when(service).getWSDL(any(JsonObject.class));
+        JaxbCompiler.generateAndLoadJaxbStructure(WSDL_URL);
         JaxbCompiler.putToCache("http://www.xignite.com/xcurrencies.asmx?WSDL", AppConstants.GENERATED_RESOURCES_DIR);
     }
 

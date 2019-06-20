@@ -45,10 +45,6 @@ dependencies {
     }
     compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jsonSchema', version: '2.9.6'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr353', version: '2.9.6'
-
-    // JUnit 5 is used in the project. Junit 4.12 is needed to fix
-    // some ClassNotFound exceptions in one of transitive dependencies
-    testCompile "junit:junit:4.12"
     testCompile "org.junit.jupiter:junit-jupiter-params:5.1.0"
     testCompile "org.mockito:mockito-core:2.13.0"
 

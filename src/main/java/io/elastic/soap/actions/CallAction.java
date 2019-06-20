@@ -41,7 +41,7 @@ public class CallAction implements Module {
         try {
             LOGGER.info("Start processing new call to SOAP ");
             final Message message = parameters.getMessage();
-            LOGGER.info("Input message: {}", message);
+            LOGGER.trace("Input message: {}", message);
             Message data = callSOAPService(message, parameters, soapBodyDescriptor);
             LOGGER.trace("Emitting data: {}", data);
             parameters.getEventEmitter().emitData(data);

@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/elasticio/sapbydesign-component.svg?style=svg&circle-token=4388a6db1735b10db7b3d6551f37a92374e61bb3)](https://circleci.com/gh/elasticio/sapbydesign-component)
+[![CircleCI](https://circleci.com/gh/elasticio/soap-component.svg?style=svg)](https://circleci.com/gh/elasticio/soap-component)
 # SOAP Component
 
 ## Description

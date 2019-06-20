@@ -59,3 +59,10 @@ uploadArchives {
 wrapper {
     gradleVersion = '5.4.1'
 }
+
+task downloadDependencies() {
+    description 'Download all dependencies to the Gradle cache'
+    doLast {
+        configurations.findAll { it.canBeResolved }.files
+    }
+}

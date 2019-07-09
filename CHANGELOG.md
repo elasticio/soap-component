@@ -1,4 +1,4 @@
-v 1.1.0 - 2019-06-20
+## 1.1.0 (June 20, 2019)
 
-Optimize memory consumptions, refactor code and tests.
-Add circle ci status badge.
+* Optimize memory consumptions, refactor code and tests.
+* Add circle ci status badge.

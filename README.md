@@ -123,6 +123,7 @@ Webhook that validates input body over WSDL.
 #### Known Limitations
 1. Namespaces ignored and SOAP Body with 2 tags that have same name but in different namespaces would be invalid
 2. SOAP Headers not supported yet
+3. Retrieve Sample does not represent actual behaviour of component 
 
 ## Actions
 ### Call

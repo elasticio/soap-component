@@ -3,6 +3,7 @@
 ## Table of Contents
 * [Description](#description)
    * [Purpose](#purpose)
+   * [Completeness Matrix](#completeness-matrix)
    * [How it works](#how-it-works)
         * [Step 1](#step-1)
         * [Step 2](#step-2)
@@ -40,8 +41,12 @@
 The SOAP Component provides the SOAP Web Services work opportunity within a open integration hub flow.
 
 ### Purpose
-
 As an integration platform, open integration hub should has an opportunity to invoke SOAP Web services over HTTP.
+
+### Completeness Matrix
+![image](https://user-images.githubusercontent.com/36419533/65602075-8d9c3a00-dfa3-11e9-9c19-17106192fcfa.png)
+
+[SOAP component completeness matrix](https://docs.google.com/spreadsheets/d/1bNDN_E9kBgeKrSu-NWDp3Zsrf6V7ud8hi2HPKlPCmcQ)
 
 ### How it works
 #### Step 1
@@ -72,8 +77,6 @@ Component supports next wsdl styles:
 * RPC/Literal
 * Document/Encoded
 * Document/Literal
-
-#### Component [completeness matrix](https://docs.google.com/spreadsheets/d/1bNDN_E9kBgeKrSu-NWDp3Zsrf6V7ud8hi2HPKlPCmcQ)
 
 #### Environment variables
 ``` OIH_REQUIRED_RAM_MB - recommended value of allocated memory is 2048MB ```

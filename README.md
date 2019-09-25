@@ -73,6 +73,8 @@ Component supports next wsdl styles:
 * Document/Encoded
 * Document/Literal
 
+#### Component [completeness matrix](https://docs.google.com/spreadsheets/d/1bNDN_E9kBgeKrSu-NWDp3Zsrf6V7ud8hi2HPKlPCmcQ)
+
 #### Environment variables
 ``` OIH_REQUIRED_RAM_MB - recommended value of allocated memory is 2048MB ```
 
@@ -168,6 +170,27 @@ You can refer these tools documentation in order to get deeper understanding abo
 
 #### Output json schema
 Output json schema is generated dynamically the same as for the input (see above).
+
+#### Input data example:
+```json
+{
+  "AddResponse": {
+    "AddResult": 3
+  }
+}
+```
+
+#### Output data example:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Body>
+        <AddResponse xmlns="http://example.org/">
+            <AddResult>3</AddResult>
+        </AddResponse>
+    </soap:Body>
+</soap:Envelope>
+```
 
 ### Current limitations
 The following are limitations of this connector:

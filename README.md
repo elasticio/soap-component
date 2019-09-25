@@ -34,6 +34,7 @@
      * [Output json schema](#output-json-schema)
      * [Current limitations](#current-limitations))
 * [API and Documentation links](#api-and-documentation-links)
+* [License](#license)
 
 ## Description
 The SOAP Component provides the SOAP Web Services work opportunity within a open integration hub flow.
@@ -188,3 +189,6 @@ This is so, because the SOAP encoding specification does not guarantee 100% inte
 ## API and Documentation links
 * [Apache Axis2](http://axis.apache.org/axis2/java/core/)
 * [FasterXML JsonSchemaGenerator](https://github.com/FasterXML/jackson-module-jsonSchema)
+
+## License
+ © [Elastic.io GmbH](https://elastic.io)

@@ -44,7 +44,7 @@ The SOAP Component provides the SOAP Web Services work opportunity within a open
 As an integration platform, open integration hub should has an opportunity to invoke SOAP Web services over HTTP.
 
 ### Completeness Matrix
-![image](https://user-images.githubusercontent.com/36419533/65602075-8d9c3a00-dfa3-11e9-9c19-17106192fcfa.png)
+![image](https://user-images.githubusercontent.com/36419533/65602890-eddfab80-dfa4-11e9-8d76-bd758aafa403.png)
 
 [SOAP component completeness matrix](https://docs.google.com/spreadsheets/d/1bNDN_E9kBgeKrSu-NWDp3Zsrf6V7ud8hi2HPKlPCmcQ)
 

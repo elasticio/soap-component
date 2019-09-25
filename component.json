@@ -90,6 +90,7 @@
           "label" : "Validation",
           "required" : false,
           "viewClass" : "SelectView",
+          "placeholder": "Enabled",
           "model" : {
             "enabled" : "Enabled",
             "disabled" : "Disabled"

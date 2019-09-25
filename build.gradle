@@ -1,10 +1,10 @@
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'idea'
-apply plugin: 'java-library-distribution'
+apply plugin: "java"
+apply plugin: "groovy"
+apply plugin: "idea"
+apply plugin: "java-library-distribution"
 
-group = 'io.elastic'
-version = '1.1.0'
+group = "io.elastic"
+version = "1.2.0"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -18,10 +18,10 @@ repositories {
 }
 sourceSets {
     main {
-        java.outputDir = file('build/classes/main')
+        java.outputDir = file("build/classes/main")
     }
     test {
-        java.outputDir = file('build/classes/test')
+        java.outputDir = file("build/classes/test")
     }
 }
 
@@ -34,28 +34,27 @@ test {
 }
 
 dependencies {
-    compile files("lib/tools.jar")
+    compile group: "com.fasterxml.jackson.module", name: "jackson-module-jsonSchema", version: "2.9.6"
+    compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.6"
+    compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr353", version: "2.9.6"
     compile "com.sun.xml.bind:jaxb-xjc:2.1.6"
     compile "com.sun.xml.ws:jaxws-tools:2.2.1"
     compile "io.elastic:sailor-jvm:2.1.0"
-    compile "org.jetbrains:annotations:16.0.1"
-    compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.6"
-    compile 'javax.xml:jaxb-impl:2.1'
+    compile "javax.xml:jaxb-impl:2.1"
+    compile files("lib/tools.jar")
     compile "org.apache.axis2:axis2-codegen:1.6.1"
     compile "org.apache.axis2:axis2-jaxbri:1.7.8"
+    compile "org.jetbrains:annotations:16.0.1"
+    compile group: "org.json", name: "json", version: "20190722"
     compile("org.membrane-soa:service-proxy-core:4.6.1") {
         exclude group: "javax.annotation"
     }
-    compile group: 'org.json', name: 'json', version: '20190722'
-
-    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-jsonSchema', version: '2.9.6'
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr353', version: '2.9.6'
-
+    testCompile "net.joshka:junit-json-params:5.5.1-r0"
     testCompile "org.junit.jupiter:junit-jupiter-params:5.4.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.2"
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.2"
     testCompile "org.mockito:mockito-core:2.13.0"
-    testCompile "net.joshka:junit-json-params:5.5.1-r0"
+
 
 }
 
@@ -66,11 +65,11 @@ uploadArchives {
 }
 
 wrapper {
-    gradleVersion = '5.4.1'
+    gradleVersion = "5.4.1"
 }
 
 task downloadDependencies() {
-    description 'Download all dependencies to the Gradle cache'
+    description "Download all dependencies to the Gradle cache"
     doLast {
         configurations.findAll { it.canBeResolved }.files
     }

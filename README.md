@@ -1,5 +1,39 @@
 [![CircleCI](https://circleci.com/gh/elasticio/soap-component.svg?style=svg)](https://circleci.com/gh/elasticio/soap-component)
 # SOAP Component
+## Table of Contents
+* [Description](#description)
+   * [Purpose](#purpose)
+   * [How it works](#how-it-works)
+        * [Step 1](#step-1)
+        * [Step 2](#step-2)
+        * [Step 3](#step-3)
+        * [Step 4](#step-4)
+        * [Step 5](#step-5)
+        * [Step 6](#step-6)
+   * [Requirements](#Requirements)
+   * [Environment variables](#environment-variables)
+* [Credentials](#credentials)
+    * [Type](#type)
+    * [Username](#username-basic-auth-type)
+    * [Password](#password-basic-auth-type)
+* [Triggers](#actions)
+   * [SOAP input trigger](#soap-input-trigger)
+     * [Input fields description](#input-fields-description)
+     * [Example of usage](#example-of-usage)
+     * [Known Limitations](#known-limitations)
+* [Actions](#actions)
+   * [Call](#call)
+     * [Input fields description](#input-fields-description)
+     * [SOAP Fault](#soap-fault)
+     * [Input Json Schema](#input-json-schema)
+     * [Output Json Schema](#output-json-schema)
+     * [Additional info](#additional-info)
+   * [Soap Reply](#soap-reply)
+     * [Input fields description](#input-fields-description)
+     * [Input json schema](#input-json-schema)
+     * [Output json schema](#output-json-schema)
+     * [Current limitations](#current-limitations))
+* [API and Documentation links](#api-and-documentation-links)
 
 ## Description
 The SOAP Component provides the SOAP Web Services work opportunity within a open integration hub flow.
@@ -61,12 +95,12 @@ Webhook that validates input body over WSDL.
 * **Operation** - One of the operations available for the binding you have selected above.
 * **Validation** - If `Enabled` validate the SOAP Body over wsdl, if `Disabled` does not validate a SOAP Input Body
 #### Example of usage
-#####Configuration:
+##### Configuration:
 * **WSDL URI** - `http://www.dneonline.com/calculator.asmx?wsdl`
 * **Binding** - `CalculatorSoap12`
 * **Operation** - `Add`
 * **Validation** - `Enabled`
-#####Request Body:
+##### Request Body:
 ```xml
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -77,7 +111,7 @@ Webhook that validates input body over WSDL.
   </soap:Body>
 </soap:Envelope>
 ```
-#####Output:
+##### Output:
 ```JSON
 {
   "Add": {

@@ -32,7 +32,7 @@
           "label": "WSDL URI",
           "required": true,
           "viewClass": "TextFieldWithNoteView",
-          "placeholder": "http://www.webservicex.net/CreditCard.asmx?wsdl",
+          "placeholder": "http://www.example.com?wsdl",
           "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
         },
         "binding": {
@@ -62,7 +62,7 @@
           "label": "WSDL URI",
           "required": true,
           "viewClass": "TextFieldWithNoteView",
-          "placeholder": "http://www.webservicex.net/CreditCard.asmx?wsdl",
+          "placeholder": "http://www.example.com?wsdl",
           "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
         },
         "binding": {
@@ -83,8 +83,8 @@
       "dynamicMetadata": "io.elastic.soap.providers.BodyMetaProvider"
     },
     "soapReplyAction": {
-      "title": "Soap Reply",
-      "description": "Returns soap response to client",
+      "title": "SOAP Reply",
+      "description": "Returns SOAP response to client",
       "main": "io.elastic.soap.actions.SoapReplyAction",
       "fields": {
         "validation" : {
@@ -102,7 +102,7 @@
           "label": "WSDL URI",
           "required": true,
           "viewClass": "TextFieldWithNoteView",
-          "placeholder": "http://www.webservicex.net/CreditCard.asmx?wsdl",
+          "placeholder": "http://www.example.com?wsdl",
           "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
         },
         "binding": {

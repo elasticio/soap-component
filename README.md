@@ -87,7 +87,7 @@ Username for Basic authorization header in the SOAP request
 ### Password (Basic auth type)
 Password for Basic authorization header in the SOAP request
 ## Triggers
-### SOAP input trigger
+### Receive SOAP Request
 Webhook that validates input body over WSDL.
 #### Input fields description
 * **WSDL URI** - Public URL address of the WSDL

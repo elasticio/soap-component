@@ -67,6 +67,7 @@ public final class Utils {
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
     objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+    objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
     objectMapper.registerModule(new JSR353Module());
     objectMapper.registerModule(module);
     return objectMapper;

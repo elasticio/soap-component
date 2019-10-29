@@ -1,6 +1,7 @@
 package io.elastic.soap.utils;
 
 import ch.qos.logback.classic.Level;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
@@ -65,6 +66,7 @@ public final class Utils {
     final JaxbAnnotationModule module = new JaxbAnnotationModule();
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
     objectMapper.registerModule(new JSR353Module());
     objectMapper.registerModule(module);
     return objectMapper;

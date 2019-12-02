@@ -3,16 +3,15 @@ package io.elastic.soap.jackson;
 import com.fasterxml.jackson.databind.PropertyName;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
 import javax.xml.bind.annotation.XmlElements;
 
-public class XMLElementsIntrospector extends JacksonAnnotationIntrospector {
+public class XmlElementsIntrospector extends JacksonAnnotationIntrospector {
 
   /**
    * Finds alias names of field in annotations XmlElements and XmlElementRefs.
@@ -23,7 +22,7 @@ public class XMLElementsIntrospector extends JacksonAnnotationIntrospector {
   public List<PropertyName> findPropertyAliases(Annotated a) {
     if (a.hasAnnotation(XmlElements.class) || a.hasAnnotation(XmlElementRefs.class)) {
       final List<PropertyName> result = Optional.ofNullable(super.findPropertyAliases(a)).orElse(new ArrayList<>());
-      final List<PropertyName> names = getXMLElementsNames(a);
+      final List<PropertyName> names = getXmlElementsNames(a);
       result.addAll(names);
       return result;
     }
@@ -44,15 +43,23 @@ public class XMLElementsIntrospector extends JacksonAnnotationIntrospector {
   @Override
   public Object findDeserializer(Annotated a) {
     if (a.hasAnnotation(XmlElementRefs.class)) {
-      return new XMLElementRefsChoiceDeserializer(a.getType(), a.getAnnotation(XmlElementRefs.class));
+      return new XmlElementRefsChoiceDeserializer(a.getType(), a.getAnnotation(XmlElementRefs.class));
     }
     if (a.hasAnnotation(XmlElements.class)) {
-      return new XMLElementsChoiceDeserializer(a.getType(), a.getAnnotation(XmlElements.class));
+      return new XmlElementsChoiceDeserializer(a.getType(), a.getAnnotation(XmlElements.class));
     }
     return super.findDeserializer(a);
   }
 
-  public List<PropertyName> getXMLElementsNames(final Annotated a) {
+  @Override
+  public Object findSerializationConverter(Annotated a) {
+    if ((a.hasAnnotation(XmlElementRefs.class) || a.hasAnnotation(XmlElements.class)) && a.getType().isCollectionLikeType()) {
+      return new JaxbElementsJsonValueConverter();
+    }
+    return super.findSerializationConverter(a);
+  }
+
+  public List<PropertyName> getXmlElementsNames(final Annotated a) {
     if (a.hasAnnotation(XmlElements.class)) {
       return Arrays.stream(a.getAnnotation(XmlElements.class).value()).map(e -> new PropertyName(e.name())).collect(Collectors.toList());
     }

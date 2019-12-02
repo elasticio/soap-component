@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlElementRefs;
 
-public class XMLElementRefsChoiceDeserializer extends AbstractChoiceDeserializer {
+public class XmlElementRefsChoiceDeserializer extends AbstractChoiceDeserializer {
 
   private final XmlElementRefs annotation;
 
-  public XMLElementRefsChoiceDeserializer(final JavaType type, final XmlElementRefs annotation) {
+  public XmlElementRefsChoiceDeserializer(final JavaType type, final XmlElementRefs annotation) {
     super(type);
     this.annotation = annotation;
   }
@@ -23,5 +23,6 @@ public class XMLElementRefsChoiceDeserializer extends AbstractChoiceDeserializer
         .filter(c -> !c.equals(XmlElementRef.DEFAULT.class))
         .collect(Collectors.toList());
   }
+
 
 }

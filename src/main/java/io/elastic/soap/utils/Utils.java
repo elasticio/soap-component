@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import com.google.common.base.CaseFormat;
@@ -14,7 +15,7 @@ import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.JaxbCompiler;
 import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.exceptions.ComponentException;
-import io.elastic.soap.jackson.XMLElementsIntrospector;
+import io.elastic.soap.jackson.XmlElementsIntrospector;
 import io.elastic.soap.services.SoapCallService;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,14 +65,14 @@ public final class Utils {
    * @return ObjectMapper instance
    */
   public static ObjectMapper getConfiguredObjectMapper() {
-    final JaxbAnnotationModule module = new JaxbAnnotationModule();
     final ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true);
     objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+    objectMapper.configure(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED, true);
     objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-    objectMapper.setAnnotationIntrospector(new XMLElementsIntrospector());
+    objectMapper.setAnnotationIntrospector(new XmlElementsIntrospector());
     objectMapper.registerModule(new JSR353Module());
-    objectMapper.registerModule(module);
+    objectMapper.registerModule(new JaxbAnnotationModule());
     return objectMapper;
   }
 

@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 
-public class XMLElementsChoiceDeserializer extends AbstractChoiceDeserializer {
+public class XmlElementsChoiceDeserializer extends AbstractChoiceDeserializer {
 
 
   private final XmlElements annotation;
 
-  public XMLElementsChoiceDeserializer(final JavaType type, final XmlElements annotation) {
+  public XmlElementsChoiceDeserializer(final JavaType type, final XmlElements annotation) {
     super(type);
     this.annotation = annotation;
   }

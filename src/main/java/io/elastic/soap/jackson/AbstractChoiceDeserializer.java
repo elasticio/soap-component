@@ -132,8 +132,8 @@ public abstract class AbstractChoiceDeserializer extends JsonDeserializer {
   }
 
   public String constructExceptionString(final JsonNode value, final List<Class> possibleTypes) {
-    StringBuilder bd = new StringBuilder("Failed to convert choice value: ");
-    bd.append(value.toPrettyString()).append("to one of: ");
+    final StringBuilder bd = new StringBuilder("Failed to convert choice value: ");
+    bd.append(value.toString()).append("to one of: ");
     bd.append(possibleTypes.stream().map(Class::getSimpleName).collect(Collectors.joining(","))).append(".");
     return bd.toString();
   }

@@ -26,12 +26,6 @@ public class XmlElementsIntrospector extends JacksonAnnotationIntrospector {
       result.addAll(names);
       return result;
     }
-    if (a.hasAnnotation(XmlElement.class)) {
-      final List<PropertyName> result = Optional.ofNullable(super.findPropertyAliases(a)).orElse(new ArrayList<>());
-      XmlElement element = a.getAnnotation(XmlElement.class);
-      result.add(new PropertyName(element.name()));
-      return result;
-    }
     return super.findPropertyAliases(a);
   }
 

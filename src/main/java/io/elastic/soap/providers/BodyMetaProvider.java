@@ -78,7 +78,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             final String portTypeName = wsdl.getBinding(bindingName).getPortType().getName();
             final Operation operation = wsdl.getOperation(operationName, portTypeName);
             final JsonObject in = generateSchema(operation.getInput().getMessage());
-            final JsonObject out = generateSchema(operation.getInput().getMessage());
+            final JsonObject out = generateSchema(operation.getOutput().getMessage());
             final JsonObject result = Json.createObjectBuilder()
                     .add("in", in)
                     .add("out", out)

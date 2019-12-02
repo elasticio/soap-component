@@ -1,0 +1,104 @@
+[
+  {
+    "XmlElementsChoice": {
+      "intFieldOrStringFieldOrComplexType": [
+        "1",
+        "2"
+      ]
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "intFieldOrStringFieldOrComplexType": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "intFieldOrStringFieldOrComplexType": [
+        {
+          "Success": true,
+          "ResponseText": "Test",
+          "City": "Test"
+        },
+        {
+          "Success": false,
+          "ResponseText": "Test2",
+          "City": "Test2"
+        }
+      ]
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "intFieldOrStringFieldOrComplexType": "1"
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "intFieldOrStringFieldOrComplexType": 2
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "intFieldOrStringFieldOrComplexType": {
+        "Success": true,
+        "ResponseText": "Test",
+        "City": "Test"
+      }
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "StringField": [
+        "1",
+        "3"
+      ]
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "IntField": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "ComplexType": [
+        {
+          "Success": true,
+          "ResponseText": "Test",
+          "City": "Test"
+        },
+        {
+          "Success": false,
+          "ResponseText": "Test2",
+          "City": "Test2"
+        }
+      ]
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "StringField": "4"
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "IntField": 1
+    }
+  },
+  {
+    "XmlElementsChoice": {
+      "ComplexType": {
+        "Success": true,
+        "ResponseText": "Test",
+        "City": "Test"
+      }
+    }
+  }
+]

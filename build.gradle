@@ -35,7 +35,7 @@ test {
 
 dependencies {
     compile group: "com.fasterxml.jackson.module", name: "jackson-module-jsonSchema", version: "2.9.6"
-    compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.6"
+    compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.10.1"
     compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr353", version: "2.9.6"
     compile "com.sun.xml.bind:jaxb-xjc:2.1.6"
     compile "com.sun.xml.ws:jaxws-tools:2.2.1"

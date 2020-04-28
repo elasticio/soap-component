@@ -1,10 +1,8 @@
 {
   "title": "SOAP V2",
   "service": "request-reply",
-  "help": {
-    "description": "Generic SOAP / WebServices integration Component",
-    "link": "https://docs.elastic.io/components/soap/"
-  },
+  "description": "Generic SOAP / WebServices integration Component",
+  "docsUrl": "https://docs.elastic.io/components/soap/",
   "credentials": {
     "fields": {
       "auth": {

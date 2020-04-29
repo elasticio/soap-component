@@ -21,8 +21,32 @@
       "main": "io.elastic.soap.triggers.ReceiveRequest",
       "type": "webhook",
       "fields": {
-        "validation" : {
+        "wsdlURI": {
           "weight": 99,
+          "label": "WSDL URI",
+          "required": true,
+          "viewClass": "TextFieldWithNoteView",
+          "placeholder": "http://www.example.com?wsdl",
+          "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
+        },
+        "binding": {
+          "weight": 98,
+          "viewClass": "SelectView",
+          "label": "Binding",
+          "required": true,
+          "model": "io.elastic.soap.providers.BindingModelProvider",
+          "prompt": "Chose an Binding [Service/Port]"
+        },
+        "operation": {
+          "weight": 97,
+          "viewClass": "SelectView",
+          "label": "Operation",
+          "required": true,
+          "model": "io.elastic.soap.providers.OperationModelProvider",
+          "prompt": "Chose an Operation [Service/Port]"
+        },
+        "validation" : {
+          "weight": 96,
           "label" : "Validation",
           "prompt" : "Enabled",
           "required" : false,
@@ -32,30 +56,6 @@
             "disabled" : "Disabled"
           },
           "note" : "Validation is enabled by default"
-        },
-        "wsdlURI": {
-          "weight": 98,
-          "label": "WSDL URI",
-          "required": true,
-          "viewClass": "TextFieldWithNoteView",
-          "placeholder": "http://www.example.com?wsdl",
-          "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
-        },
-        "binding": {
-          "weight": 97,
-          "viewClass": "SelectView",
-          "label": "Binding",
-          "required": true,
-          "model": "io.elastic.soap.providers.BindingModelProvider",
-          "prompt": "Chose an Binding [Service/Port]"
-        },
-        "operation": {
-          "weight": 96,
-          "viewClass": "SelectView",
-          "label": "Operation",
-          "required": true,
-          "model": "io.elastic.soap.providers.OperationModelProvider",
-          "prompt": "Chose an Operation [Service/Port]"
         }
       }
     }
@@ -104,17 +104,6 @@
       },
       "main": "io.elastic.soap.actions.SoapReplyAction",
       "fields": {
-        "validation" : {
-          "label" : "Validation",
-          "required" : false,
-          "viewClass" : "SelectView",
-          "prompt": "Enabled",
-          "model" : {
-            "enabled" : "Enabled",
-            "disabled" : "Disabled"
-          },
-          "note" : "Validation is enabled by default"
-        },
         "wsdlURI": {
           "weight": 99,
           "label": "WSDL URI",
@@ -138,6 +127,18 @@
           "required": true,
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Chose an Operation [Service/Port]"
+        },
+        "validation" : {
+          "weight": 96,
+          "label" : "Validation",
+          "required" : false,
+          "viewClass" : "SelectView",
+          "prompt": "Enabled",
+          "model" : {
+            "enabled" : "Enabled",
+            "disabled" : "Disabled"
+          },
+          "note" : "Validation is enabled by default"
         }
       },
       "dynamicMetadata": "io.elastic.soap.providers.ReplyBodyMetaProvider"

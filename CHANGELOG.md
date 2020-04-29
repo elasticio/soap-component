@@ -1,3 +1,9 @@
+# 1.2.1 (September 25, 2019)
+## General Changes
+* Fix component.json field order
+* Fix component.json descriptions and links
+    
+    
 # 1.2.0 (September 25, 2019)
 ## Actions
     * Add Soap Reply action

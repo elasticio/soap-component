@@ -1,4 +1,4 @@
-# 1.2.1 (September 25, 2019)
+# 1.2.1 (April 29, 2020)
 ## General Changes
 * Fix component.json field order
 * Fix component.json descriptions and links

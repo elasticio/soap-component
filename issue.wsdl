@@ -4,7 +4,7 @@
             <xs:element name="NumberToWords">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="ubiNum" type="xs:unsignedLong"/>
+                        <xs:element name="ubiNum" type="xs:decimal"/>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

@@ -8,6 +8,18 @@
       "auth": {
         "required": false,
         "viewClass": "WebhookAuthView"
+      },
+      "wsdlLogin": {
+        "label" : "Login for WSDL url, if needed",
+        "required" : false,
+        "viewClass": "TextFieldWithNoteView",
+        "note" : "This field used only in Call Action"
+      },
+      "wsdlPassword" : {
+        "label" : "Password for WSDL url, if needed",
+        "required" : false,
+        "viewClass": "PasswordFieldWithNoteView",
+        "note" : "This field used only in Call Action"
       }
     }
   },

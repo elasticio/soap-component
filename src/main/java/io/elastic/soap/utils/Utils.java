@@ -145,13 +145,6 @@ public final class Utils {
   }
 
   /**
-   * Builds basic auth header for authorization. E.g.: Basic X0VJT0VYVEVOREVEOldlbGNvbWUxMjM=
-   */
-  public static String getBasicAuthHeader(JsonObject config) {
-    return Base64Utils.getBasicAuthHeader(config);
-  }
-
-  /**
    * Retrieves username from the credentials object
    */
   public static String getUsername(JsonObject config) {
@@ -212,8 +205,10 @@ public final class Utils {
    */
   public static HttpGet createGet(final JsonObject config) {
     final HttpGet get = new HttpGet(getWsdlUrl(config));
-    if (isBasicAuth(config)) {
-      get.addHeader("Authorization", getBasicAuthHeader(config));
+    final String username = config.getString(AppConstants.WSDL_LOGIN, "");
+    final String password = config.getString(AppConstants.WSDL_PASSWORD, "");
+    if (!username.equals("") && !password.equals("")) {
+      get.addHeader("Authorization", Base64Utils.getEncodedString(username, password));
     }
     return get;
   }

@@ -15,6 +15,7 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.Message;
 import com.predic8.wsdl.Operation;
 import io.elastic.api.DynamicMetadataProvider;
+import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.JaxbCompiler;
 import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.services.WSDLService;
@@ -66,8 +67,10 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
       LOGGER.info("Start creating meta data for component");
       LOGGER.trace("Got configuration: {}", configuration.toString());
       String wsdlUrl = Utils.getWsdlUrl(configuration);
-      if (isBasicAuth(configuration)) {
-        wsdlUrl = Utils.addAuthToURL(Utils.getWsdlUrl(configuration), Utils.getUsername(configuration), Utils.getPassword(configuration));
+      final String username = configuration.getString(AppConstants.WSDL_LOGIN, "");
+      final String password = configuration.getString(AppConstants.WSDL_PASSWORD, "");
+      if (!username.equals("") && !password.equals("")) {
+        wsdlUrl = Utils.addAuthToURL(wsdlUrl, username, password);
       }
       final String bindingName = Utils.getBinding(configuration);
       final String operationName = Utils.getOperation(configuration);

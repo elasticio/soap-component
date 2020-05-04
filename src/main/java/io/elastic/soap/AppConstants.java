@@ -6,7 +6,7 @@ package io.elastic.soap;
 public final class AppConstants {
 
     // Basic Authentication platform name
-    public static final String BASIC_AUTH_CONFIG_NAME = "Basic Auth";
+    public static final String BASIC_AUTH_CONFIG_NAME = "BASIC";
     // Name of binding object in the platform config
     public static final String BINDING_CONFIG_NAME = "binding";
     // Default package for generating JAXB classes to
@@ -29,6 +29,10 @@ public final class AppConstants {
     public static final String VALIDATION_ENABLED = "enabled";
     // Validation disabled keyword
     public static final String VALIDATION_DISABLED = "disabled";
+    // Login to wsdl url
+    public static final String WSDL_LOGIN = "wsdlLogin";
+    // Password to wsdl url
+    public static final String WSDL_PASSWORD = "wsdlPassword";
 
     // Private constructor to prevent instantiation. Since utility classes should not be instantiated
     private AppConstants() {

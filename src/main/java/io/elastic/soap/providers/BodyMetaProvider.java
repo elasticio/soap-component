@@ -65,6 +65,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
     @Override
     public JsonObject getMetaModel(final JsonObject configuration) {
         try {
+            LOGGER.info("Config: {}", configuration);
             LOGGER.info("Start creating meta data for component");
             LOGGER.trace("Got configuration: {}", configuration.toString());
             String wsdlUrl = Utils.getWsdlUrl(configuration);

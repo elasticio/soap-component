@@ -135,7 +135,6 @@ public final class Utils {
    * @return true if basic auth is enabled. false otherwise
    */
   public static boolean isBasicAuth(JsonObject config) {
-    LOGGER.info("Config: {}", config);
     final String authType = config.getJsonObject("auth").getJsonString("type").getString();
     if (!AppConstants.BASIC_AUTH_CONFIG_NAME.equals(authType)) {
       return false;

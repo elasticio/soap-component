@@ -10,16 +10,15 @@
         "viewClass": "WebhookAuthView"
       },
       "wsdlLogin": {
-        "label" : "Login for WSDL url, if needed",
+        "label" : "Login for WSDL url",
         "required" : false,
         "viewClass": "TextFieldWithNoteView",
-        "note" : "This field used only in Call Action"
+        "note" : "This field used only in Call Action. Only supports Basic Auth"
       },
       "wsdlPassword" : {
-        "label" : "Password for WSDL url, if needed",
+        "label" : "Password for WSDL url",
         "required" : false,
-        "viewClass": "PasswordFieldWithNoteView",
-        "note" : "This field used only in Call Action"
+        "viewClass": "PasswordFieldView"
       }
     }
   },

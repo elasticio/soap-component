@@ -67,9 +67,9 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
       LOGGER.info("Start creating meta data for component");
       LOGGER.trace("Got configuration: {}", configuration.toString());
       String wsdlUrl = Utils.getWsdlUrl(configuration);
-      final String username = configuration.getString(AppConstants.WSDL_LOGIN, "");
-      final String password = configuration.getString(AppConstants.WSDL_PASSWORD, "");
-      if (!username.equals("") && !password.equals("")) {
+      if (Utils.isBasicAuth(configuration)) {
+        final String username = Utils.getUsername(configuration);
+        final String password = Utils.getPassword(configuration);
         wsdlUrl = Utils.addAuthToURL(wsdlUrl, username, password);
       }
       final String bindingName = Utils.getBinding(configuration);

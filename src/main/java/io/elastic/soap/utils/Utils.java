@@ -205,11 +205,10 @@ public final class Utils {
    */
   public static HttpGet createGet(final JsonObject config) {
     final HttpGet get = new HttpGet(getWsdlUrl(config));
-    final String username = config.getString(AppConstants.WSDL_LOGIN, "");
-    final String password = config.getString(AppConstants.WSDL_PASSWORD, "");
-    LOGGER.info("About to add authrozatuion header");
-    if (!username.equals("") && !password.equals("")) {
-      LOGGER.info("Adding authrozatuion header");
+    if (Utils.isBasicAuth(config)) {
+      final String username = Utils.getUsername(config);
+      final String password = Utils.getPassword(config);
+      LOGGER.info("Adding Authorization header");
       get.addHeader("Authorization", "Basic " + Base64Utils.getEncodedString(username, password));
     }
     return get;

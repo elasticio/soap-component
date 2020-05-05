@@ -29,10 +29,6 @@ public final class AppConstants {
     public static final String VALIDATION_ENABLED = "enabled";
     // Validation disabled keyword
     public static final String VALIDATION_DISABLED = "disabled";
-    // Login to wsdl url
-    public static final String WSDL_LOGIN = "wsdlLogin";
-    // Password to wsdl url
-    public static final String WSDL_PASSWORD = "wsdlPassword";
 
     // Private constructor to prevent instantiation. Since utility classes should not be instantiated
     private AppConstants() {

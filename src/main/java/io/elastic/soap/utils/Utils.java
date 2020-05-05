@@ -251,7 +251,7 @@ public final class Utils {
   public static String createSOAPFaultLogString(final SOAPFaultException soapFaultException) {
     return String.format("Server has responded with SOAP fault. See the logs for more details. Code: %s. Reason: %s",
         soapFaultException.getFault().getFaultCode(),
-        soapFaultException.getFault().getFaultString());
+            soapFaultException.getFault().getFaultString());
   }
 
   public static void logSOAPMSgIfTraceEnabled(final Logger log, final String message, final SOAPMessage soapMessage) throws IOException, SOAPException {

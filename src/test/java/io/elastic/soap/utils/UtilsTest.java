@@ -124,11 +124,6 @@ public class UtilsTest {
     }
 
     @Test
-    public void isBasicAuth() {
-        assertTrue(Utils.isBasicAuth(configHttpBasicAuth));
-    }
-
-    @Test
     public void getUsername() {
         assertTrue("Leadtributor".equals(Utils.getUsername(configHttpBasicAuth)));
     }

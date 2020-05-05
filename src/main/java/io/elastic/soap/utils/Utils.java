@@ -210,7 +210,7 @@ public final class Utils {
     LOGGER.info("About to add authrozatuion header");
     if (!username.equals("") && !password.equals("")) {
       LOGGER.info("Adding authrozatuion header");
-      get.addHeader("Authorization", Base64Utils.getEncodedString(username, password));
+      get.addHeader("Authorization", "Basic " + Base64Utils.getEncodedString(username, password));
     }
     return get;
   }

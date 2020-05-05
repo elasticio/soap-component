@@ -1,7 +1,8 @@
-# 1.2.1 (April 29, 2020)
+# 1.2.1 (May 5, 2020)
 ## General Changes
 * Fix component.json field order
 * Fix component.json descriptions and links
+* Add basic authorization support to Call action
     
     
 # 1.2.0 (September 25, 2019)

@@ -134,6 +134,7 @@ Webhook that validates input body over WSDL.
 ## Actions
 ### Call
 Makes a call to SOAP service over HTTP using public WSDL URL
+Call action supports Basic Authorization, chose Basic Authorization type in credentials and provide credentials for WSDL.
 
 #### Input fields description
 * **WSDL URI** - Public URL address of the WSDL

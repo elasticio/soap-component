@@ -207,7 +207,9 @@ public final class Utils {
     final HttpGet get = new HttpGet(getWsdlUrl(config));
     final String username = config.getString(AppConstants.WSDL_LOGIN, "");
     final String password = config.getString(AppConstants.WSDL_PASSWORD, "");
+    LOGGER.info("About to add authrozatuion header");
     if (!username.equals("") && !password.equals("")) {
+      LOGGER.info("Adding authrozatuion header");
       get.addHeader("Authorization", Base64Utils.getEncodedString(username, password));
     }
     return get;

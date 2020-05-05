@@ -28,7 +28,6 @@ public class OperationModelProvider implements SelectModelProvider {
     @Override
     public JsonObject getSelectModel(final JsonObject configuration) {
         try {
-            LOGGER.info("Config: {}", configuration);
             LOGGER.info("Start creating operation list");
             LOGGER.trace("Input model configuration: {}", JSON.stringify(configuration));
             final String bindingName = Utils.getBinding(configuration);

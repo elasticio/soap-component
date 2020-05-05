@@ -29,7 +29,6 @@ public class BindingModelProvider implements SelectModelProvider {
     @Override
     public JsonObject getSelectModel(final JsonObject configuration) {
         try {
-            LOGGER.info("Config: {}", configuration);
             LOGGER.info("Start creating bindings list");
             LOGGER.trace("Input model configuration: {}", JSON.stringify(configuration));
             final List<Binding> bindings = wsdlService.getWSDL(configuration).getBindings();

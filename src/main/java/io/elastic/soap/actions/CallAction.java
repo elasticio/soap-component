@@ -30,7 +30,6 @@ public class CallAction implements Module {
 
     @Override
     public void init(JsonObject configuration) {
-        LOGGER.info("Config: {}", configuration);
         LOGGER.info("On init started");
         soapBodyDescriptor = loadClasses(configuration, soapBodyDescriptor);
         LOGGER.info("On init finished");
@@ -45,7 +44,6 @@ public class CallAction implements Module {
     @Override
     public void execute(final ExecutionParameters parameters) {
         try {
-            LOGGER.info("Config: {}", parameters.getConfiguration());
             LOGGER.info("Start processing new call to SOAP ");
             final Message message = parameters.getMessage();
             LOGGER.trace("Input message: {}", message);

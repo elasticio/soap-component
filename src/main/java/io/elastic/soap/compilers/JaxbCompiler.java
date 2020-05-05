@@ -130,7 +130,7 @@ public class JaxbCompiler {
             LOGGER.error("SAPByDesign component currently doesn't support the rpc/encoded style {}",
                     bindingOperation.getBinding().getStyle());
             throw new UnsupportedOperationException(
-                    "SAPByDesign component currently doesn't support the rpc/encoded style");
+                    "SOAP component currently doesn't support the rpc/encoded style");
         }
         String soapAction;
         if(bindingOperation.getOperation() != null) {

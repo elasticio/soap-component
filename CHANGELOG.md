@@ -4,7 +4,6 @@
 * Fix component.json descriptions and links
 * Add basic authorization support to Call action
     
-    
 # 1.2.0 (September 25, 2019)
 ## Actions
     * Add Soap Reply action

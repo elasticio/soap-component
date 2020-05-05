@@ -132,7 +132,12 @@ public class JaxbCompiler {
             throw new UnsupportedOperationException(
                     "SAPByDesign component currently doesn't support the rpc/encoded style");
         }
-        final String soapAction = bindingOperation.getOperation().getSoapAction();
+        String soapAction;
+        if(bindingOperation.getOperation() != null) {
+            soapAction = bindingOperation.getOperation().getSoapAction();
+        } else {
+            soapAction = bindingOperation.getName();
+        }
         final String soapEndPoint = defs.getServices().stream()
                 .flatMap(service -> service.getPorts().stream())
                 .filter(port -> port.getBinding().getName().equals(binding))

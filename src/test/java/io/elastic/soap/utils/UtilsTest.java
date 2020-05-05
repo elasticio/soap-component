@@ -129,12 +129,6 @@ public class UtilsTest {
     }
 
     @Test
-    public void getBasicAuthHeader() {
-        assertTrue("Basic TGVhZHRyaWJ1dG9yOkxlYWR0cmlidXRvcg=="
-                .equals(Utils.getBasicAuthHeader(configHttpBasicAuth)));
-    }
-
-    @Test
     public void getUsername() {
         assertTrue("Leadtributor".equals(Utils.getUsername(configHttpBasicAuth)));
     }

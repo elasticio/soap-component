@@ -47,7 +47,7 @@ public class SoapCallService {
             LOGGER.info("About to start SOAP call...");
             final SOAPMessage response = con.call(requestSoapMessage, endPoint);
             LOGGER.info("SOAP call successfully done");
-            final ResponseHandler responseHandler = new ResponseHandler();
+            final ResponseHandler responseHandler = new ResponseHandler(soapBodyDescriptor.getResponseBodyElementName());
             final Class responseClass = Class
                     .forName(soapBodyDescriptor.getResponseBodyClassName());
             final Object responseObject = responseHandler.getResponseObject(response, responseClass);

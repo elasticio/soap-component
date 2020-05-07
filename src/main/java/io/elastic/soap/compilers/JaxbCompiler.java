@@ -39,8 +39,8 @@ import static io.elastic.soap.utils.Utils.getElementName;
  * or {@link Axis2GeneratorImpl}
  * <p>
  * {@link io.elastic.soap.compilers.generators.impl.WsImportGeneratorImpl} has some limitations. In
- * JAX-WS RPC/encoded is not supported as a messaging mode. In JAX-WS the “encoded” encoding style
- * isn’t supported and only the “literal” encoding style used. In most cases using {@link
+ * JAX-WS RPC/encoded is not supported as a messaging mode. In JAX-WS the "encoded" encoding style
+ * isn’t supported and only the "literal" encoding style used. In most cases using {@link
  * Axis2GeneratorImpl} is preferred.
  */
 public class JaxbCompiler {
@@ -130,9 +130,14 @@ public class JaxbCompiler {
             LOGGER.error("SAPByDesign component currently doesn't support the rpc/encoded style {}",
                     bindingOperation.getBinding().getStyle());
             throw new UnsupportedOperationException(
-                    "SAPByDesign component currently doesn't support the rpc/encoded style");
+                    "SOAP component currently doesn't support the rpc/encoded style");
         }
-        final String soapAction = bindingOperation.getOperation().getSoapAction();
+        String soapAction;
+        if(bindingOperation.getOperation() != null) {
+            soapAction = bindingOperation.getOperation().getSoapAction();
+        } else {
+            soapAction = bindingOperation.getName();
+        }
         final String soapEndPoint = defs.getServices().stream()
                 .flatMap(service -> service.getPorts().stream())
                 .filter(port -> port.getBinding().getName().equals(binding))

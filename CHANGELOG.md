@@ -3,6 +3,7 @@
 * Fix component.json field order
 * Fix component.json descriptions and links
 * Add basic authorization support to Call action
+* Improved SOAP Body parsing
     
 # 1.2.0 (September 25, 2019)
 ## Actions

@@ -10,6 +10,9 @@ import java.util.Iterator;
 import javax.json.JsonArray;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+
+import org.apache.http.client.methods.HttpGet;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class UtilsTest {
 
     private static JsonObject configHttpNoAuth;
-    private static JsonObject configHttpBasicAuth;
     private static JsonObject configHttpsNoAuth;
     private static JsonObject configHttpsBasicAuth;
     private static String elementName;
@@ -41,18 +43,6 @@ public class UtilsTest {
                         Json.createObjectBuilder().add("type", "No Auth")
                                 .add("basic", Json.createObjectBuilder().add("username", "")
                                         .add("password", "")
-                                        .build())
-                )
-                .build();
-
-        configHttpBasicAuth = Json.createObjectBuilder()
-                .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
-                .add(AppConstants.OPERATION_CONFIG_NAME, "GetCurrencyIntradayChartCustom")
-                .add(AppConstants.WSDL_CONFIG_NAME, "http://www.xignite.com/xcurrencies.asmx?WSDL")
-                .add("auth",
-                        Json.createObjectBuilder().add("type", "Basic Auth")
-                                .add("basic", Json.createObjectBuilder().add("username", "Leadtributor")
-                                        .add("password", "Leadtributor")
                                         .build())
                 )
                 .build();
@@ -76,9 +66,9 @@ public class UtilsTest {
                 .add(AppConstants.WSDL_CONFIG_NAME,
                         "https://www.thomas-bayer.com/axis2/services/BLZService?wsdl")
                 .add("auth",
-                        Json.createObjectBuilder().add("type", "Basic Auth")
-                                .add("basic", Json.createObjectBuilder().add("username", "Leadtributor")
-                                        .add("password", "Leadtributor")
+                        Json.createObjectBuilder().add("type", "BASIC")
+                                .add("basic", Json.createObjectBuilder().add("username", "Test")
+                                        .add("password", "TestPassword")
                                         .build())
                 )
                 .build();
@@ -96,7 +86,7 @@ public class UtilsTest {
 
     @Test
     public void getOperation() {
-        assertTrue("GetCurrencyIntradayChartCustom".equals(Utils.getOperation(configHttpBasicAuth)));
+        assertTrue("getBank".equals(Utils.getOperation(configHttpsBasicAuth)));
     }
 
     @Test
@@ -124,24 +114,13 @@ public class UtilsTest {
     }
 
     @Test
-    public void isBasicAuth() {
-        assertTrue(Utils.isBasicAuth(configHttpBasicAuth));
-    }
-
-    @Test
-    public void getBasicAuthHeader() {
-        assertTrue("Basic TGVhZHRyaWJ1dG9yOkxlYWR0cmlidXRvcg=="
-                .equals(Utils.getBasicAuthHeader(configHttpBasicAuth)));
-    }
-
-    @Test
     public void getUsername() {
-        assertTrue("Leadtributor".equals(Utils.getUsername(configHttpBasicAuth)));
+        assertTrue("Test".equals(Utils.getUsername(configHttpsBasicAuth)));
     }
 
     @Test
     public void getPassword() {
-        assertTrue("Leadtributor".equals(Utils.getPassword(configHttpBasicAuth)));
+        assertTrue("TestPassword".equals(Utils.getPassword(configHttpsBasicAuth)));
     }
 
     @Test
@@ -155,5 +134,12 @@ public class UtilsTest {
             JsonObject o = (JsonObject) iter.next();
             assertEquals(o.getJsonObject("result"), Utils.prettifyBody(o.getJsonObject("ns")));
         }
+    }
+
+
+    @Test
+    public void createGetAddsAuthorizationHeader() {
+        final HttpGet get = Utils.createGet(configHttpsBasicAuth);
+        Assertions.assertEquals("Basic VGVzdDpUZXN0UGFzc3dvcmQ=", get.getFirstHeader("Authorization").getValue());
     }
 }

@@ -1,3 +1,10 @@
+# 1.2.1 (May 7, 2020)
+## General Changes
+* Fix component.json field order
+* Fix component.json descriptions and links
+* Add basic authorization support to Call action
+* Improved SOAP Body parsing
+    
 # 1.2.0 (September 25, 2019)
 ## Actions
     * Add Soap Reply action

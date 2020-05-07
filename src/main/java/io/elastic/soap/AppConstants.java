@@ -6,7 +6,7 @@ package io.elastic.soap;
 public final class AppConstants {
 
     // Basic Authentication platform name
-    public static final String BASIC_AUTH_CONFIG_NAME = "Basic Auth";
+    public static final String BASIC_AUTH_CONFIG_NAME = "BASIC";
     // Name of binding object in the platform config
     public static final String BINDING_CONFIG_NAME = "binding";
     // Default package for generating JAXB classes to

@@ -35,7 +35,7 @@ public class ResponseHandlerTest {
 
     @BeforeAll
     public static void initConfig() throws SOAPException {
-        responseHandler = new ResponseHandler();
+        responseHandler = new ResponseHandler("getBankResponse");
         soapBodyDescriptor = new SoapBodyDescriptor.Builder()
                 .setResponseBodyElementName("getBankResponse")
                 .build();

@@ -145,13 +145,6 @@ public final class Utils {
   }
 
   /**
-   * Builds basic auth header for authorization. E.g.: Basic X0VJT0VYVEVOREVEOldlbGNvbWUxMjM=
-   */
-  public static String getBasicAuthHeader(JsonObject config) {
-    return Base64Utils.getBasicAuthHeader(config);
-  }
-
-  /**
    * Retrieves username from the credentials object
    */
   public static String getUsername(JsonObject config) {
@@ -212,8 +205,11 @@ public final class Utils {
    */
   public static HttpGet createGet(final JsonObject config) {
     final HttpGet get = new HttpGet(getWsdlUrl(config));
-    if (isBasicAuth(config)) {
-      get.addHeader("Authorization", getBasicAuthHeader(config));
+    if (Utils.isBasicAuth(config)) {
+      final String username = Utils.getUsername(config);
+      final String password = Utils.getPassword(config);
+      LOGGER.info("Adding Authorization header");
+      get.addHeader("Authorization", "Basic " + Base64Utils.getEncodedString(username, password));
     }
     return get;
   }
@@ -255,7 +251,7 @@ public final class Utils {
   public static String createSOAPFaultLogString(final SOAPFaultException soapFaultException) {
     return String.format("Server has responded with SOAP fault. See the logs for more details. Code: %s. Reason: %s",
         soapFaultException.getFault().getFaultCode(),
-        soapFaultException.getFault().getFaultString());
+            soapFaultException.getFault().getFaultString());
   }
 
   public static void logSOAPMSgIfTraceEnabled(final Logger log, final String message, final SOAPMessage soapMessage) throws IOException, SOAPException {

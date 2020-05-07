@@ -4,6 +4,7 @@ import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.handlers.RequestHandler;
 import io.elastic.soap.handlers.ResponseHandler;
+import io.elastic.soap.utils.Base64Utils;
 import io.elastic.soap.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,8 @@ public class SoapCallService {
         final Object requestObject = requestHandler.getRequestObject(inputJsonObject, soapBodyDescriptor, requestClass);
         final SOAPMessage requestSoapMessage = requestHandler.getSoapRequestMessage(requestObject, soapBodyDescriptor, requestClass);
         if (isBasicAuth(configuration)) {
-            final String encodedAuthHeader = Utils.getBasicAuthHeader(configuration);
-            requestSoapMessage.getMimeHeaders().addHeader(AppConstants.AUTH_KEYWORD, encodedAuthHeader);
+            final String encodedString = Base64Utils.getBasicAuthHeader(Utils.getUsername(configuration), Utils.getPassword(configuration));
+            requestSoapMessage.getMimeHeaders().addHeader(AppConstants.AUTH_KEYWORD, encodedString);
         }
         return callSOAP(requestSoapMessage, soapBodyDescriptor);
     }
@@ -46,7 +47,7 @@ public class SoapCallService {
             LOGGER.info("About to start SOAP call...");
             final SOAPMessage response = con.call(requestSoapMessage, endPoint);
             LOGGER.info("SOAP call successfully done");
-            final ResponseHandler responseHandler = new ResponseHandler();
+            final ResponseHandler responseHandler = new ResponseHandler(soapBodyDescriptor.getResponseBodyElementName());
             final Class responseClass = Class
                     .forName(soapBodyDescriptor.getResponseBodyClassName());
             final Object responseObject = responseHandler.getResponseObject(response, responseClass);

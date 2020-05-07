@@ -84,14 +84,16 @@ Component supports next wsdl styles:
 ## Credentials
 
 ### Type
-You can select next authorization type:
+Call action supports next authorization type:
 * **No Auth**
 * **Basic Auth**
-* **API Key Auth** <span style="color:red">(*not supported yet*)</span>.
 ### Username (Basic auth type)
 Username for Basic authorization header in the SOAP request
 ### Password (Basic auth type)
 Password for Basic authorization header in the SOAP request
+
+NOTE: Error would not be thrown on invalid credentials, as credenteals does not contain WSDL url.
+In case of invalid credentials error expected on sample retrieve step: Unexprected reponse from server satus code: 401 Anunthorized
 ## Triggers
 ### Receive SOAP Request
 Webhook that validates input body over WSDL.
@@ -134,6 +136,7 @@ Webhook that validates input body over WSDL.
 ## Actions
 ### Call
 Makes a call to SOAP service over HTTP using public WSDL URL
+Call action supports Basic Authorization, chose Basic Authorization type in credentials and provide credentials for WSDL.
 
 #### Input fields description
 * **WSDL URI** - Public URL address of the WSDL

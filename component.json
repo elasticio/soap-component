@@ -16,7 +16,7 @@
       "title": "Receive SOAP Request",
       "help":  {
         "description":  "Receive SOAP Request",
-        "link": "https://docs.elastic.io/components/soap/triggers#receive-soap-request"
+        "link": "/components/soap/triggers#receive-soap-request"
       },
       "main": "io.elastic.soap.triggers.ReceiveRequest",
       "type": "webhook",
@@ -65,7 +65,7 @@
       "title": "Call",
       "help": {
         "description": "Makes a call to SOAP service over HTTP using public WSDL URL",
-        "link": "https://docs.elastic.io/components/soap/actions#call"
+        "link": "/components/soap/actions#call"
       },
       "main": "io.elastic.soap.actions.CallAction",
       "fields": {
@@ -100,7 +100,7 @@
       "title": "SOAP Reply",
       "help" : {
         "description": "Returns SOAP response to client",
-        "link": "https://docs.elastic.io/components/soap/actions#soap-reply"
+        "link": "/components/soap/actions#soap-reply"
       },
       "main": "io.elastic.soap.actions.SoapReplyAction",
       "fields": {

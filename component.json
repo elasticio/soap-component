@@ -16,13 +16,13 @@
       "title": "Receive SOAP Request",
       "help":  {
         "description":  "Receive SOAP Request",
-        "link": "https://docs.elastic.io/components/soap/triggers#receive-soap-request"
+        "link": "/components/soap/triggers#receive-soap-request"
       },
       "main": "io.elastic.soap.triggers.ReceiveRequest",
       "type": "webhook",
       "fields": {
         "wsdlURI": {
-          "weight": 99,
+          "order": 99,
           "label": "WSDL URI",
           "required": true,
           "viewClass": "TextFieldWithNoteView",
@@ -30,7 +30,7 @@
           "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
         },
         "binding": {
-          "weight": 98,
+          "order": 98,
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
@@ -38,7 +38,7 @@
           "prompt": "Chose an Binding [Service/Port]"
         },
         "operation": {
-          "weight": 97,
+          "order": 97,
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
@@ -46,7 +46,7 @@
           "prompt": "Chose an Operation [Service/Port]"
         },
         "validation" : {
-          "weight": 96,
+          "order": 96,
           "label" : "Validation",
           "prompt" : "Enabled",
           "required" : false,
@@ -65,12 +65,12 @@
       "title": "Call",
       "help": {
         "description": "Makes a call to SOAP service over HTTP using public WSDL URL",
-        "link": "https://docs.elastic.io/components/soap/actions#call"
+        "link": "/components/soap/actions#call"
       },
       "main": "io.elastic.soap.actions.CallAction",
       "fields": {
         "wsdlURI": {
-          "weight": 99,
+          "order": 99,
           "label": "WSDL URI",
           "required": true,
           "viewClass": "TextFieldWithNoteView",
@@ -78,7 +78,7 @@
           "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
         },
         "binding": {
-          "weight": 98,
+          "order": 98,
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
@@ -86,7 +86,7 @@
           "prompt": "Chose an Binding [Service/Port]"
         },
         "operation": {
-          "weight": 97,
+          "order": 97,
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
@@ -100,12 +100,12 @@
       "title": "SOAP Reply",
       "help" : {
         "description": "Returns SOAP response to client",
-        "link": "https://docs.elastic.io/components/soap/actions#soap-reply"
+        "link": "/components/soap/actions#soap-reply"
       },
       "main": "io.elastic.soap.actions.SoapReplyAction",
       "fields": {
         "wsdlURI": {
-          "weight": 99,
+          "order": 99,
           "label": "WSDL URI",
           "required": true,
           "viewClass": "TextFieldWithNoteView",
@@ -113,7 +113,7 @@
           "note": "Please specify a full URI of your WSDL, it should also be accessible from the internet."
         },
         "binding": {
-          "weight": 98,
+          "order": 98,
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
@@ -121,7 +121,7 @@
           "prompt": "Chose an Binding [Service/Port]"
         },
         "operation": {
-          "weight": 97,
+          "order": 97,
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
@@ -129,7 +129,7 @@
           "prompt": "Chose an Operation [Service/Port]"
         },
         "validation" : {
-          "weight": 96,
+          "order": 96,
           "label" : "Validation",
           "required" : false,
           "viewClass" : "SelectView",

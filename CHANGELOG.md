@@ -1,3 +1,7 @@
+# 1.2.2 (May 29, 2020)
+## General Changes
+* Replace weight in component.json with order
+
 # 1.2.1 (May 7, 2020)
 ## General Changes
 * Fix component.json field order

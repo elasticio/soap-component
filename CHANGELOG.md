@@ -1,3 +1,6 @@
+## 1.2.3 (June 6, 2020)
+    * Remove update docs on deploy script
+
 # 1.2.2 (May 29, 2020)
 ## General Changes
 * Replace weight in component.json with order

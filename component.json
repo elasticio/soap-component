@@ -35,7 +35,7 @@
           "label": "Binding",
           "required": true,
           "model": "io.elastic.soap.providers.BindingModelProvider",
-          "prompt": "Chose an Binding [Service/Port]"
+          "prompt": "Choose an Binding [Service/Port]"
         },
         "operation": {
           "order": 97,
@@ -43,7 +43,7 @@
           "label": "Operation",
           "required": true,
           "model": "io.elastic.soap.providers.OperationModelProvider",
-          "prompt": "Chose an Operation [Service/Port]"
+          "prompt": "Choose an Operation [Service/Port]"
         },
         "validation" : {
           "order": 96,
@@ -83,7 +83,7 @@
           "label": "Binding",
           "required": true,
           "model": "io.elastic.soap.providers.BindingModelProvider",
-          "prompt": "Chose an Binding [Service/Port]"
+          "prompt": "Choose an Binding [Service/Port]"
         },
         "operation": {
           "order": 97,
@@ -91,7 +91,7 @@
           "label": "Operation",
           "required": true,
           "model": "io.elastic.soap.providers.OperationModelProvider",
-          "prompt": "Chose an Operation [Service/Port]"
+          "prompt": "Choose an Operation [Service/Port]"
         }
       },
       "dynamicMetadata": "io.elastic.soap.providers.BodyMetaProvider"
@@ -118,7 +118,7 @@
           "label": "Binding",
           "required": true,
           "model": "io.elastic.soap.providers.BindingModelProvider",
-          "prompt": "Chose an Binding [Service/Port]"
+          "prompt": "Choose an Binding [Service/Port]"
         },
         "operation": {
           "order": 97,
@@ -126,7 +126,7 @@
           "label": "Operation",
           "required": true,
           "model": "io.elastic.soap.providers.OperationModelProvider",
-          "prompt": "Chose an Operation [Service/Port]"
+          "prompt": "Choose an Operation [Service/Port]"
         },
         "validation" : {
           "order": 96,
@@ -145,4 +145,3 @@
     }
   }
 }
-

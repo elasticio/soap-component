@@ -1,3 +1,7 @@
+# 1.2.3 (June 22, 2020)
+## General Changes
+* Remove the job which updates docs on code changes 
+
 # 1.2.2 (May 29, 2020)
 ## General Changes
 * Replace weight in component.json with order

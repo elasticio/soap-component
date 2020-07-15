@@ -21,6 +21,8 @@ public final class AppConstants {
     public static final String SOAP12_PROTOCOL_NAME = "SOAP12";
     // Name of WSDL URI object in the platform config
     public static final String WSDL_CONFIG_NAME = "wsdlURI";
+    // Name of WSDL URI object in the platform config
+    public static final String WSDL_LOCAL_PATH = "src/main/generated-java/wsdlLocal.xml";
     // Authorization keyword
     public static final String AUTH_KEYWORD = "Authorization";
     // component.json validation option keyword

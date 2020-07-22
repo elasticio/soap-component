@@ -20,10 +20,23 @@ import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.services.WSDLService;
 import io.elastic.soap.services.impls.HttpWSDLService;
 import io.elastic.soap.utils.Utils;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Iterator;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonObject;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,14 +82,14 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             LOGGER.info("Start creating meta data for component");
             LOGGER.trace("Got configuration: {}", configuration.toString());
             String wsdlUrl = Utils.getWsdlUrl(configuration);
-            if (Utils.isBasicAuth(configuration)) {
-                final String username = Utils.getUsername(configuration);
-                final String password = Utils.getPassword(configuration);
-                wsdlUrl = Utils.addAuthToURL(wsdlUrl, username, password);
-            }
             final String bindingName = Utils.getBinding(configuration);
             final String operationName = Utils.getOperation(configuration);
             final Definitions wsdl = wsdlService.getWSDL(configuration);
+
+            if (Utils.isBasicAuth(configuration)) {
+                wsdlUrl = Utils.loadWsdlLocally(configuration);
+            }
+
             JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
             final String portTypeName = wsdl.getBinding(bindingName).getPortType().getName();
             final Operation operation = wsdl.getOperation(operationName, portTypeName);

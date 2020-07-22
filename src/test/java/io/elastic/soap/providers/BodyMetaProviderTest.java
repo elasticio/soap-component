@@ -70,7 +70,7 @@ public class BodyMetaProviderTest {
   }
 
   @Test
-  public void testBodyMeta() throws ClassNotFoundException, IOException {
+  public void testBodyMeta() {
     final JsonObject object = provider.getMetaModel(config);
     Assertions.assertNotNull(object.get("in"));
     Assertions.assertNotNull(object.get("out"));

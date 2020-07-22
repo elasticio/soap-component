@@ -1,3 +1,7 @@
+# 1.2.4 (July 24, 2020)
+## General Changes
+* Fix bug for some cases with WSDL behind basic auth  
+
 # 1.2.3 (June 22, 2020)
 ## General Changes
 * Remove the job which updates docs on code changes 

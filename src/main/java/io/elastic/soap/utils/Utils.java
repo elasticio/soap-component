@@ -15,11 +15,16 @@ import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.services.SoapCallService;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,6 +47,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.soap.SOAPFaultException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -214,11 +220,40 @@ public final class Utils {
     return get;
   }
 
+  /**
+   * Loads WSDL file locally and parses it from the FS. Is a workaround
+   * for the basic auth case when Server fault: too many redirects (20)
+   * @param configuration
+   * @return
+   * @throws IOException
+   */
+  public static String loadWsdlLocally(final JsonObject configuration) throws IOException {
+    final String username = Utils.getUsername(configuration);
+    final String password = Utils.getPassword(configuration);
+    final URL url = new URL(Utils.getWsdlUrl(configuration));
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    final String auth = username + ":" + password;
+    byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
+    String authHeaderValue = "Basic " + new String(encodedAuth);
+    connection.setRequestProperty("Authorization", authHeaderValue);
+
+    InputStream is = connection.getInputStream();
+    FileOutputStream fos = new FileOutputStream(new File(AppConstants.WSDL_LOCAL_PATH));
+    byte[] buffer = new byte[4096];
+    int n = 0;
+    while (-1 != (n = is.read(buffer))) {
+      fos.write(buffer, 0, n);
+    }
+    is.close();
+    fos.close();
+    return AppConstants.WSDL_LOCAL_PATH;
+  }
+
   public static SoapBodyDescriptor loadClasses(final JsonObject configuration, final SoapBodyDescriptor soapBodyDescriptor) {
     try {
       String wsdlUrl = getWsdlUrl(configuration);
       if (isBasicAuth(configuration)) {
-        wsdlUrl = addAuthToURL(wsdlUrl, getUsername(configuration), getPassword(configuration));
+        wsdlUrl = loadWsdlLocally(configuration);
       }
       final String binding = Utils.getBinding(configuration);
       final String operation = Utils.getOperation(configuration);

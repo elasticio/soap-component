@@ -54,7 +54,6 @@ public class RequestHandler {
     headers.addHeader("SOAPAction", soapBodyDescriptor.getSoapAction());
     soapMessage.getSOAPBody().addDocument(document);
 
-    Utils.logSOAPMSgIfTraceEnabled(LOGGER, "Request to SOAP service: {}", soapMessage);
     return soapMessage;
   }
 
@@ -97,14 +96,13 @@ public class RequestHandler {
   public <T> T getObjectFromJson(final JsonObject request,
       final String elementName, final Class<T> clazz) throws IOException {
     LOGGER.info("About to start deserialization JsonObject");
-    LOGGER.trace("JsonObject: {}", request);
     final ObjectMapper objectMapper = Utils.getConfiguredObjectMapper();
     final JsonObject requestBody = request.getJsonObject(elementName);
     if (null == requestBody) {
       throw new ComponentException(String.format("Can not find valid structure for request. Object '%s' is not exist", elementName));
     }
     final T requestObject = objectMapper.readValue(requestBody.toString(), clazz);
-    LOGGER.trace("Deserialization JsonObject to {} class successfully done", clazz.getSimpleName());
+    LOGGER.debug("Deserialization JsonObject to {} class successfully done", clazz.getSimpleName());
     LOGGER.info("Finish deserialization");
     return requestObject;
   }

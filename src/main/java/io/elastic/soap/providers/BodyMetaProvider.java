@@ -14,29 +14,15 @@ import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.Message;
 import com.predic8.wsdl.Operation;
 import io.elastic.api.DynamicMetadataProvider;
-import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.JaxbCompiler;
 import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.services.WSDLService;
 import io.elastic.soap.services.impls.HttpWSDLService;
 import io.elastic.soap.utils.Utils;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Iterator;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonObject;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,20 +53,18 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             deepRemoveNull(result.fields());
             return objectMapper.convertValue(result, JsonObject.class);
         } catch (JsonMappingException e) {
-            LOGGER.error("Could not map the Json to deserialize schema", e);
+            LOGGER.error("Could not map the Json to deserialize schema");
             throw new ComponentException("Could not map the Json to deserialize schema", e);
         } catch (ClassNotFoundException e) {
-            LOGGER.error("The class in the schema can not be found", e);
+            LOGGER.error("The class in the schema can not be found");
             throw new ComponentException("The class in the schema can not be found", e);
         }
     }
 
-
     @Override
     public JsonObject getMetaModel(final JsonObject configuration) {
         try {
-            LOGGER.info("Start creating meta data for component");
-            LOGGER.trace("Got configuration: {}", configuration.toString());
+            LOGGER.info("Start creating metadata for component");
             String wsdlUrl = Utils.getWsdlUrl(configuration);
             final String bindingName = Utils.getBinding(configuration);
             final String operationName = Utils.getOperation(configuration);
@@ -99,16 +83,15 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
                     .add("in", in)
                     .add("out", out)
                     .build();
-            LOGGER.trace("Component metadata: {}", result);
             LOGGER.info("Successfully generated component metadata");
             return result;
         } catch (ComponentException e) {
             throw e;
         } catch (Exception e) {
-            LOGGER.error("Unexpected exception while creating metadata for component", e);
+            LOGGER.error("Unexpected exception while creating metadata for component");
             throw new ComponentException("Unexpected exception while creating metadata for component", e);
         } catch (Throwable throwable) {
-            LOGGER.error("Unexpected exception while creating metadata for component", throwable);
+            LOGGER.error("Unexpected exception while creating metadata for component");
             throw new ComponentException("Unexpected error while creating metadata for component", throwable);
         }
     }

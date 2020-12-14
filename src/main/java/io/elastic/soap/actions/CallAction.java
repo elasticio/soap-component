@@ -1,8 +1,9 @@
 package io.elastic.soap.actions;
 
 import io.elastic.api.ExecutionParameters;
+import io.elastic.api.Function;
+import io.elastic.api.InitParameters;
 import io.elastic.api.Message;
-import io.elastic.api.Module;
 import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.utils.Utils;
@@ -19,7 +20,7 @@ import static io.elastic.soap.utils.Utils.loadClasses;
 /**
  * Action to make a SOAP call.
  */
-public class CallAction implements Module {
+public class CallAction implements Function {
 
     static {
         Utils.configLogger();
@@ -29,8 +30,9 @@ public class CallAction implements Module {
     private SoapBodyDescriptor soapBodyDescriptor;
 
     @Override
-    public void init(JsonObject configuration) {
+    public void init(InitParameters parameters) {
         LOGGER.info("On init started");
+        final JsonObject configuration = parameters.getConfiguration();
         soapBodyDescriptor = loadClasses(configuration, soapBodyDescriptor);
         LOGGER.info("On init finished");
     }
@@ -46,17 +48,16 @@ public class CallAction implements Module {
         try {
             LOGGER.info("Start processing new call to SOAP ");
             final Message message = parameters.getMessage();
-            LOGGER.trace("Input message: {}", message);
             Message data = callSOAPService(message, parameters, soapBodyDescriptor);
-            LOGGER.trace("Emitting data: {}", data);
+            LOGGER.debug("Emitting data...");
             parameters.getEventEmitter().emitData(data);
             LOGGER.info("Finish processing call SOAP action");
         } catch (SOAPFaultException soapFaultException) {
             String exceptionText = createSOAPFaultLogString(soapFaultException);
-            LOGGER.error(exceptionText, soapFaultException);
+            LOGGER.error("SOAP Fault occurred");
             throw new ComponentException(exceptionText, soapFaultException);
         } catch (Throwable throwable) {
-            LOGGER.error("Unexpected internal component error.", throwable);
+            LOGGER.error("Unexpected internal component error");
             throw new ComponentException(throwable);
         }
     }

@@ -6,8 +6,9 @@ import static io.elastic.soap.utils.Utils.configLogger;
 import static io.elastic.soap.utils.Utils.loadClasses;
 
 import io.elastic.api.ExecutionParameters;
+import io.elastic.api.Function;
+import io.elastic.api.InitParameters;
 import io.elastic.api.Message;
-import io.elastic.api.Module;
 import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.utils.Utils;
@@ -21,7 +22,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Trigger to get soap request.
  */
-public class ReceiveRequest implements Module {
+public class ReceiveRequest implements Function {
 
   static {
     configLogger();
@@ -34,17 +35,18 @@ public class ReceiveRequest implements Module {
   private SoapBodyDescriptor soapBodyDescriptor;
 
   @Override
-  public void init(JsonObject configuration) {
+  public void init(InitParameters parameters) {
     try {
       LOGGER.info("On init started");
+      final JsonObject configuration = parameters.getConfiguration();
       soapBodyDescriptor = loadClasses(configuration, soapBodyDescriptor);
       validator = new WsdlSOAPValidator(soapBodyDescriptor.getRequestBodyClassName());
       LOGGER.info("On init finished");
     } catch (ComponentException e) {
-      LOGGER.error("Error in init method", e);
+      LOGGER.error("Error in init method");
       throw e;
     } catch (Exception e) {
-      LOGGER.error("Error in init method", e);
+      LOGGER.error("Error in init method");
       throw new ComponentException(e);
     }
   }
@@ -59,8 +61,6 @@ public class ReceiveRequest implements Module {
       final JsonObject configuration = parameters.getConfiguration();
       final JsonObject body = Utils.getSoapBody(message.getBody());
       LOGGER.info("Received new SOAP message, start processing");
-      LOGGER.trace("Input configuration: {}", configuration);
-      LOGGER.trace("Input body: {}", message.getBody());
       final Message data = new Message.Builder().body(body).build();
       if (VALIDATION_ENABLED.equals(configuration.getString(VALIDATION, VALIDATION_ENABLED))) {
         LOGGER.trace("Validation is required for SOAP message");
@@ -70,14 +70,14 @@ public class ReceiveRequest implements Module {
          throw validationResult.getException();
         }
       }
-      LOGGER.trace("Emitting data: {}", data);
+      LOGGER.debug("Emitting data...");
       parameters.getEventEmitter().emitData(data);
       LOGGER.info("Finished processing SOAP message");
     } catch (ComponentException e) {
-      LOGGER.error("Error in receive request trigger", e);
+      LOGGER.error("Error in receive request trigger");
       throw e;
     } catch (Exception e) {
-      LOGGER.error("Error in receive request trigger", e);
+      LOGGER.error("Error in receive request trigger");
       throw new ComponentException(e);
     }
   }

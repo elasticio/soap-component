@@ -64,10 +64,10 @@ public class WsdlSOAPValidator extends SOAPValidator {
       LOGGER.trace("Successful finished message validation");
       return new ValidationResult(xmlString, doc);
     } catch (JsonParseException | JsonMappingException e) {
-      LOGGER.error("Failed to validate message", e);
+      LOGGER.error("Failed to validate message");
       return new ValidationResult(new ValidationException(e.getLocation().toString(), e));
     } catch (Exception e) {
-      LOGGER.error("Failed to validate message", e);
+      LOGGER.error("Failed to validate message");
       throw new ComponentException(e);
     }
   }

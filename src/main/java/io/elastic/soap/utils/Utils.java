@@ -261,15 +261,15 @@ public final class Utils {
       if (null == soapBodyDescriptor) {
         result = JaxbCompiler
             .getSoapBodyDescriptor(wsdlUrl, binding, operation);
-        LOGGER.trace("Got SOAP Body Descriptor: {}", soapBodyDescriptor);
+        LOGGER.trace("Got SOAP Body Descriptor");
       }
       JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
       return result;
     } catch (NullPointerException npe) {
-      LOGGER.error("WSDL URL, Binding and Operation can not be empty.");
+      LOGGER.error("WSDL URL, Binding and Operation can not be empty");
       throw new ComponentException("WSDL URL, Binding and Operation can not be empty.", npe);
     } catch (Throwable throwable) {
-      LOGGER.error("Unexpected error in init method", throwable);
+      LOGGER.error("Unexpected error in init method");
       throw new ComponentException(String.format("Can not generate Jaxb classes for wsdl. Exception: %s",
           throwable.getMessage()), throwable);
     }
@@ -284,7 +284,7 @@ public final class Utils {
   }
 
   public static String createSOAPFaultLogString(final SOAPFaultException soapFaultException) {
-    return String.format("Server has responded with SOAP fault. See the logs for more details. Code: %s. Reason: %s",
+    return String.format("Server has responded with SOAP fault. Code: %s. Reason: %s",
         soapFaultException.getFault().getFaultCode(),
             soapFaultException.getFault().getFaultString());
   }

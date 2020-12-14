@@ -52,20 +52,18 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
       deepRemoveNull(result.fields());
       return objectMapper.convertValue(result, JsonObject.class);
     } catch (JsonMappingException e) {
-      LOGGER.error("Could not map the Json to deserialize schema", e);
+      LOGGER.error("Could not map the Json to deserialize schema");
       throw new ComponentException("Could not map the Json to deserialize schema", e);
     } catch (ClassNotFoundException e) {
-      LOGGER.error("The class in the schema can not be found", e);
+      LOGGER.error("The class in the schema can not be found");
       throw new ComponentException("The class in the schema can not be found", e);
     }
   }
-
 
   @Override
   public JsonObject getMetaModel(final JsonObject configuration) {
     try {
       LOGGER.info("Start creating meta data for component");
-      LOGGER.trace("Got configuration: {}", configuration.toString());
       String wsdlUrl = Utils.getWsdlUrl(configuration);
       if (Utils.isBasicAuth(configuration)) {
         final String username = Utils.getUsername(configuration);
@@ -83,16 +81,15 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
           .add("in", out)
           .add("out", out)
           .build();
-      LOGGER.trace("Component metadata: {}", result);
       LOGGER.info("Successfully generated component metadata");
       return result;
     } catch (ComponentException e) {
       throw e;
     } catch (Exception e) {
-      LOGGER.error("Unexpected exception while creating metadata for component", e);
+      LOGGER.error("Unexpected exception while creating metadata for component");
       throw new ComponentException("Unexpected exception while creating metadata for component", e);
     } catch (Throwable throwable) {
-      LOGGER.error("Unexpected exception while creating metadata for component", throwable);
+      LOGGER.error("Unexpected exception while creating metadata for component");
       throw new ComponentException("Unexpected error while creating metadata for component", throwable);
     }
   }

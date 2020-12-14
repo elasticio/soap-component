@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import io.elastic.api.EventEmitter;
 import io.elastic.api.ExecutionParameters;
 import io.elastic.api.HttpReply;
+import io.elastic.api.InitParameters;
 import io.elastic.api.Message;
 import io.elastic.soap.AppConstants;
 import io.elastic.soap.TestCallback;
@@ -74,7 +75,8 @@ public class SoapReplyTest {
                     .build())
         )
         .build();
-    soapReplyAction.init(cfg);
+    InitParameters initParameters = new InitParameters(cfg);
+    soapReplyAction.init(initParameters);
 
     JsonObject headers = Json.createObjectBuilder()
         .add("reply_to", "testReplyId")
@@ -133,7 +135,8 @@ public class SoapReplyTest {
         )
         .add(AppConstants.VALIDATION, AppConstants.VALIDATION_DISABLED)
         .build();
-    soapReplyAction.init(cfg);
+    InitParameters initParameters = new InitParameters(cfg);
+    soapReplyAction.init(initParameters);
 
     JsonObject headers = Json.createObjectBuilder()
         .add("reply_to", "testReplyId")
@@ -203,7 +206,8 @@ public class SoapReplyTest {
         )
         .build();
 
-    soapReplyAction.init(cfg);
+    InitParameters initParameters = new InitParameters(cfg);
+    soapReplyAction.init(initParameters);
 
     JsonObject headers = Json.createObjectBuilder()
         .add("reply_to", "testReplyId")

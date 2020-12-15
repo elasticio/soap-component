@@ -481,7 +481,7 @@ public final class Utils {
       Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
       return doc;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error("Converting string to XML was not successful");
     }
     return null;
   }

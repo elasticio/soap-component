@@ -6,9 +6,10 @@ import static io.elastic.soap.AppConstants.VALIDATION_ENABLED;
 import static io.elastic.soap.utils.Utils.loadClasses;
 
 import io.elastic.api.ExecutionParameters;
+import io.elastic.api.Function;
 import io.elastic.api.HttpReply;
+import io.elastic.api.InitParameters;
 import io.elastic.api.Message;
-import io.elastic.api.Module;
 import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.utils.Utils;
@@ -28,10 +29,8 @@ import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
-
-public class SoapReplyAction implements Module {
+public class SoapReplyAction implements Function {
 
   static {
     Utils.configLogger();
@@ -46,35 +45,29 @@ public class SoapReplyAction implements Module {
   public static final String CONTENT_TYPE = "text/xml";
   private SoapBodyDescriptor soapBodyDescriptor;
 
-
   @Override
-  public void init(JsonObject configuration) {
+  public void init(InitParameters parameters) {
     try {
       LOGGER.info("On init started");
+      final JsonObject configuration = parameters.getConfiguration();
       soapBodyDescriptor = loadClasses(configuration, soapBodyDescriptor);
       validator = new WsdlSOAPValidator(soapBodyDescriptor.getResponseBodyClassName());
       LOGGER.info("On init finished");
     } catch (ComponentException e) {
-      LOGGER.error("Error in init method", e);
+      LOGGER.error("Error occurred in init method");
       throw e;
     } catch (Exception e) {
-      LOGGER.error("Error in init method", e);
+      LOGGER.error("Error occurred in init method");
       throw new ComponentException(e);
     }
   }
 
-
   @Override
   public void execute(ExecutionParameters parameters) {
     try {
-      final JsonObject headers = parameters.getMessage().getHeaders();
       final JsonObject configuration = parameters.getConfiguration();
       final Message inputMsg = parameters.getMessage();
       final JsonObject body = inputMsg.getBody();
-
-      LOGGER.trace("Input configuration: {}", configuration);
-      LOGGER.trace("Input headers: {}", headers);
-      LOGGER.trace("Input body: {}", body);
 
       final boolean enableValidation = !VALIDATION_ENABLED.equals(configuration.getString(VALIDATION, VALIDATION_DISABLED));
 
@@ -134,12 +127,10 @@ public class SoapReplyAction implements Module {
       LOGGER.info("Emitting data...");
       parameters.getEventEmitter().emitData(new Message.Builder().body(soapResponse).build());
     } catch (ComponentException e) {
-      LOGGER.error("Got component exception: ", e);
-      e.printStackTrace();
+      LOGGER.error("Got component exception");
       parameters.getEventEmitter().emitException(e);
     } catch (Exception e) {
-      LOGGER.error("Got exception: ", e);
-      e.printStackTrace();
+      LOGGER.error("Error occurred");
       parameters.getEventEmitter().emitException(e);
     }
   }

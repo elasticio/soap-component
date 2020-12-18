@@ -34,6 +34,7 @@
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
+          "require": ["wsdlURI"],
           "model": "io.elastic.soap.providers.BindingModelProvider",
           "prompt": "Choose a Binding [Service/Port]"
         },
@@ -42,6 +43,7 @@
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
+          "require": ["binding"],
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Choose an Operation [Service/Port]"
         },
@@ -82,6 +84,7 @@
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
+          "require": ["wsdlURI"],
           "model": "io.elastic.soap.providers.BindingModelProvider",
           "prompt": "Choose a Binding [Service/Port]"
         },
@@ -90,6 +93,7 @@
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
+          "require": ["binding"],
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Choose an Operation [Service/Port]"
         }
@@ -117,6 +121,7 @@
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
+          "require": ["wsdlURI"],
           "model": "io.elastic.soap.providers.BindingModelProvider",
           "prompt": "Choose a Binding [Service/Port]"
         },
@@ -125,6 +130,7 @@
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
+          "require": ["binding"],
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Choose an Operation [Service/Port]"
         },

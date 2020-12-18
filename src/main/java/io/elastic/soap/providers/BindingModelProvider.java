@@ -30,7 +30,6 @@ public class BindingModelProvider implements SelectModelProvider {
     public JsonObject getSelectModel(final JsonObject configuration) {
         try {
             LOGGER.info("Start creating bindings list");
-            LOGGER.trace("Input model configuration: {}", JSON.stringify(configuration));
             final List<Binding> bindings = wsdlService.getWSDL(configuration).getBindings();
             final JsonObjectBuilder builder = Json.createObjectBuilder();
             bindings.stream()
@@ -42,18 +41,16 @@ public class BindingModelProvider implements SelectModelProvider {
                         SOAP11_PROTOCOL_NAME,
                         SOAP12_PROTOCOL_NAME));
             }
-            LOGGER.trace("Result bindings list {}", result);
             LOGGER.info("Finish creating bindings list");
             return result;
         } catch (ComponentException e) {
-            LOGGER.error("Exception while creating bindings list for component", e);
+            LOGGER.error("Exception while creating bindings list for component");
             throw e;
         } catch (Exception e) {
-            LOGGER.error("Unexpected exception while creating bindings list for component", e);
+            LOGGER.error("Unexpected exception while creating bindings list for component");
             throw new ComponentException("Unexpected exception while creating bindings list for component", e);
         }
     }
-
 
     private boolean isSupportedSOAPVersion(final Binding binding) {
         final Object version = binding.getProtocol();

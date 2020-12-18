@@ -47,17 +47,16 @@ public class ResponseHandler {
      */
     public <T> T getResponseObject(final SOAPMessage response, final Class<T> clazz)
             throws JAXBException, SOAPException, IOException, SOAPFaultException {
-        Utils.logSOAPMSgIfTraceEnabled(LOGGER, "Response SOAP message: {}", response);
 
         SOAPFault soapFault = response.getSOAPBody().getFault();
         if (soapFault != null) {
             throw new SOAPFaultException(soapFault);
         }
         LOGGER.info("Start unmarshalling");
-        LOGGER.trace("About to start unmarshalling response SoapMessage to {} class", clazz.getName());
+        LOGGER.debug("About to start unmarshalling response SoapMessage to {} class", clazz.getName());
         final Unmarshaller unmarshaller = JAXBContext.newInstance(clazz).createUnmarshaller();
         final JAXBElement<T> responseObject = unmarshaller.unmarshal(getResponsePayload(response, clazz), clazz);
-        LOGGER.trace("Unmarshalling response SoapMessage to {} class successfully done", clazz.getName());
+        LOGGER.debug("Unmarshalling response SoapMessage to {} class successfully done", clazz.getName());
         LOGGER.info("Finish unmarshalling");
         return responseObject.getValue();
     }
@@ -78,7 +77,6 @@ public class ResponseHandler {
         builder.add(soapBodyDescriptor.getResponseBodyElementName(), jsonResponseObject);
         final JsonObject jsonObject = builder.build();
         LOGGER.info("JSON object successfully serialized");
-        LOGGER.trace("JSON object: {}", jsonObject);
         return jsonObject;
     }
 

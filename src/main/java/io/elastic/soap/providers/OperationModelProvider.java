@@ -29,7 +29,6 @@ public class OperationModelProvider implements SelectModelProvider {
     public JsonObject getSelectModel(final JsonObject configuration) {
         try {
             LOGGER.info("Start creating operation list");
-            LOGGER.trace("Input model configuration: {}", JSON.stringify(configuration));
             final String bindingName = Utils.getBinding(configuration);
             final Definitions wsdl = wsdlService.getWSDL(configuration);
             final Binding binding = wsdl.getBinding(bindingName);
@@ -39,14 +38,13 @@ public class OperationModelProvider implements SelectModelProvider {
             if (result.keySet().size() == 0) {
                 throw new ComponentException(String.format("No operations where found for binding: %s, in wsdl.", bindingName));
             }
-            LOGGER.trace("Result operation list {}", result);
             LOGGER.info("Finish creating operation list");
             return result;
         } catch (ComponentException e) {
-            LOGGER.error("Exception while creating operation list for component", e);
+            LOGGER.error("Exception while creating operation list for component");
             throw e;
         } catch (Exception e) {
-            LOGGER.error("Unexpected exception while creating operation list for component", e);
+            LOGGER.error("Unexpected exception while creating operation list for component");
             throw new ComponentException("Unexpected exception while creating operation list for component", e);
         }
     }

@@ -1,3 +1,7 @@
+# 1.2.5 (December 18, 2020)
+* Update Sailor version to 3.3.1
+* Annual audit of the component code to check if it exposes sensitive data in the logs
+
 # 1.2.4 (July 24, 2020)
 ## General Changes
 * Fix bug for some cases with WSDL behind basic auth  

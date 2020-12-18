@@ -7,14 +7,12 @@ jobs:
       - checkout
       - restore_cache:
           key: gradle-{{ checksum "build.gradle" }}
-
       - run: ./gradlew downloadDependencies --daemon
       - save_cache:
           key: gradle-{{ checksum "build.gradle" }}
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
-
       - run:
           name: Run Unit Tests
           command: ./gradlew test --daemon

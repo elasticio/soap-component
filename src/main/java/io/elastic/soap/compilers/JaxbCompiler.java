@@ -127,7 +127,7 @@ public class JaxbCompiler {
         final BindingOperation bindingOperation = getBindingOperation(defs, binding, operation);
         LOGGER.trace("Got {} style wsdl", bindingOperation.getBinding().getStyle());
         if (bindingOperation.getBinding().getStyle().equals("Rpc/Encoded")) {
-            LOGGER.error("SAPByDesign component currently doesn't support the rpc/encoded style {}",
+            LOGGER.error("SOAP component currently doesn't support the rpc/encoded style {}",
                     bindingOperation.getBinding().getStyle());
             throw new UnsupportedOperationException(
                     "SOAP component currently doesn't support the rpc/encoded style");
@@ -219,14 +219,16 @@ public class JaxbCompiler {
         isWsdlCompiledMap.put(url, path);
     }
 
+    /**
+     * Utility method which you can run to build a schema for given WSDL
+     * @param args
+     */
     public static void main(String[] args) {
         Definitions definitions = getDefinitionsFromWsdl(
                 "http://ws.cdyne.com/emailverify/Emailvernotestemail.asmx?wsdl");
         List<Schema> schemas = definitions.getSchemas();
         for (Schema schema : schemas) {
             System.out.println(schema.toString());
-
         }
-
     }
 }

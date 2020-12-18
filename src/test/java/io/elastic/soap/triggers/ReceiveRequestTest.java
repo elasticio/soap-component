@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.elastic.api.EventEmitter;
 import io.elastic.api.ExecutionParameters;
+import io.elastic.api.InitParameters;
 import io.elastic.api.Message;
 import io.elastic.soap.AppConstants;
 import io.elastic.soap.TestCallback;
@@ -48,7 +49,8 @@ public class ReceiveRequestTest {
   @DisplayName("Receive and parse SOAP message")
   public void receiveRequest(JsonObject body) {
     ReceiveRequest receiveRequest = new ReceiveRequest();
-    receiveRequest.init(cfg);
+    InitParameters initParameters = new InitParameters(cfg);
+    receiveRequest.init(initParameters);
     Message msg = new Message.Builder().body(body).build();
     EventEmitter eventEmitter = new EventEmitter.Builder()
         .onData(new TestCallback())

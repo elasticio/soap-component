@@ -4,7 +4,6 @@ apply plugin: "idea"
 apply plugin: "java-library-distribution"
 
 group = "io.elastic"
-version = "1.2.5"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -37,9 +36,10 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-jsonSchema:2.9.6"
     compile "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.9.6"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr353:2.9.6"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.6"
     compile "com.sun.xml.bind:jaxb-xjc:2.1.6"
     compile "com.sun.xml.ws:jaxws-tools:2.2.1"
-    compile "io.elastic:sailor-jvm:3.3.1"
+    compile "io.elastic:sailor-jvm:3.3.6"
     compile "javax.xml:jaxb-impl:2.1"
     compile files("lib/tools.jar")
     compile "org.apache.axis2:axis2-codegen:1.6.1"

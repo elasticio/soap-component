@@ -198,7 +198,7 @@ Output json schema is generated dynamically the same as for the input (see above
 </soap:Envelope>
 ```
 
-### Current limitations
+### Known limitations
 The following are limitations of this connector:
 
 * RPC/SOAP-Encoded styles are not supported.
@@ -214,6 +214,7 @@ This is so, because the SOAP encoding specification does not guarantee 100% inte
 * Custom SOAP headers can not be added.
 * The WSDL and associated schemas must be accessible via a publicly accessible URL. File upload of the WSDL and/or XSD schemas is not supported.
 * Component does not support multipart format of message in the SOAP request element. Only first part of request element will be processed in the current component version.
+* 'Emit SOAP Faults Instead of Throwing an Error' feature of the 'CallAction' action was not fully tested against all the possible SOAP faults.
 
 ## API and Documentation links
 * [Apache Axis2](http://axis.apache.org/axis2/java/core/)

@@ -75,12 +75,12 @@ public class JaxbCompiler {
     public static void createFolder(final String path) {
         final File dir = new File(path);
         if (!dir.exists()) {
-            boolean mkDirResult = dir.mkdir();
+            boolean mkDirResult = dir.mkdirs();
             if (mkDirResult) {
                 LOGGER.trace("Directory {} successfully created.", AppConstants.GENERATED_RESOURCES_DIR);
             } else {
                 throw new RuntimeException(
-                        "Folder for storing generated classes cold not be created. "
+                        "Folder for storing generated classes could not be created. "
                                 + "The component execution will be terminated");
             }
         }

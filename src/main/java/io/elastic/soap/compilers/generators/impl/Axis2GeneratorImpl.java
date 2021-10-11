@@ -51,9 +51,9 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
                     "-uri", wsdlUrl,
                     "-d", "jaxbri",
                     "-or",
-                    "-p", AppConstants.DEFAULT_PACKAGE + ".ignored",
+//                    "-p", AppConstants.DEFAULT_PACKAGE + ".ignored",
                     "--noBuildXML",
-                    "-ep", AppConstants.DEFAULT_PACKAGE + ".ignored"
+//                    "-ep", AppConstants.DEFAULT_PACKAGE + ".ignored"
             };
             PrintStream originalStdout = System.out;
             System.setOut(new PrintStream(new OutputStream() { // Hack coz logs of lib contains sensitive info. Disabling System.out.println.

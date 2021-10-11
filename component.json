@@ -1,7 +1,7 @@
 {
   "title": "SOAP V2",
   "service": "request-reply",
-  "version": "1.2.7-dev.1",
+  "version": "1.2.7-dev.2",
   "description": "Generic SOAP / WebServices integration Component",
   "docsUrl": "https://docs.elastic.io/components/soap/",
   "credentials": {

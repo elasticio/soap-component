@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 @Disabled
 // The test actually works! Should be enabled and run (given that)
 // https://www.ebi.ac.uk/europepmc/webservices/test/soap?wsdl service is still available
+// Is disabled because we can't rely on an external SOAP service in the tests. It might die
 public class CallActionTest {
 
   private static final Logger logger = LoggerFactory.getLogger(EventEmitter.class);
@@ -89,7 +90,7 @@ public class CallActionTest {
 
     assertEquals(1, onData.getCalls().size());
     assertEquals(expectedJsonSoapFault,
-        ((Message) onData.getCalls().get(0)).getBody().getJsonObject("fault").toString());
+        ((Message) onData.getCalls().get(0)).getBody().toString());
   }
 
   @Test

@@ -62,8 +62,7 @@ public class CallAction implements Function {
         throw new ComponentException(exceptionText, soapFaultException);
       }
       JsonObjectBuilder jsonObjectBuilder = Utils.buildJsonSoapFault(soapFaultException.getFault());
-      JsonObject soapFaultJsonObject = Json.createObjectBuilder().add("fault", jsonObjectBuilder)
-          .build();
+      JsonObject soapFaultJsonObject = jsonObjectBuilder.build();
       Message soapFaultMessage = new Builder().body(soapFaultJsonObject).build();
       parameters.getEventEmitter().emitData(soapFaultMessage);
     } catch (Throwable throwable) {

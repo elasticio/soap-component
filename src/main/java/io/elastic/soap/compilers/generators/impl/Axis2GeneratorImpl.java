@@ -3,6 +3,13 @@ package io.elastic.soap.compilers.generators.impl;
 import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.generators.IJaxbGenerator;
 import io.elastic.soap.utils.Utils;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.axis2.wsdl.WSDL2Java;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,14 +53,27 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
             // -p. The target package name. If omitted, a default package (formed using the target
             // namespace of the WSDL) will be used.
             // --noBuildXML - don't generate the build.xml in the output directory
+            System.out.println("==============================");
+            try (Stream<Path> walk = Files.walk(Paths.get("/tmp/soap-component"))) {
+
+                List<String> result = walk.filter(Files::isRegularFile)
+                    .map(x -> x.toString()).collect(Collectors.toList());
+
+                result.forEach(System.out::println);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("==============================");
             final String[] input = new String[]{
+                    "-o", AppConstants.GENERATED_RESOURCES_DIR,
                     "-Djavax.xml.accessExternalSchema", "all",
                     "-uri", wsdlUrl,
                     "-d", "jaxbri",
                     "-or",
-//                    "-p", AppConstants.DEFAULT_PACKAGE + ".ignored",
+                    "-p", AppConstants.DEFAULT_PACKAGE + ".ignored",
                     "--noBuildXML",
-//                    "-ep", AppConstants.DEFAULT_PACKAGE + ".ignored"
+                    "-ep", AppConstants.DEFAULT_PACKAGE + ".ignored"
             };
             PrintStream originalStdout = System.out;
             System.setOut(new PrintStream(new OutputStream() { // Hack coz logs of lib contains sensitive info. Disabling System.out.println.
@@ -66,16 +86,19 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
             System.setOut(originalStdout);
             LOGGER.info("JAXB structure was successfully generated");
             LOGGER.info("About to start compiling generated JAXB classes...");
-            final List<Path> paths = Utils.listGeneratedFiles("src");
+//            final List<Path> paths = Utils.listGeneratedFiles("src");
+            final List<Path> paths = Utils.listGeneratedFiles("/tmp/soap-component/src");
             // Now we must compile JAXB classes as Apache WSDL2Java tool does not compile generated classes
             for (final Path p : paths) {
+                System.out.println(p.toString());
                 final com.sun.tools.javac.Main javac = new com.sun.tools.javac.Main();
                 // -cp path option specifies where to find user class files and annotation processors.
                 // This class path overrides the user class path in the CLASSPATH environment variable.
                 // -proc controls whether annotation processing and compilation are done.
                 // -proc:none means that compilation takes place without annotation processing.
                 final String[] options = new String[]{"-d", AppConstants.GENERATED_RESOURCES_DIR,
-                        "-cp", "src",
+//                        "-cp", "src",
+                        "-cp", "/tmp/soap-component/src",
                         "-proc:none",
                         p.toString()};
                 javac.compile(options);

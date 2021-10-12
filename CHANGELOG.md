@@ -1,5 +1,5 @@
 # 1.2.7 (October 15, 2021)
-* Moved all the local files created by the component to /tmp/ folder
+* All the local files created by the component moved to /tmp/soap-component folder where it is allowed to write
 
 # 1.2.6 (October 1, 2021)
 * Update Sailor version to 3.3.6

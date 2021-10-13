@@ -79,7 +79,7 @@ Component supports next wsdl styles:
 * Document/Literal
 
 #### Environment variables
-``` OIH_REQUIRED_RAM_MB - recommended value of allocated memory is 2048MB ```
+``` EIO_REQUIRED_RAM_MB - recommended value of allocated memory is 2048MB ```
 
 ## Credentials
 

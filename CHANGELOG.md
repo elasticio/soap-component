@@ -1,9 +1,6 @@
-# 1.2.7 (October 15, 2021)
-* All the local files created by the component moved to /tmp/soap-component folder where it is allowed to write
-
-# 1.2.6 (October 1, 2021)
+# 1.2.6 (October 15, 2021)
 * Update Sailor version to 3.3.6
-* Add an option to emit a platform message instead of throwing an exception in case of a SOAP fault
+* `Call` action: add an option to emit a platform message instead of throwing an exception in case of a SOAP fault
 
 # 1.2.5 (December 18, 2020)
 * Update Sailor version to 3.3.1

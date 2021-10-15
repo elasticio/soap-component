@@ -1,3 +1,7 @@
+# 1.2.6 (October 15, 2021)
+* Update Sailor version to 3.3.6
+* `Call` action: add an option to emit a platform message instead of throwing an exception in case of a SOAP fault
+
 # 1.2.5 (December 18, 2020)
 * Update Sailor version to 3.3.1
 * Annual audit of the component code to check if it exposes sensitive data in the logs

@@ -47,6 +47,7 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
             // namespace of the WSDL) will be used.
             // --noBuildXML - don't generate the build.xml in the output directory
             final String[] input = new String[]{
+                    "-o", AppConstants.GENERATED_RESOURCES_DIR,
                     "-Djavax.xml.accessExternalSchema", "all",
                     "-uri", wsdlUrl,
                     "-d", "jaxbri",
@@ -59,14 +60,13 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
             System.setOut(new PrintStream(new OutputStream() { // Hack coz logs of lib contains sensitive info. Disabling System.out.println.
                 @Override
                 public void write(int i) {
-
                 }
             }));
             WSDL2Java.main(input);
             System.setOut(originalStdout);
             LOGGER.info("JAXB structure was successfully generated");
             LOGGER.info("About to start compiling generated JAXB classes...");
-            final List<Path> paths = Utils.listGeneratedFiles("src");
+            final List<Path> paths = Utils.listGeneratedFiles(AppConstants.GENERATED_RESOURCES_DIR + "/src");
             // Now we must compile JAXB classes as Apache WSDL2Java tool does not compile generated classes
             for (final Path p : paths) {
                 final com.sun.tools.javac.Main javac = new com.sun.tools.javac.Main();
@@ -75,7 +75,7 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
                 // -proc controls whether annotation processing and compilation are done.
                 // -proc:none means that compilation takes place without annotation processing.
                 final String[] options = new String[]{"-d", AppConstants.GENERATED_RESOURCES_DIR,
-                        "-cp", "src",
+                        "-cp", AppConstants.GENERATED_RESOURCES_DIR + "/src",
                         "-proc:none",
                         p.toString()};
                 javac.compile(options);

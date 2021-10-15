@@ -12,7 +12,7 @@ public final class AppConstants {
     // Default package for generating JAXB classes to
     public static final String DEFAULT_PACKAGE = "io.elastic.soap";
     // Default folder for generating JAXB classes to
-    public static final String GENERATED_RESOURCES_DIR = "src/main/generated-java";
+    public static final String GENERATED_RESOURCES_DIR = "/tmp/soap-component";
     // Name of operation object in the platform config
     public static final String OPERATION_CONFIG_NAME = "operation";
     // SOAP 1.1 short name
@@ -22,7 +22,7 @@ public final class AppConstants {
     // Name of WSDL URI object in the platform config
     public static final String WSDL_CONFIG_NAME = "wsdlURI";
     // Name of WSDL URI object in the platform config
-    public static final String WSDL_LOCAL_PATH = "src/main/generated-java/wsdlLocal.xml";
+    public static final String WSDL_LOCAL_PATH = "/tmp/soap-component/wsdlLocal.xml";
     // Authorization keyword
     public static final String AUTH_KEYWORD = "Authorization";
     // component.json validation option keyword

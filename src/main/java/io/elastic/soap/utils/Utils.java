@@ -37,14 +37,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.SOAPException;
+import javax.xml.soap.SOAPFault;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.soap.SOAPFaultException;
 import org.apache.commons.codec.binary.Base64;
@@ -63,7 +67,8 @@ public final class Utils {
   }
 
   /**
-   * Create configured ObjectMapper. All the marshall/unmarshal configurations should be added here if needed
+   * Create configured ObjectMapper. All the marshall/unmarshal configurations should be added here
+   * if needed
    *
    * @return ObjectMapper instance
    */
@@ -99,8 +104,10 @@ public final class Utils {
   }
 
   /**
-   * Since many WSDL schemas have XSD elements started from the small letter (getBank), with underscore (CustomerQueryIn_sync), but WSImport utility generates this class starting
-   * from a capital letter (GetBank) and without underscores (CustomerQueryInSync), it should be manually converted to upper camel case.
+   * Since many WSDL schemas have XSD elements started from the small letter (getBank), with
+   * underscore (CustomerQueryIn_sync), but WSImport utility generates this class starting from a
+   * capital letter (GetBank) and without underscores (CustomerQueryInSync), it should be manually
+   * converted to upper camel case.
    */
   public static String convertStringToUpperCamelCase(final String elementName) {
     return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
@@ -125,10 +132,12 @@ public final class Utils {
    * @param password password.
    * @return URI with username and password.
    */
-  public static String addAuthToURL(final String source, final String username, final String password) {
+  public static String addAuthToURL(final String source, final String username,
+      final String password) {
     try {
       final URI uri = new URI(source);
-      return new URI(uri.getScheme(), username + ":" + password, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment()).toString();
+      return new URI(uri.getScheme(), username + ":" + password, uri.getHost(), uri.getPort(),
+          uri.getPath(), uri.getQuery(), uri.getFragment()).toString();
     } catch (URISyntaxException e) {
       throw new ComponentException("Invalid URI: " + source, e);
     }
@@ -164,6 +173,10 @@ public final class Utils {
     return config.getJsonObject("auth").getJsonObject("basic").getString("password");
   }
 
+  public static boolean getEmitSoapFault(JsonObject config) {
+    return Utils.getConfigBoolean(config, "emitSoapFault");
+  }
+
   /**
    * Internal common method for getting value from the configuration {@link JsonObject} object.
    *
@@ -179,6 +192,74 @@ public final class Utils {
     }
 
     return value.getString();
+  }
+
+  private static boolean getConfigBoolean(final JsonObject config, final String key) {
+    return config.getBoolean(key, false);
+  }
+
+  public static JsonObjectBuilder buildJsonSoapFault(SOAPFault soapFault) {
+    String soapFaultNamespaceURI = soapFault.getNamespaceURI();
+    SoapVersion soapVersion = Utils.resolveSoapVersion(soapFaultNamespaceURI);
+    switch (soapVersion) {
+      case SOAP1_1:
+        return Utils.buildJsonSoapFaultSoap11(soapFault);
+      case SOAP1_2:
+        try {
+          return Utils.buildJsonSoapFaultSoap12(soapFault);
+        } catch (SOAPException e) {
+          e.printStackTrace();
+          throw new ComponentException(e.getMessage());
+        }
+      default:
+        throw new ComponentException("SOAP Version was not resolved");
+    }
+  }
+
+  private static SoapVersion resolveSoapVersion(String namespace) {
+    if (namespace.contains("schemas.xmlsoap.org/soap/envelope")) {
+      return SoapVersion.SOAP1_1;
+    }
+    if (namespace.contains("www.w3.org/2003/05/soap-envelope")) {
+      return SoapVersion.SOAP1_2;
+    }
+    throw new ComponentException("SOAP Version was not resolved");
+  }
+
+  private static JsonObjectBuilder buildJsonSoapFaultSoap11(SOAPFault soapFault) {
+    JsonValue faultCode = Utils.getValueOrNull("faultcode", soapFault.getFaultCode());
+    JsonValue faultString = Utils.getValueOrNull("faultstring", soapFault.getFaultString());
+    JsonValue faultActor = Utils.getValueOrNull("faultactor", soapFault.getFaultActor());
+    JsonObjectBuilder jsonSoapFaultBuilder = Json.createObjectBuilder()
+        .add("Fault", Json.createObjectBuilder()
+            .add("faultcode", faultCode)
+            .add("faultstring", faultString)
+            .add("faultactor", faultActor)
+            .build());
+    return jsonSoapFaultBuilder;
+  }
+
+  private static JsonObjectBuilder buildJsonSoapFaultSoap12(SOAPFault soapFault)
+      throws SOAPException {
+    JsonValue faultCode = Utils.getValueOrNull("faultcode", soapFault.getFaultCode());
+    JsonArrayBuilder reasonArrayBuilder = Json.createArrayBuilder();
+    Iterator faultReasonTexts = soapFault.getFaultReasonTexts();
+    while (faultReasonTexts.hasNext()) {
+      reasonArrayBuilder.add((String) faultReasonTexts.next());
+    }
+    JsonObjectBuilder jsonSoapFaultBuilder = Json.createObjectBuilder()
+        .add("Fault", Json.createObjectBuilder()
+            .add("faultcode", faultCode)
+            .add("reason", reasonArrayBuilder.build())
+            .build());
+    return jsonSoapFaultBuilder;
+  }
+
+  private static JsonValue getValueOrNull(String key, String value) {
+    if (value == null) {
+      return JsonValue.NULL;
+    }
+    return Json.createObjectBuilder().add(key, value).build().get(key);
   }
 
   /**
@@ -221,11 +302,8 @@ public final class Utils {
   }
 
   /**
-   * Loads WSDL file locally and parses it from the FS. Is a workaround
-   * for the basic auth case when Server fault: too many redirects (20)
-   * @param configuration
-   * @return
-   * @throws IOException
+   * Loads WSDL file locally and parses it from the FS. Is a workaround for the basic auth case when
+   * Server fault: too many redirects (20)
    */
   public static String loadWsdlLocally(final JsonObject configuration) throws IOException {
     final String username = Utils.getUsername(configuration);
@@ -249,7 +327,8 @@ public final class Utils {
     return AppConstants.WSDL_LOCAL_PATH;
   }
 
-  public static SoapBodyDescriptor loadClasses(final JsonObject configuration, final SoapBodyDescriptor soapBodyDescriptor) {
+  public static SoapBodyDescriptor loadClasses(final JsonObject configuration,
+      final SoapBodyDescriptor soapBodyDescriptor) {
     try {
       String wsdlUrl = getWsdlUrl(configuration);
       if (isBasicAuth(configuration)) {
@@ -270,12 +349,14 @@ public final class Utils {
       throw new ComponentException("WSDL URL, Binding and Operation can not be empty.", npe);
     } catch (Throwable throwable) {
       LOGGER.error("Unexpected error in init method");
-      throw new ComponentException(String.format("Can not generate Jaxb classes for wsdl. Exception: %s",
-          throwable.getMessage()), throwable);
+      throw new ComponentException(
+          String.format("Can not generate Jaxb classes for wsdl. Exception: %s",
+              throwable.getMessage()), throwable);
     }
   }
 
-  public static Message callSOAPService(final Message message, final ExecutionParameters parameters, final SoapBodyDescriptor soapBodyDescriptor) throws Throwable {
+  public static Message callSOAPService(final Message message, final ExecutionParameters parameters,
+      final SoapBodyDescriptor soapBodyDescriptor) throws Throwable {
     final JsonObject body = message.getBody();
     final JsonObject configuration = parameters.getConfiguration();
     final SoapCallService soapCallService = new SoapCallService();
@@ -286,19 +367,21 @@ public final class Utils {
   public static String createSOAPFaultLogString(final SOAPFaultException soapFaultException) {
     return String.format("Server has responded with SOAP fault. Code: %s. Reason: %s",
         soapFaultException.getFault().getFaultCode(),
-            soapFaultException.getFault().getFaultString());
+        soapFaultException.getFault().getFaultString());
   }
 
-  public static void logSOAPMSgIfTraceEnabled(final Logger log, final String message, final SOAPMessage soapMessage) throws IOException, SOAPException {
+  public static void logSOAPMSgIfTraceEnabled(final Logger log, final String message,
+      final SOAPMessage soapMessage) throws IOException, SOAPException {
     if (log.isTraceEnabled()) {
       log.trace(message, getStringOfSoapMessage(soapMessage));
     }
   }
 
-  public static String getStringOfSoapMessage(final SOAPMessage soapMessage) throws IOException, SOAPException {
-      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      soapMessage.writeTo(outputStream);
-      return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+  public static String getStringOfSoapMessage(final SOAPMessage soapMessage)
+      throws IOException, SOAPException {
+    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    soapMessage.writeTo(outputStream);
+    return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
   }
 
   public static void configLogger() {
@@ -312,6 +395,7 @@ public final class Utils {
 
   /**
    * Extracts SOAP body from envelope and remove namespaces from keys
+   *
    * @param body body with envelope
    * @return SOAP body
    */
@@ -325,17 +409,10 @@ public final class Utils {
   }
 
   /**
-   * Recursively remove namespace from each JsonObject keys
-   * Examples:
-   *  {                                 {
-   *    "ns1-a" : "val1",                 "a" : "val1",
-   *    "ns2-b" : {           =========>    "b": {
-   *      "ns1-c" : {                         "c" : "val2"
-   *        "_attr" : ["a, b, c"],          }
-   *        "_" : "val2"                 }
-   *      }
-   *    }
-   *  }
+   * Recursively remove namespace from each JsonObject keys Examples: { { "ns1-a" : "val1",
+   *        "a" : "val1", "ns2-b" : {           =========>    "b": { "ns1-c" : {
+   * "c" : "val2" "_attr" : ["a, b, c"],          } "_" : "val2" } } } }
+   *
    * @param jsonObject json.
    * @return json object with keys without namespace.
    */
@@ -343,18 +420,15 @@ public final class Utils {
     try {
       return resolveObject(jsonObject);
     } catch (Exception e) {
-      throw new  ComponentException(e);
+      throw new ComponentException(e);
     }
   }
 
   /**
-   * Removes fist part key that is namespace
-   * Examples:
-   *  1. ns-a -> a
-   *  2. ns-a-b -> a-b
+   * Removes fist part key that is namespace Examples: 1. ns-a -> a 2. ns-a-b -> a-b
+   *
    * @param key key with namespace
    * @return key without namespace part.
-   * @throws Exception
    */
   private static String getNewKey(final String key) throws Exception {
     final String[] parts = key.split("-");
@@ -363,10 +437,10 @@ public final class Utils {
       return key;
     }
     for (int i = 0; i < parts.length; i++) {
-         if (i == 0) {
-           continue;
-         }
-         result.append(parts[i]).append("-");
+      if (i == 0) {
+        continue;
+      }
+      result.append(parts[i]).append("-");
     }
     if (key.endsWith("-")) {
       return result.toString();
@@ -404,7 +478,8 @@ public final class Utils {
     return array;
   }
 
-  private static void removeAttributeFromArray(List<JsonValue> newValues, JsonObject v) throws Exception {
+  private static void removeAttributeFromArray(List<JsonValue> newValues, JsonObject v)
+      throws Exception {
     JsonValue realValue = v.get("_");
     ValueType realType = realValue.getValueType();
     if (realType.equals(ValueType.OBJECT)) {
@@ -427,7 +502,7 @@ public final class Utils {
     Map<String, JsonValue> map = (Map<String, JsonValue>) valueMap.get(object);
     Map<String, JsonValue> newKeys = new HashMap<>();
     for (Entry<String, JsonValue> e : map.entrySet()) {
-      if(e.getKey().equals("_attr")) {
+      if (e.getKey().equals("_attr")) {
         continue;
       }
       final String newKey = getNewKey(e.getKey());
@@ -452,7 +527,8 @@ public final class Utils {
     return object;
   }
 
-  private static void removeAttribute(Map<String, JsonValue> newKeys, String newKey, JsonObject v) throws Exception {
+  private static void removeAttribute(Map<String, JsonValue> newKeys, String newKey, JsonObject v)
+      throws Exception {
     JsonValue realValue = v.get("_");
     ValueType realType = realValue.getValueType();
     if (realType.equals(ValueType.OBJECT)) {

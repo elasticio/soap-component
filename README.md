@@ -79,7 +79,7 @@ Component supports next wsdl styles:
 * Document/Literal
 
 #### Environment variables
-``` OIH_REQUIRED_RAM_MB - recommended value of allocated memory is 2048MB ```
+``` EIO_REQUIRED_RAM_MB - recommended value of allocated memory is 2048MB ```
 
 ## Credentials
 
@@ -128,8 +128,8 @@ Webhook that validates input body over WSDL.
   }
 }
 ```
-#### Known Limitations
-1. Namespaces ignored and SOAP Body with 2 tags that have same name but in different namespaces would be invalid
+#### Current Limitations
+1. Namespaces ignored and SOAP Body with 2 tags that have the same name but in different namespaces would be invalid
 2. SOAP Headers not supported yet
 3. Retrieve Sample does not represent actual behaviour of component 
 
@@ -146,6 +146,27 @@ Call action supports Basic Authorization, choose Basic Authorization type in cre
 #### SOAP Fault
 A SOAP fault is used to carry error information within a SOAP message. The component handles SOAP faults and emits platform exception in this case.
 SOAP Fault should comply with the [W3C SOAP Fault standard](https://www.w3.org/TR/soap12-part1/#soapfault).
+
+Example of the SOAP 1.1 Fault:
+```json
+{
+  "Fault": {
+    "faultcode": "S:Server",
+    "faultstring": "Server error java.lang.NullPointerException",
+    "faultactor": null
+  }
+}
+```
+
+Example of the SOAP 1.2 Fault:
+```json
+{
+  "Fault": {
+    "faultcode": "S:Server",
+    "reason": "Server error java.lang.NullPointerException"
+  }
+}
+```
 
 #### Input json schema
 The component does not have static input json schema as it is dynamically generated for every wsdl/binding/operation specified in the process of configuration the component input fields.
@@ -198,7 +219,7 @@ Output json schema is generated dynamically the same as for the input (see above
 </soap:Envelope>
 ```
 
-### Current limitations
+### Known limitations
 The following are limitations of this connector:
 
 * RPC/SOAP-Encoded styles are not supported.
@@ -214,6 +235,7 @@ This is so, because the SOAP encoding specification does not guarantee 100% inte
 * Custom SOAP headers can not be added.
 * The WSDL and associated schemas must be accessible via a publicly accessible URL. File upload of the WSDL and/or XSD schemas is not supported.
 * Component does not support multipart format of message in the SOAP request element. Only first part of request element will be processed in the current component version.
+* 'Emit SOAP Faults Instead of Throwing an Error' feature of the 'CallAction' action was not fully tested against all the possible SOAP faults.
 
 ## API and Documentation links
 * [Apache Axis2](http://axis.apache.org/axis2/java/core/)

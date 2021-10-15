@@ -1,6 +1,7 @@
 {
   "title": "SOAP V2",
   "service": "request-reply",
+  "version": "1.2.6",
   "description": "Generic SOAP / WebServices integration Component",
   "docsUrl": "https://docs.elastic.io/components/soap/",
   "credentials": {
@@ -96,6 +97,12 @@
           "require": ["binding"],
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Choose an Operation [Service/Port]"
+        },
+        "emitSoapFault": {
+          "label": "Emit SOAP Faults Instead of Throwing an Error",
+          "viewClass": "CheckBoxView",
+          "order": 96,
+          "note": "When this checkbox is checked and the component receives a SOAP fault, the component does not emit/throw an error but instead emits a JSON representation of the SOAP fault received"
         }
       },
       "dynamicMetadata": "io.elastic.soap.providers.BodyMetaProvider"

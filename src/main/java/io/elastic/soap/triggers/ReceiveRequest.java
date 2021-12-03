@@ -65,8 +65,8 @@ public class ReceiveRequest implements Function {
       final String originalUrl = message.getOriginalUrl();
 
       LOGGER.info("Entire message: " + message);
-      LOGGER.info("body: " + body1.toString());
-      LOGGER.info("query: " + query.toString());
+      LOGGER.info("body: " + body1);
+      LOGGER.info("query: " + query);
       LOGGER.info("method: " + method);
       LOGGER.info("url: " + url);
       LOGGER.info("originalUrl: " + originalUrl);

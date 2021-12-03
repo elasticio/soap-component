@@ -14,6 +14,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import net.joshka.junit.json.params.JsonFileSource;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ public class ReceiveRequestTest {
   }
 
 
+  @Disabled
   @ParameterizedTest
   @JsonFileSource(resources = "/add.json")
   @DisplayName("Receive and parse SOAP message")

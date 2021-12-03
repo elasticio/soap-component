@@ -58,6 +58,18 @@ public class ReceiveRequest implements Function {
   public void execute(final ExecutionParameters parameters) {
     try {
       final Message message = parameters.getMessage();
+      final JsonObject body1 = message.getBody();
+      final JsonObject query = message.getQuery();
+      final String method = message.getMethod();
+      final String url = message.getUrl();
+      final String originalUrl = message.getOriginalUrl();
+
+      LOGGER.info("Entire message: " + message);
+      LOGGER.info("body: " + body1.toString());
+      LOGGER.info("query: " + query.toString());
+      LOGGER.info("method: " + method);
+      LOGGER.info("url: " + url);
+      LOGGER.info("originalUrl: " + originalUrl);
       final JsonObject configuration = parameters.getConfiguration();
       final JsonObject body = Utils.getSoapBody(message.getBody());
       LOGGER.info("Received new SOAP message, start processing");

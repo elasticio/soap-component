@@ -1,21 +1,23 @@
 package io.elastic.soap.services;
 
+import static io.elastic.soap.utils.Utils.isBasicAuth;
+
 import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.handlers.RequestHandler;
 import io.elastic.soap.handlers.ResponseHandler;
 import io.elastic.soap.utils.Base64Utils;
 import io.elastic.soap.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
 import javax.json.JsonObject;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPMessage;
-import java.net.URL;
-
-import static io.elastic.soap.utils.Utils.isBasicAuth;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The class which controls all the process of retrieving input data, input configuration, its
@@ -36,11 +38,26 @@ public class SoapCallService {
             final String encodedString = Base64Utils.getBasicAuthHeader(Utils.getUsername(configuration), Utils.getPassword(configuration));
             requestSoapMessage.getMimeHeaders().addHeader(AppConstants.AUTH_KEYWORD, encodedString);
         }
-        return callSOAP(requestSoapMessage, soapBodyDescriptor);
+        final int timeout = Utils.getRequestTimeoutPeriod(configuration);
+        return callSOAP(requestSoapMessage, soapBodyDescriptor, timeout);
     }
 
-    private JsonObject callSOAP(final SOAPMessage requestSoapMessage, final SoapBodyDescriptor soapBodyDescriptor) throws Exception {
-        final URL endPoint = new URL(soapBodyDescriptor.getSoapEndPoint());
+    private JsonObject callSOAP(final SOAPMessage requestSoapMessage, final SoapBodyDescriptor soapBodyDescriptor, final int timeout) throws Exception {
+        final URL fullUrl = new URL(soapBodyDescriptor.getSoapEndPoint());
+        String baseUrl = fullUrl.getProtocol() + "://" + fullUrl.getHost();
+        final URL endPoint =
+            new URL(new URL(baseUrl),
+                fullUrl.getPath(),
+                new URLStreamHandler() {
+                    @Override
+                    protected URLConnection openConnection(URL url) throws IOException {
+                        URL target = new URL(url.toString());
+                        URLConnection connection = target.openConnection();
+                        connection.setConnectTimeout(timeout);
+                        connection.setReadTimeout(timeout);
+                        return(connection);
+                    }
+                });
         final SOAPConnectionFactory factory = SOAPConnectionFactory.newInstance();
         final SOAPConnection con = factory.createConnection();
         try {

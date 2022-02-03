@@ -142,6 +142,7 @@ Call action supports Basic Authorization, choose Basic Authorization type in cre
 * **WSDL URI** - Public URL address of the WSDL
 * **Binding** - One of the bindings available and described in the WSDL, which you want to use for a SOAP call
 * **Operation** - One of the operations available for the binding you have selected above.
+* **Request timeout** - Timeout period in milliseconds (1-1140000) while component waiting for server response. Defaults to 60000 (60 sec).
 
 #### SOAP Fault
 A SOAP fault is used to carry error information within a SOAP message. The component handles SOAP faults and emits platform exception in this case.

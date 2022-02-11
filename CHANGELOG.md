@@ -1,3 +1,6 @@
+# 1.2.7 (February 11, 2022)
+* Add configuration field `Request timeout` for `Call` action: timeout period in milliseconds (1-1140000) while component waiting for server response. Defaults to 60000 (60 sec).
+
 # 1.2.6 (October 15, 2021)
 * Update Sailor version to 3.3.6
 * `Call` action: add an option to emit a platform message instead of throwing an exception in case of a SOAP fault

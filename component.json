@@ -1,7 +1,7 @@
 {
   "title": "SOAP V2",
   "service": "request-reply",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Generic SOAP / WebServices integration Component",
   "docsUrl": "https://docs.elastic.io/components/soap/",
   "credentials": {
@@ -103,6 +103,11 @@
           "viewClass": "CheckBoxView",
           "order": 96,
           "note": "When this checkbox is checked and the component receives a SOAP fault, the component does not emit/throw an error but instead emits a JSON representation of the SOAP fault received"
+        },
+        "requestTimeoutPeriod": {
+          "label": "Request timeout",
+          "viewClass": "TextFieldView",
+          "note": "Timeout period in milliseconds while component waiting for server response, should be positive integer (1-1140000), defaults to 100000 (100 sec)"
         }
       },
       "dynamicMetadata": "io.elastic.soap.providers.BodyMetaProvider"

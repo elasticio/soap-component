@@ -61,6 +61,7 @@ import org.xml.sax.InputSource;
 public final class Utils {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
+  private static final int REQUEST_TIMEOUT = 60000;
 
   // Private constructor to prevent instantiation. Since utility classes should not be instantiated
   private Utils() {
@@ -196,6 +197,21 @@ public final class Utils {
 
   private static boolean getConfigBoolean(final JsonObject config, final String key) {
     return config.getBoolean(key, false);
+  }
+
+  /**
+   * Retrieves password from the credentials object
+   */
+  public static int getRequestTimeoutPeriod(JsonObject config) {
+    try {
+      LOGGER.info("Try to parse requestTimeoutPeriod value...");
+      int timeout = Integer.parseInt(config.getString("requestTimeoutPeriod"));
+      LOGGER.info("RequestTimeoutPeriod value is {}", timeout);
+      return timeout;
+    } catch (Exception e) {
+      LOGGER.info("Default timeout value = {} will be returned", REQUEST_TIMEOUT);
+      return REQUEST_TIMEOUT;
+    }
   }
 
   public static JsonObjectBuilder buildJsonSoapFault(SOAPFault soapFault) {

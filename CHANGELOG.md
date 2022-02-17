@@ -1,3 +1,6 @@
+# 1.2.8 (February 25, 2022)
+* Update Sailor version to 3.3.8
+
 # 1.2.7 (February 11, 2022)
 * Add configuration field `Request timeout` for `Call` action: timeout period in milliseconds (1-1140000) while component waiting for server response. Defaults to 60000 (60 sec).
 

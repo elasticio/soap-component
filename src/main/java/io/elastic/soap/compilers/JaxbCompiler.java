@@ -221,7 +221,7 @@ public class JaxbCompiler {
             for (int i = urnPath.length; i > 0; i--) {
                className = className + urnPath[i-1].toLowerCase() + ".";
             }
-            className = className + operationName;
+            className = className + operationName.replace("_","");
 //            className = "isdmrecos.recossoapdata.HandleRequestUIResponse";
             return className;
         } else if (msg.getParts().get(0).getElement().getType() == null) {

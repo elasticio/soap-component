@@ -49,7 +49,11 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             final String className = JaxbCompiler.getClassName(message, elementName, operationName);
             final JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(objectMapper);
             final ObjectNode schema = objectMapper.valueToTree(schemaGen.generateSchema(Class.forName(className)));
-            final ObjectNode properties = (ObjectNode) schema.get("properties");
+            ObjectNode properties = (ObjectNode) schema.get("properties");
+            if (properties == null){
+                properties = new ObjectNode(JsonNodeFactory.instance);
+                return objectMapper.convertValue(properties, JsonObject.class);
+            }
             final ObjectNode propertiesType = factory.objectNode();
             propertiesType.set("type", factory.textNode("object"));
             propertiesType.set("properties", properties);

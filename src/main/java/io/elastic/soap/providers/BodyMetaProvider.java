@@ -19,12 +19,18 @@ import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.services.WSDLService;
 import io.elastic.soap.services.impls.HttpWSDLService;
 import io.elastic.soap.utils.Utils;
+
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 /**
  * Provides dynamically generated fields set representing correlated XSD schema for given WSDL, its
@@ -36,18 +42,18 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
     private WSDLService wsdlService = new HttpWSDLService();
     private static final JsonNodeFactory factory = JsonNodeFactory.instance;
 
-    private JsonObject generateSchema(final Message message) throws ComponentException {
+    private JsonObject generateSchema(final Message message, final String operationName) throws ComponentException {
         try {
             final ObjectMapper objectMapper = Utils.getConfiguredObjectMapper();
             final String elementName = getElementName(message);
-            final String className = JaxbCompiler.getClassName(message, elementName);
+            final String className = JaxbCompiler.getClassName(message, elementName, operationName);
             final JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(objectMapper);
             final ObjectNode schema = objectMapper.valueToTree(schemaGen.generateSchema(Class.forName(className)));
             final ObjectNode properties = (ObjectNode) schema.get("properties");
             final ObjectNode propertiesType = factory.objectNode();
             propertiesType.set("type", factory.textNode("object"));
             propertiesType.set("properties", properties);
-            final JsonNode classNameNode = factory.objectNode().set(elementName, propertiesType);
+            final JsonNode classNameNode = factory.objectNode().set(message.getParts().get(0).getName(), propertiesType);
             final JsonNode result = schema.set("properties", classNameNode);
             deepRemoveKey(result.fields(), "id");
             deepRemoveNull(result.fields());
@@ -58,6 +64,18 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         } catch (ClassNotFoundException e) {
             LOGGER.error("The class in the schema can not be found");
             throw new ComponentException("The class in the schema can not be found", e);
+        } catch (XPathExpressionException e) {
+            LOGGER.error("Could not map the Json to deserialize schema");
+            throw new ComponentException("Could not map the Json to deserialize schema", e);
+        } catch (ParserConfigurationException e) {
+            LOGGER.error("Could not map the Json to deserialize schema");
+            throw new ComponentException("Could not map the Json to deserialize schema", e);
+        } catch (IOException e) {
+            LOGGER.error("Could not map the Json to deserialize schema");
+            throw new ComponentException("Could not map the Json to deserialize schema", e);
+        } catch (SAXException e) {
+            LOGGER.error("Could not map the Json to deserialize schema");
+            throw new ComponentException("Could not map the Json to deserialize schema", e);
         }
     }
 
@@ -77,8 +95,8 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
             final String portTypeName = wsdl.getBinding(bindingName).getPortType().getName();
             final Operation operation = wsdl.getOperation(operationName, portTypeName);
-            final JsonObject in = generateSchema(operation.getInput().getMessage());
-            final JsonObject out = generateSchema(operation.getInput().getMessage());
+            final JsonObject in = generateSchema(operation.getInput().getMessage(), operationName);
+            final JsonObject out = generateSchema(operation.getInput().getMessage(), operationName);
             final JsonObject result = Json.createObjectBuilder()
                     .add("in", in)
                     .add("out", out)

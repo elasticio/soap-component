@@ -18,8 +18,16 @@ import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -27,6 +35,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static io.elastic.soap.utils.Utils.getElementName;
@@ -118,7 +127,7 @@ public class JaxbCompiler {
      * SoapBodyDescriptor} object containing this data combination
      */
     public static SoapBodyDescriptor getSoapBodyDescriptor(final String wsdlUrl, final String binding,
-                                                           final String operation) {
+                                                           final String operation) throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
         Definitions defs = loadedDefsMap.get(wsdlUrl);
         if (defs == null) {
             defs = new JaxbCompiler().getDefinitionsFromWsdl(wsdlUrl);
@@ -154,11 +163,11 @@ public class JaxbCompiler {
                 .setSoapEndPoint(soapEndPoint).setRequestBodyElementName(inputElementName)
                 .setRequestBodyPackageName(Utils.convertToPackageName(inputMessage.getNamespaceUri()))
                 .setRequestBodyNameSpace(inputMessage.getParts().get(0).getElement().getNamespaceUri())
-                .setRequestBodyClassName(getClassName(inputMessage, inputElementName))
+                .setRequestBodyClassName(getClassName(inputMessage, inputElementName, ""))
                 .setResponseBodyElementName(outputElementName)
                 .setRequestBodyPackageName(Utils.convertToPackageName(inputMessage.getNamespaceUri()))
                 .setResponseBodyNameSpace(outputMessage.getNamespaceUri())
-                .setResponseBodyClassName(getClassName(outputMessage, outputElementName)).build();
+                .setResponseBodyClassName(getClassName(outputMessage, outputElementName, "")).build();
     }
 
     /**
@@ -194,9 +203,28 @@ public class JaxbCompiler {
      * @param elementName The name of the element which type or element name should be retieved
      * @return Element or type name
      */
-    public static String getClassName(final Message msg, final String elementName) {
-        String className;
-        if (msg.getParts().get(0).getElement().getType() == null) {
+    public static String getClassName(final Message msg, final String elementName, final String operationName) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
+        String className = "";
+        if (elementName == null){
+            DocumentBuilderFactory factoryDoc = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factoryDoc.newDocumentBuilder();
+            Document document = builder.parse("https://eiotesting.a2hosted.com/files/isdmrecos.xml");
+
+            XPathFactory xPathfactory = XPathFactory.newInstance();
+            XPath xpath = xPathfactory.newXPath();
+            XPathExpression expr = xpath.compile("//binding/operation[@name='" + operationName + "']/input/body");
+            Object eval = expr.evaluate(document, XPathConstants.NODESET);
+            NodeList nodeList = (NodeList) eval;
+            String urn = nodeList.item(0).getAttributes().getNamedItem("namespace").getNodeValue();
+            System.out.println(urn);
+            String[] urnPath = urn.replace("urn:","").split("-");
+            for (int i = urnPath.length; i > 0; i--) {
+               className = className + urnPath[i-1].toLowerCase() + ".";
+            }
+            className = className + operationName;
+//            className = "isdmrecos.recossoapdata.HandleRequestUIResponse";
+            return className;
+        } else if (msg.getParts().get(0).getElement().getType() == null) {
             className = Utils.convertStringToUpperCamelCase(elementName);
         } else {
             className = msg.getParts().get(0).getElement().getType().getLocalPart();

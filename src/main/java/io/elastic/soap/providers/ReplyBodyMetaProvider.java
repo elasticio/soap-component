@@ -23,8 +23,14 @@ import io.elastic.soap.services.impls.HttpWSDLService;
 import io.elastic.soap.utils.Utils;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
 
 /**
  * Provides dynamically generated fields set representing correlated XSD schema for given WSDL, its binding and operation.
@@ -39,7 +45,22 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
     try {
       final ObjectMapper objectMapper = Utils.getConfiguredObjectMapper();
       final String elementName = getElementName(message);
-      final String className = JaxbCompiler.getClassName(message, elementName);
+      final String className;
+      try {
+        className = JaxbCompiler.getClassName(message, elementName, "");
+      } catch (ParserConfigurationException e) {
+        LOGGER.error("Could not map the Json to deserialize schema");
+        throw new ComponentException("Could not map the Json to deserialize schema", e);
+      } catch (XPathExpressionException e) {
+        LOGGER.error("Could not map the Json to deserialize schema");
+        throw new ComponentException("Could not map the Json to deserialize schema", e);
+      } catch (IOException e) {
+        LOGGER.error("Could not map the Json to deserialize schema");
+        throw new ComponentException("Could not map the Json to deserialize schema", e);
+      } catch (SAXException e) {
+        LOGGER.error("Could not map the Json to deserialize schema");
+        throw new ComponentException("Could not map the Json to deserialize schema", e);
+      }
       final JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(objectMapper);
       final ObjectNode schema = objectMapper.valueToTree(schemaGen.generateSchema(Class.forName(className)));
       final ObjectNode properties = (ObjectNode) schema.get("properties");

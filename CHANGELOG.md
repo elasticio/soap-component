@@ -1,3 +1,6 @@
+# 1.2.9 (April 1, 2022)
+* Added possibility to handle WSDL files where the "message" doesn't contain an element
+
 # 1.2.8 (March 15, 2022)
 * Added component pusher build script
 

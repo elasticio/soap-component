@@ -68,18 +68,9 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         } catch (ClassNotFoundException e) {
             LOGGER.error("The class in the schema can not be found");
             throw new ComponentException("The class in the schema can not be found", e);
-        } catch (XPathExpressionException e) {
-            LOGGER.error("Could not map the Json to deserialize schema");
-            throw new ComponentException("Could not map the Json to deserialize schema", e);
-        } catch (ParserConfigurationException e) {
-            LOGGER.error("Could not map the Json to deserialize schema");
-            throw new ComponentException("Could not map the Json to deserialize schema", e);
-        } catch (IOException e) {
-            LOGGER.error("Could not map the Json to deserialize schema");
-            throw new ComponentException("Could not map the Json to deserialize schema", e);
-        } catch (SAXException e) {
-            LOGGER.error("Could not map the Json to deserialize schema");
-            throw new ComponentException("Could not map the Json to deserialize schema", e);
+        } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
+            LOGGER.error("Could not parse xml");
+            throw new ComponentException("Could not parse xml", e);
         }
     }
 

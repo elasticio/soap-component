@@ -47,16 +47,21 @@ import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFault;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.ws.soap.SOAPFaultException;
+import javax.xml.xpath.*;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public final class Utils {
 
@@ -579,6 +584,36 @@ public final class Utils {
       LOGGER.error("Converting string to XML was not successful");
     }
     return null;
+  }
+
+  /**
+   * Since many WSDL schemas have XSD elements started from the small letter (getBank), with
+   * underscore (CustomerQueryIn_sync), but WSImport utility generates this class starting from a
+   * capital letter (GetBank) and without underscores (CustomerQueryInSync), it should be manually
+   * converted to upper camel case.
+   */
+  public static String getClassNameFromXPath(final String operationName, final String wsdlUrl) {
+    String className = "";
+    DocumentBuilderFactory factoryDoc = DocumentBuilderFactory.newInstance();
+    try {
+      DocumentBuilder builder = factoryDoc.newDocumentBuilder();
+      Document document = builder.parse(wsdlUrl);
+      XPathFactory xPathfactory = XPathFactory.newInstance();
+      XPath xpath = xPathfactory.newXPath();
+      XPathExpression expr = xpath.compile("//binding/operation[@name='" + operationName + "']/input/body");
+      Object eval  = expr.evaluate(document, XPathConstants.NODESET);
+      NodeList nodeList = (NodeList) eval;
+      String urn = nodeList.item(0).getAttributes().getNamedItem("namespace").getNodeValue();
+      System.out.println(urn);
+      String[] urnPath = urn.replace("urn:","").split("-");
+      for (int i = urnPath.length; i > 0; i--) {
+        className = className + urnPath[i-1].toLowerCase() + ".";
+      }
+    } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException e) {
+      throw new ComponentException("Unexpected exception while creating metadata for component", e);
+    }
+    className = className + operationName.replace("_","");
+    return className;
   }
 }
 

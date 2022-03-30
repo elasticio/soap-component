@@ -47,7 +47,7 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
       final String elementName = getElementName(message);
       final String className;
       try {
-        className = JaxbCompiler.getClassName(message, elementName, "");
+        className = JaxbCompiler.getClassName(message, elementName, "", "");
       } catch (ParserConfigurationException e) {
         LOGGER.error("Could not map the Json to deserialize schema");
         throw new ComponentException("Could not map the Json to deserialize schema", e);

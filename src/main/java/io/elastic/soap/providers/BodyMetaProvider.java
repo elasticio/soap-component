@@ -42,11 +42,11 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
     private WSDLService wsdlService = new HttpWSDLService();
     private static final JsonNodeFactory factory = JsonNodeFactory.instance;
 
-    private JsonObject generateSchema(final Message message, final String operationName) throws ComponentException {
+    private JsonObject generateSchema(final Message message, final String operationName, final String wsdlUrl) throws ComponentException {
         try {
             final ObjectMapper objectMapper = Utils.getConfiguredObjectMapper();
             final String elementName = getElementName(message);
-            final String className = JaxbCompiler.getClassName(message, elementName, operationName);
+            final String className = JaxbCompiler.getClassName(message, elementName, operationName, wsdlUrl);
             final JsonSchemaGenerator schemaGen = new JsonSchemaGenerator(objectMapper);
             final ObjectNode schema = objectMapper.valueToTree(schemaGen.generateSchema(Class.forName(className)));
             ObjectNode properties = (ObjectNode) schema.get("properties");
@@ -99,8 +99,8 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
             final String portTypeName = wsdl.getBinding(bindingName).getPortType().getName();
             final Operation operation = wsdl.getOperation(operationName, portTypeName);
-            final JsonObject in = generateSchema(operation.getInput().getMessage(), operationName);
-            final JsonObject out = generateSchema(operation.getInput().getMessage(), operationName);
+            final JsonObject in = generateSchema(operation.getInput().getMessage(), operationName, wsdlUrl);
+            final JsonObject out = generateSchema(operation.getInput().getMessage(), operationName, wsdlUrl);
             final JsonObject result = Json.createObjectBuilder()
                     .add("in", in)
                     .add("out", out)

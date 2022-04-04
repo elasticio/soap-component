@@ -604,7 +604,6 @@ public final class Utils {
       Object eval  = expr.evaluate(document, XPathConstants.NODESET);
       NodeList nodeList = (NodeList) eval;
       String urn = nodeList.item(0).getAttributes().getNamedItem("namespace").getNodeValue();
-      System.out.println(urn);
       String[] urnPath = urn.replace("urn:","").split("-");
       for (int i = urnPath.length; i > 0; i--) {
         className = className + urnPath[i-1].toLowerCase() + ".";

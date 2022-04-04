@@ -68,9 +68,18 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         } catch (ClassNotFoundException e) {
             LOGGER.error("The class in the schema can not be found");
             throw new ComponentException("The class in the schema can not be found", e);
-        } catch (XPathExpressionException | ParserConfigurationException | IOException | SAXException e) {
-            LOGGER.error("Could not parse xml");
-            throw new ComponentException("Could not parse xml", e);
+        } catch (XPathExpressionException e) {
+            LOGGER.error("Could not parse xml, XPath Expression exception caught");
+            throw new ComponentException("Could not parse xml, XPath Expression exception caught", e);
+        } catch (ParserConfigurationException e) {
+            LOGGER.error("Could not parse xml, Parser Configuration exception caught");
+            throw new ComponentException("Could not parse xml, Parser Configuration exception caught", e);
+        } catch (IOException e) {
+            LOGGER.error("Could not parse xml, IOException exception caught");
+            throw new ComponentException("Could not parse xml, IOException exception caught", e);
+        } catch (SAXException e) {
+            LOGGER.error("Could not parse xml, SAXE exception caught");
+            throw new ComponentException("Could not parse xml, SAXE exception caught", e);
         }
     }
 

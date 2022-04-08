@@ -4,11 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.predic8.schema.Schema;
-import com.predic8.wsdl.Binding;
-import com.predic8.wsdl.BindingOperation;
-import com.predic8.wsdl.Definitions;
-import com.predic8.wsdl.Message;
-import com.predic8.wsdl.WSDLParser;
+import com.predic8.wsdl.*;
 import io.elastic.soap.AppConstants;
 import io.elastic.soap.compilers.generators.IJaxbGenerator;
 import io.elastic.soap.compilers.generators.JaxbGeneratorModule;
@@ -18,8 +14,12 @@ import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -118,7 +118,7 @@ public class JaxbCompiler {
      * SoapBodyDescriptor} object containing this data combination
      */
     public static SoapBodyDescriptor getSoapBodyDescriptor(final String wsdlUrl, final String binding,
-                                                           final String operation) {
+                                                           final String operation) throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
         Definitions defs = loadedDefsMap.get(wsdlUrl);
         if (defs == null) {
             defs = new JaxbCompiler().getDefinitionsFromWsdl(wsdlUrl);
@@ -154,11 +154,11 @@ public class JaxbCompiler {
                 .setSoapEndPoint(soapEndPoint).setRequestBodyElementName(inputElementName)
                 .setRequestBodyPackageName(Utils.convertToPackageName(inputMessage.getNamespaceUri()))
                 .setRequestBodyNameSpace(inputMessage.getParts().get(0).getElement().getNamespaceUri())
-                .setRequestBodyClassName(getClassName(inputMessage, inputElementName))
+                .setRequestBodyClassName(getClassName(inputMessage, inputElementName, "", ""))
                 .setResponseBodyElementName(outputElementName)
                 .setRequestBodyPackageName(Utils.convertToPackageName(inputMessage.getNamespaceUri()))
                 .setResponseBodyNameSpace(outputMessage.getNamespaceUri())
-                .setResponseBodyClassName(getClassName(outputMessage, outputElementName)).build();
+                .setResponseBodyClassName(getClassName(outputMessage, outputElementName, "", "")).build();
     }
 
     /**
@@ -194,9 +194,12 @@ public class JaxbCompiler {
      * @param elementName The name of the element which type or element name should be retieved
      * @return Element or type name
      */
-    public static String getClassName(final Message msg, final String elementName) {
-        String className;
-        if (msg.getParts().get(0).getElement().getType() == null) {
+    public static String getClassName(final Message msg, final String elementName, final String operationName, final String wsdlUrl) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
+        String className = "";
+        if (elementName == null){
+            className = Utils.getClassNameFromXPath(operationName, wsdlUrl);
+            return className;
+        } else if (msg.getParts().get(0).getElement().getType() == null) {
             className = Utils.convertStringToUpperCamelCase(elementName);
         } else {
             className = msg.getParts().get(0).getElement().getType().getLocalPart();

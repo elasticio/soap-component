@@ -1,3 +1,7 @@
+# 1.2.9 (April 8, 2022)
+* Added possibility to handle WSDL files where the "message" doesn't contain an element
+* Updated the Sailor version to 3.3.9
+
 # 1.2.8 (March 15, 2022)
 * Added component pusher build script
 

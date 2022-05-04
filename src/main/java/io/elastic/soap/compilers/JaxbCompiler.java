@@ -126,12 +126,12 @@ public class JaxbCompiler {
         }
         final BindingOperation bindingOperation = getBindingOperation(defs, binding, operation);
         LOGGER.trace("Got {} style wsdl", bindingOperation.getBinding().getStyle());
-        if (bindingOperation.getBinding().getStyle().equals("Rpc/Encoded")) {
-            LOGGER.error("SOAP component currently doesn't support the rpc/encoded style {}",
-                    bindingOperation.getBinding().getStyle());
-            throw new UnsupportedOperationException(
-                    "SOAP component currently doesn't support the rpc/encoded style");
-        }
+//        if (bindingOperation.getBinding().getStyle().equals("Rpc/Encoded")) {
+//            LOGGER.error("SOAP component currently doesn't support the rpc/encoded style {}",
+//                    bindingOperation.getBinding().getStyle());
+//            throw new UnsupportedOperationException(
+//                    "SOAP component currently doesn't support the rpc/encoded style");
+//        }
         String soapAction;
         if(bindingOperation.getOperation() != null) {
             soapAction = bindingOperation.getOperation().getSoapAction();

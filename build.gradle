@@ -41,7 +41,9 @@ dependencies {
     compile "com.sun.xml.ws:jaxws-tools:2.2.1"
     compile "io.elastic:sailor-jvm:3.3.9"
     compile "javax.xml:jaxb-impl:2.1"
+    compile "javax.xml.rpc:javax.xml.rpc-api:1.1.2"
     compile files("lib/tools.jar")
+    compile "org.apache.axis:axis:1.4"
     compile "org.apache.axis2:axis2-codegen:1.6.1"
     compile "org.apache.axis2:axis2-jaxbri:1.7.8"
     compile "org.jetbrains:annotations:16.0.1"

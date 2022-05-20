@@ -303,7 +303,13 @@ public final class Utils {
   }
 
   public static String getElementName(final com.predic8.wsdl.Message message) {
-    if (message.getParts().size() == 0 || message.getParts().get(0).getElement() == null){
+    if (message.getParts().size() == 0) {
+      return null;
+    }
+    if (message.getParts().get(0).getElement() == null) {
+      if (message.getParts().get(0).getName() != null) {
+        return message.getParts().get(0).getName();
+      }
       return null;
     }
     return message.getParts().get(0).getElement().getName();

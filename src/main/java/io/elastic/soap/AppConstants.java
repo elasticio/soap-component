@@ -12,7 +12,7 @@ public final class AppConstants {
     // Default package for generating JAXB classes to
     public static final String DEFAULT_PACKAGE = "io.elastic.soap";
     // Default folder for generating JAXB classes to
-    public static final String GENERATED_RESOURCES_DIR = "/tmp/soap-component";
+    public static final String GENERATED_RESOURCES_DIR = "/home/olga/jxcb/soap-component";
     // Name of operation object in the platform config
     public static final String OPERATION_CONFIG_NAME = "operation";
     // SOAP 1.1 short name

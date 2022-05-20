@@ -32,9 +32,9 @@ public class BodyMetaProviderTest {
   public static void beforeAll() throws Throwable {
     Definitions definitions = getDefinitions(WSDL_URL);
     config = Json.createObjectBuilder()
-        .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
-        .add(AppConstants.OPERATION_CONFIG_NAME, "ListCurrencies")
-        .add(AppConstants.WSDL_CONFIG_NAME, "http://www.xignite.com/xcurrencies.asmx?WSDL")
+        .add(AppConstants.BINDING_CONFIG_NAME, "IsdmRecosbinding")
+        .add(AppConstants.OPERATION_CONFIG_NAME, "GetVersionInformation")
+        .add(AppConstants.WSDL_CONFIG_NAME, "https://hostingrcs.stratechlive.nl/RCSE_WSSEC_TestIntegrations_edf9b2a2a3d64cdcb9c1e65ee94892e6/RCS-webserver.dll/wsdl/isdmrecos")
         .add("auth",
             Json.createObjectBuilder().add("type", "No Auth")
                 .add("basic", Json.createObjectBuilder().add("username", "")
@@ -44,11 +44,11 @@ public class BodyMetaProviderTest {
         .build();
 
     provider = new BodyMetaProvider();
-    WSDLService service = spy(new HttpWSDLService());
-    provider.setWsdlService(service);
-    doReturn(definitions).when(service).getWSDL(any(JsonObject.class));
-    JaxbCompiler.generateAndLoadJaxbStructure(WSDL_URL);
-    JaxbCompiler.putToCache("http://www.xignite.com/xcurrencies.asmx?WSDL", AppConstants.GENERATED_RESOURCES_DIR);
+//    WSDLService service = spy(new HttpWSDLService());
+//    provider.setWsdlService(service);
+//    doReturn(definitions).when(service).getWSDL(any(JsonObject.class));
+//    JaxbCompiler.generateAndLoadJaxbStructure(WSDL_URL);
+//    JaxbCompiler.putToCache("http://www.xignite.com/xcurrencies.asmx?WSDL", AppConstants.GENERATED_RESOURCES_DIR);
   }
 
 

@@ -18,6 +18,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+import javax.xml.rpc.*;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -149,16 +150,17 @@ public class JaxbCompiler {
         final Message outputMessage = (Message) bindingOperation.getOutput().getProperty("message");
         final String inputElementName = getElementName(inputMessage);
         final String outputElementName = getElementName(outputMessage);
+//        SoapBodyDescriptor sbd = new SoapBodyDescriptor().Builder()
         return new SoapBodyDescriptor.Builder()
                 .setBindingName(binding).setOperationName(operation).setSoapAction(soapAction)
                 .setSoapEndPoint(soapEndPoint).setRequestBodyElementName(inputElementName)
                 .setRequestBodyPackageName(Utils.convertToPackageName(inputMessage.getNamespaceUri()))
-                .setRequestBodyNameSpace(inputMessage.getParts().get(0).getElement().getNamespaceUri())
-                .setRequestBodyClassName(getClassName(inputMessage, inputElementName, "", ""))
+                .setRequestBodyNameSpace(inputMessage.getParts().size()==0?null:inputMessage.getParts().get(0).getElement().getNamespaceUri())
+                .setRequestBodyClassName(getClassName(inputMessage, inputElementName, operation, wsdlUrl))
                 .setResponseBodyElementName(outputElementName)
                 .setRequestBodyPackageName(Utils.convertToPackageName(inputMessage.getNamespaceUri()))
                 .setResponseBodyNameSpace(outputMessage.getNamespaceUri())
-                .setResponseBodyClassName(getClassName(outputMessage, outputElementName, "", "")).build();
+                .setResponseBodyClassName(getClassName(outputMessage, outputElementName, operation, wsdlUrl)).build();
     }
 
     /**
@@ -196,7 +198,7 @@ public class JaxbCompiler {
      */
     public static String getClassName(final Message msg, final String elementName, final String operationName, final String wsdlUrl) throws ParserConfigurationException, XPathExpressionException, IOException, SAXException {
         String className = "";
-        if (elementName == null){
+        if (elementName == null || msg.getParts().size() == 0 || msg.getParts().get(0).getElement() == null){
             className = Utils.getClassNameFromXPath(operationName, wsdlUrl);
             return className;
         } else if (msg.getParts().get(0).getElement().getType() == null) {

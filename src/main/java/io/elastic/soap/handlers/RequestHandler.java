@@ -6,7 +6,9 @@ import io.elastic.soap.compilers.model.SoapBodyDescriptor;
 import io.elastic.soap.exceptions.ComponentException;
 import io.elastic.soap.utils.Utils;
 import java.io.IOException;
+import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -97,9 +99,14 @@ public class RequestHandler {
       final String elementName, final Class<T> clazz) throws IOException {
     LOGGER.info("About to start deserialization JsonObject");
     final ObjectMapper objectMapper = Utils.getConfiguredObjectMapper();
-    final JsonObject requestBody = request.getJsonObject(elementName);
+    final JsonObject requestBody;
+    if (elementName != null){
+    requestBody = request.getJsonObject(elementName);
     if (null == requestBody) {
       throw new ComponentException(String.format("Can not find valid structure for request. Object '%s' is not exist", elementName));
+    }
+    } else {
+      requestBody = Json.createObjectBuilder().build();
     }
     final T requestObject = objectMapper.readValue(requestBody.toString(), clazz);
     LOGGER.debug("Deserialization JsonObject to {} class successfully done", clazz.getSimpleName());

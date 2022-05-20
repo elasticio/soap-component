@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Disabled
+//@Disabled
 // The test actually works! Should be enabled and run (given that)
 // https://www.ebi.ac.uk/europepmc/webservices/test/soap?wsdl service is still available
 // Is disabled because we can't rely on an external SOAP service in the tests. It might die
@@ -55,15 +55,19 @@ public class CallActionTest {
   @Test
   @DisplayName("SOAP Fault checked. Should emit fault as message")
   public void callAction() {
-    JsonObject body = Json.createObjectBuilder().add("getBookXML",
-            Json.createObjectBuilder().add("source", "bla").build())
+    JsonObject body = Json.createObjectBuilder()
+//            .add("getBookXML", Json.createObjectBuilder().add("source", "bla").build())
         .build();
 
     JsonObject cfg = Json.createObjectBuilder()
-        .add(AppConstants.BINDING_CONFIG_NAME, "WSCitationImplPortBinding")
-        .add(AppConstants.OPERATION_CONFIG_NAME, "getBookXML")
-        .add(AppConstants.WSDL_CONFIG_NAME,
-            "https://www.ebi.ac.uk/europepmc/webservices/test/soap?wsdl")
+            .add(AppConstants.BINDING_CONFIG_NAME, "IsdmRecosbinding")
+            .add(AppConstants.OPERATION_CONFIG_NAME, "GetVersionInformation")
+            .add(AppConstants.WSDL_CONFIG_NAME, "https://hostingrcs.stratechlive.nl/RCSE_WSSEC_TestIntegrations_edf9b2a2a3d64cdcb9c1e65ee94892e6/RCS-webserver.dll/wsdl/isdmrecos")
+
+//        .add(AppConstants.BINDING_CONFIG_NAME, "WSCitationImplPortBinding")
+//        .add(AppConstants.OPERATION_CONFIG_NAME, "getBookXML")
+//        .add(AppConstants.WSDL_CONFIG_NAME,
+//            "https://www.ebi.ac.uk/europepmc/webservices/test/soap?wsdl")
         .add("emitSoapFault", true)
         .add("auth",
             Json.createObjectBuilder().add("type", "No Auth")

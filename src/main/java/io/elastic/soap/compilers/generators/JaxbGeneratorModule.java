@@ -1,6 +1,7 @@
 package io.elastic.soap.compilers.generators;
 
 import com.google.inject.AbstractModule;
+import io.elastic.soap.compilers.generators.impl.Axis1GeneratorImpl;
 import io.elastic.soap.compilers.generators.impl.Axis2GeneratorImpl;
 
 /**
@@ -11,6 +12,6 @@ public class JaxbGeneratorModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(IJaxbGenerator.class).to(Axis2GeneratorImpl.class);
+        bind(IJaxbGenerator.class).to(Axis1GeneratorImpl.class);
     }
 }

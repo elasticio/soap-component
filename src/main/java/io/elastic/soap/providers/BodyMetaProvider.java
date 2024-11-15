@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -82,6 +84,21 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             throw new ComponentException("Could not parse xml, SAXE exception caught", e);
         }
     }
+    public static JsonObject removeRefKeys(JsonObject jsonObject) {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+
+        for (String key : jsonObject.keySet()) {
+            if (!"$ref".equals(key)) {
+                JsonValue value = jsonObject.get(key);
+                if (value instanceof JsonObject) {
+                    value = removeRefKeys((JsonObject) value);
+                }
+                builder.add(key, value);
+            }
+        }
+
+        return builder.build();
+    }
 
     @Override
     public JsonObject getMetaModel(final JsonObject configuration) {
@@ -105,8 +122,9 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
                     .add("in", in)
                     .add("out", out)
                     .build();
+            JsonObject cleanedResult = removeRefKeys(result);
             LOGGER.info("Successfully generated component metadata");
-            return result;
+            return cleanedResult;
         } catch (ComponentException e) {
             throw e;
         } catch (Exception e) {

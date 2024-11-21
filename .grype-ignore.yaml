@@ -158,3 +158,208 @@ ignore:
     package:
       name: woodstox-core
       version: 5.0.3
+
+  - vulnerability: GHSA-mm8h-8587-p46h
+    package:
+      name: amqp-client
+      version: 5.9.0
+
+  - vulnerability: GHSA-jw7r-rxff-gv24
+    package:
+      name: apache-mime4j-core
+      version: 0.7.2
+
+  - vulnerability: CVE-2012-5351
+    package:
+      name: axis2-adb
+      version: 1.7.8
+
+  - vulnerability: CVE-2012-4418
+    package:
+      name: axis2-adb
+      version: 1.7.8
+
+  - vulnerability: CVE-2012-5351
+    package:
+      name: axis2-codegen
+      version: 1.7.8
+
+  - vulnerability: CVE-2012-4418
+    package:
+      name: axis2-codegen
+      version: 1.7.8
+
+  - vulnerability: CVE-2012-5351
+    package:
+      name: axis2-jaxbri
+      version: 1.7.8
+
+  - vulnerability: CVE-2012-4418
+    package:
+      name: axis2-jaxbri
+      version: 1.7.8
+
+  - vulnerability: CVE-2012-5351
+    package:
+      name: axis2-kernel
+      version: 1.7.8
+
+  - vulnerability: CVE-2012-4418
+    package:
+      name: axis2-kernel
+      version: 1.7.8
+
+  - vulnerability: CVE-2024-47554
+    package:
+      name: commons-io
+      version: 2.7
+
+  - vulnerability: CVE-2008-0732
+    package:
+      name: geronimo-activation_1.1_spec
+      version: 1.1
+
+  - vulnerability: CVE-2008-0732
+    package:
+      name: geronimo-jta_1.1_spec
+      version: 1.1
+
+  - vulnerability: CVE-2008-0732
+    package:
+      name: geronimo-stax-api_1.0_spec
+      version: 1.0.1
+
+  - vulnerability: CVE-2008-0732
+    package:
+      name: geronimo-ws-metadata_2.0_spec
+      version: 1.1.2
+
+  - vulnerability: CVE-2020-8908
+    package:
+      name: guava
+      version: 19.0
+
+  - vulnerability: CVE-2018-10237
+    package:
+      name: guava
+      version: 19.0
+
+  - vulnerability: CVE-2023-2976
+    package:
+      name: guava
+      version: 19.0
+
+  - vulnerability: GHSA-5mg8-w23w-74h3
+    package:
+      name: guava
+      version: 19.0
+
+  - vulnerability: GHSA-7g45-4rm6-3mm3
+    package:
+      name: guava
+      version: 19.0
+
+  - vulnerability: GHSA-mvr2-9pj6-7w5j
+    package:
+      name: guava
+      version: 19.0
+
+  - vulnerability: CVE-2023-35116
+    package:
+      name: jackson-databind
+      version: 2.13.2.2
+
+  - vulnerability: CVE-2022-42003
+    package:
+      name: jackson-databind
+      version: 2.13.2.2
+
+  - vulnerability: GHSA-jgvc-jfgh-rjvv
+    package:
+      name: jose4j
+      version: 0.4.4
+
+  - vulnerability: GHSA-7g24-qg88-p43q
+    package:
+      name: jose4j
+      version: 0.4.4
+
+  - vulnerability: CVE-2024-9143
+    package:
+      name: libcrypto3
+      version: 3.3.2-r0
+
+  - vulnerability: CVE-2024-9143
+    package:
+      name: libssl3
+      version: 3.3.2-r0
+
+  - vulnerability: GHSA-c4r9-r8fh-9vj2
+    package:
+      name: snakeyaml
+      version: 1.15
+
+  - vulnerability: GHSA-w37g-rhq8-7m4j
+    package:
+      name: snakeyaml
+      version: 1.15
+
+  - vulnerability: GHSA-hhhw-99gj-p3c3
+    package:
+      name: snakeyaml
+      version: 1.15
+
+  - vulnerability: GHSA-98wm-3w3q-mw94
+    package:
+      name: snakeyaml
+      version: 1.15
+
+  - vulnerability: GHSA-9w3m-gqgf-c4p9
+    package:
+      name: snakeyaml
+      version: 1.15
+
+  - vulnerability: CVE-2018-1257
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: CVE-2022-22950
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: CVE-2018-11039
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: CVE-2020-5421
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: CVE-2022-22968
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: CVE-2023-20861
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: CVE-2018-11040
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: CVE-2018-15756
+    package:
+      name: spring-core
+      version: 4.2.3.RELEASE
+
+  - vulnerability: GHSA-3f7h-mf4q-vrm4
+    package:
+      name: woodstox-core
+      version: 5.0.3

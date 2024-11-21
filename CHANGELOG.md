@@ -1,4 +1,4 @@
-# 1.2.10 (November 15, 2024)
+# 1.2.10 (November 21, 2024)
 * Fixed issue when you have `$ref` in generated metadata
 
 # 1.2.9 (April 8, 2022)

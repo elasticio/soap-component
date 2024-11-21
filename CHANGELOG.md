@@ -1,3 +1,6 @@
+# 1.2.10 (November 21, 2024)
+* Fixed issue when you have `$ref` in generated metadata
+
 # 1.2.9 (April 8, 2022)
 * Added possibility to handle WSDL files where the "message" doesn't contain an element
 * Updated the Sailor version to 3.3.9

@@ -1,59 +1,88 @@
 ignore:
-- GHSA-mm8h-8587-p46h
-- GHSA-jw7r-rxff-gv24
-- CVE-2012-4418
-- CVE-2012-5351
-- CVE-2023-24998
-- GHSA-hfrx-6qgj-fp6c
-- CVE-2024-47554
-- GHSA-78wr-2p64-hpwj
-- CVE-2011-5034
-- CVE-2008-0732
-- GHSA-hw42-3568-wj87
-- GHSA-f263-c949-w85g
-- CVE-2018-10237
-- CVE-2023-2976
-- GHSA-mvr2-9pj6-7w5j
-- CVE-2020-8908
-- GHSA-5mg8-w23w-74h3
-- GHSA-7g45-4rm6-3mm3
-- GHSA-jjjh-jjxp-wpff
-- CVE-2023-35116
-- CVE-2022-42004
-- GHSA-rgv9-q543-rqg4
-- CVE-2022-42003
-- GHSA-h4x4-5qp2-wp46
-- GHSA-6qvw-249j-h44c
-- GHSA-jgvc-jfgh-rjvv
-- GHSA-7g24-qg88-p43q
-- GHSA-4jq9-2xhw-jpx7
-- GHSA-3vqj-43w4-2q58
-- CVE-2024-9143
-- GHSA-vmq6-5m68-f53m
-- GHSA-w77p-8cfg-2x43
-- GHSA-3mc7-4q67-w48m
-- GHSA-98wm-3w3q-mw94
-- GHSA-rvwf-54qp-4r6v
-- GHSA-9w3m-gqgf-c4p9
-- GHSA-hhhw-99gj-p3c3
-- GHSA-c4r9-r8fh-9vj2
-- GHSA-w37g-rhq8-7m4j
-- GHSA-pv39-qp28-4mgh
-- CVE-2022-22970
-- CVE-2018-1257
-- CVE-2020-5421
-- CVE-2022-22950
-- CVE-2018-11039
-- CVE-2022-22968
-- CVE-2018-1270
-- CVE-2016-1000027
-- CVE-2018-15756
-- CVE-2018-11040
-- CVE-2022-22965
-- CVE-2023-20861
-- CVE-2017-1000208
-- CVE-2017-1000207
-- GHSA-vgvf-9jh3-fg75
-- GHSA-q7pf-qr96-2vq5
-- GHSA-3f7h-mf4q-vrm4
-- CVE-2022-40152
+- vulnerability: GHSA-mm8h-8587-p46h
+- vulnerability: GHSA-jw7r-rxff-gv24
+- vulnerability: CVE-2012-4418
+- vulnerability: CVE-2012-5351
+- vulnerability: CVE-2023-24998
+- vulnerability: GHSA-hfrx-6qgj-fp6c
+- vulnerability: CVE-2024-47554
+- vulnerability: GHSA-78wr-2p64-hpwj
+- vulnerability: CVE-2011-5034
+- vulnerability: CVE-2008-0732
+- vulnerability: GHSA-hw42-3568-wj87
+- vulnerability: GHSA-f263-c949-w85g
+- vulnerability: CVE-2018-10237
+- vulnerability: CVE-2023-2976
+- vulnerability: GHSA-mvr2-9pj6-7w5j
+- vulnerability: CVE-2020-8908
+- vulnerability: GHSA-5mg8-w23w-74h3
+- vulnerability: GHSA-7g45-4rm6-3mm3
+- vulnerability: GHSA-jjjh-jjxp-wpff
+- vulnerability: CVE-2023-35116
+- vulnerability: CVE-2022-42004
+- vulnerability: GHSA-rgv9-q543-rqg4
+- vulnerability: CVE-2022-42003
+- vulnerability: GHSA-h4x4-5qp2-wp46
+- vulnerability: GHSA-6qvw-249j-h44c
+- vulnerability: GHSA-jgvc-jfgh-rjvv
+- vulnerability: GHSA-7g24-qg88-p43q
+- vulnerability: GHSA-4jq9-2xhw-jpx7
+- vulnerability: GHSA-3vqj-43w4-2q58
+- vulnerability: CVE-2024-9143
+- vulnerability: GHSA-vmq6-5m68-f53m
+- vulnerability: GHSA-w77p-8cfg-2x43
+- vulnerability: GHSA-3mc7-4q67-w48m
+- vulnerability: GHSA-98wm-3w3q-mw94
+- vulnerability: GHSA-rvwf-54qp-4r6v
+- vulnerability: GHSA-9w3m-gqgf-c4p9
+- vulnerability: GHSA-hhhw-99gj-p3c3
+- vulnerability: GHSA-c4r9-r8fh-9vj2
+- vulnerability: GHSA-w37g-rhq8-7m4j
+- vulnerability: GHSA-pv39-qp28-4mgh
+- vulnerability: CVE-2022-22970
+- vulnerability: CVE-2018-1257
+- vulnerability: CVE-2020-5421
+- vulnerability: CVE-2022-22950
+- vulnerability: CVE-2018-11039
+- vulnerability: CVE-2022-22968
+- vulnerability: CVE-2018-1270
+- vulnerability: CVE-2016-1000027
+- vulnerability: CVE-2018-15756
+- vulnerability: CVE-2018-11040
+- vulnerability: CVE-2022-22965
+- vulnerability: CVE-2023-20861
+- vulnerability: CVE-2017-1000208
+- vulnerability: CVE-2017-1000207
+- vulnerability: GHSA-vgvf-9jh3-fg75
+- vulnerability: GHSA-q7pf-qr96-2vq5
+- vulnerability: GHSA-3f7h-mf4q-vrm4
+- vulnerability: CVE-2022-40152
+- vulnerability: GHSA-wjxj-5m7g-mg7q
+- vulnerability: GHSA-v435-xc8x-wvr9
+- vulnerability: GHSA-m44j-cfrm-g8qc
+- vulnerability: GHSA-hr8g-6v94-x4m9
+- vulnerability: GHSA-8xfc-gm6g-vgpv
+- vulnerability: GHSA-72m5-fvvv-55m6
+- vulnerability: GHSA-6xx3-rg99-gc3p
+- vulnerability: GHSA-rcjj-h6gh-jf3r
+- vulnerability: GHSA-mjmj-j48q-9wg2
+- vulnerability: GHSA-36p3-wjmg-h94x
+- vulnerability: GHSA-hh26-6xwr-ggv7
+- vulnerability: GHSA-g5mm-vmx4-3rg7
+- vulnerability: GHSA-4gc7-5j7h-4qph
+- vulnerability: GHSA-p5hg-3xm3-gcjg
+- vulnerability: GHSA-3rmv-2pg5-xvqj
+- vulnerability: GHSA-ffvq-7w96-97p7
+- vulnerability: GHSA-8crv-49fr-2h6j
+- vulnerability: GHSA-4487-x383-qpph
+- vulnerability: GHSA-rcpf-vj53-7h2m
+- vulnerability: GHSA-g8hw-794c-4j9g
+- vulnerability: GHSA-wxqc-pxw9-g2p8
+- vulnerability: GHSA-9cmq-m9j5-mvww
+- vulnerability: GHSA-564r-hj7v-mcr5
+- vulnerability: GHSA-558x-2xjg-6232
+- vulnerability: GHSA-4wrc-f8pq-fpqp
+- vulnerability: GHSA-hgjh-9rj2-g67j
+- vulnerability: GHSA-ccgv-vj62-xf9h
+- vulnerability: GHSA-2wrp-6fg6-hmc5
+- vulnerability: GHSA-2rmj-mq67-h97g

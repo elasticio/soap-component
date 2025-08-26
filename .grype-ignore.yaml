@@ -86,3 +86,5 @@ ignore:
 - vulnerability: GHSA-ccgv-vj62-xf9h
 - vulnerability: GHSA-2wrp-6fg6-hmc5
 - vulnerability: GHSA-2rmj-mq67-h97g
+- vulnerability: GHSA-h46c-h94j-95f3
+- vulnerability: GHSA-vv7r-c36w-3prj

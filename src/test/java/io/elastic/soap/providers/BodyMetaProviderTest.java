@@ -18,39 +18,11 @@ import javax.json.JsonObject;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class BodyMetaProviderTest {
 
-  private static BodyMetaProvider provider;
-  private static JsonObject config;
-  private final static String WSDL_URL = "src/test/resources/xcurrencies.wsdl";
   private static String[] arrayOfDirsToDelete = {"src/com", "src/io"};
-
-  @BeforeAll
-  public static void beforeAll() throws Throwable {
-    Definitions definitions = getDefinitions(WSDL_URL);
-    config = Json.createObjectBuilder()
-        .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
-        .add(AppConstants.OPERATION_CONFIG_NAME, "ListCurrencies")
-        .add(AppConstants.WSDL_CONFIG_NAME, "http://www.xignite.com/xcurrencies.asmx?WSDL")
-        .add("auth",
-            Json.createObjectBuilder().add("type", "No Auth")
-                .add("basic", Json.createObjectBuilder().add("username", "")
-                    .add("password", "")
-                    .build())
-        )
-        .build();
-
-    provider = new BodyMetaProvider();
-    WSDLService service = spy(new HttpWSDLService());
-    provider.setWsdlService(service);
-    doReturn(definitions).when(service).getWSDL(any(JsonObject.class));
-    JaxbCompiler.generateAndLoadJaxbStructure(WSDL_URL);
-    JaxbCompiler.putToCache("http://www.xignite.com/xcurrencies.asmx?WSDL", AppConstants.GENERATED_RESOURCES_DIR);
-  }
-
 
   @AfterAll
   public static void cleanup() throws IOException {
@@ -70,9 +42,62 @@ public class BodyMetaProviderTest {
   }
 
   @Test
-  public void testBodyMeta() {
+  public void testBodyMetaForXCurrenciesWsdl() throws Throwable {
+    final String wsdlUrl = "src/test/resources/xcurrencies.wsdl";
+    final Definitions definitions = getDefinitions(wsdlUrl);
+    final JsonObject config = Json.createObjectBuilder()
+        .add(AppConstants.BINDING_CONFIG_NAME, "XigniteCurrenciesSoap")
+        .add(AppConstants.OPERATION_CONFIG_NAME, "ListCurrencies")
+        .add(AppConstants.WSDL_CONFIG_NAME, "http://www.xignite.com/xcurrencies.asmx?WSDL")
+        .add("auth",
+            Json.createObjectBuilder().add("type", "No Auth")
+                .add("basic", Json.createObjectBuilder().add("username", "")
+                    .add("password", "")
+                    .build())
+        )
+        .build();
+
+    final BodyMetaProvider provider = new BodyMetaProvider();
+    final WSDLService service = spy(new HttpWSDLService());
+    provider.setWsdlService(service);
+    doReturn(definitions).when(service).getWSDL(any(JsonObject.class));
+    JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
+    JaxbCompiler.putToCache("http://www.xignite.com/xcurrencies.asmx?WSDL", AppConstants.GENERATED_RESOURCES_DIR);
+
     final JsonObject object = provider.getMetaModel(config);
     Assertions.assertNotNull(object.get("in"));
     Assertions.assertNotNull(object.get("out"));
+  }
+
+  @Test
+  public void testBodyMetaForCapitalsWsdl() throws Throwable {
+    final String wsdlUrl = "src/test/resources/capitals.wsdl";
+    final Definitions definitions = getDefinitions(wsdlUrl);
+    final JsonObject config = Json.createObjectBuilder()
+            .add(AppConstants.BINDING_CONFIG_NAME, "CountryInfoServiceSoapBinding")
+            .add(AppConstants.OPERATION_CONFIG_NAME, "CapitalCity")
+            .add(AppConstants.WSDL_CONFIG_NAME,
+                    "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl")
+        .add("auth",
+            Json.createObjectBuilder().add("type", "No Auth")
+                .add("basic", Json.createObjectBuilder().add("username", "")
+                    .add("password", "")
+                    .build())
+        )
+        .build();
+
+    final BodyMetaProvider provider = new BodyMetaProvider();
+    final WSDLService service = spy(new HttpWSDLService());
+    provider.setWsdlService(service);
+    doReturn(definitions).when(service).getWSDL(any(JsonObject.class));
+    JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
+    JaxbCompiler.putToCache("http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl", AppConstants.GENERATED_RESOURCES_DIR);
+
+    final JsonObject object = provider.getMetaModel(config);
+    Assertions.assertNotNull(object.get("in"));
+    Assertions.assertNotNull(object.get("out"));
+    final JsonObject inSchema = object.getJsonObject("in");
+    final JsonObject properties = inSchema.getJsonObject("properties");
+    Assertions.assertTrue(properties.containsKey("CapitalCity"));
   }
 }

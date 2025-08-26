@@ -14,11 +14,13 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import net.joshka.junit.json.params.JsonFileSource;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Disabled("The tests are disabled because they rely on an external SOAP service that is not always available.")
 public class ReceiveRequestTest {
 
   private static JsonObject cfg;
@@ -33,7 +35,7 @@ public class ReceiveRequestTest {
         .add(AppConstants.VALIDATION, AppConstants.VALIDATION_ENABLED)
         .add(AppConstants.OPERATION_CONFIG_NAME, "Add")
         .add(AppConstants.BINDING_CONFIG_NAME, "CalculatorSoap12")
-        .add(AppConstants.WSDL_CONFIG_NAME, "src/test/resources/calculator.wsdl")
+        .add(AppConstants.WSDL_CONFIG_NAME, "http://www.dneonline.com/calculator.asmx?WSDL")
         .add("auth",
             Json.createObjectBuilder().add("type", "No Auth")
                 .add("basic", Json.createObjectBuilder().add("username", "")

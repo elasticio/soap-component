@@ -20,10 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Disabled
-// The test actually works! Should be enabled and run (given that)
-// https://www.ebi.ac.uk/europepmc/webservices/test/soap?wsdl service is still available
-// Is disabled because we can't rely on an external SOAP service in the tests. It might die
+@Disabled("The tests are disabled because they rely on an external SOAP service that is not always available.")
 public class CallActionTest {
 
   private static final Logger logger = LoggerFactory.getLogger(EventEmitter.class);
@@ -83,8 +80,7 @@ public class CallActionTest {
         .configuration(cfg).build();
     callAction.execute(executionParameters);
 
-    String expectedJsonSoapFault =
-        "{\"Fault\":{\"faultcode\":\"S:Server\",\"faultstring\":\"java.lang.NullPointerException\",\"faultactor\":null}}";
+    String expectedJsonSoapFault = "{\"Fault\":{\"faultcode\":\"S:Server\",\"faultstring\":\"java.lang.NullPointerException\",\"faultactor\":null}}";
 
     assertEquals(0, onError.getCalls().size());
 
@@ -131,5 +127,43 @@ public class CallActionTest {
 
     assertEquals(0, onData.getCalls().size());
     assertEquals(expectedExceptionMessage, componentException.getMessage());
+  }
+
+  @Test
+  @DisplayName("Call action for capitals wsdl")
+  public void callActionForCapitalsWsdl() {
+    JsonObject body = Json.createObjectBuilder().add("CapitalCity",
+            Json.createObjectBuilder().add("sCountryISOCode", "US").build())
+        .build();
+
+    JsonObject cfg = Json.createObjectBuilder()
+        .add(AppConstants.BINDING_CONFIG_NAME, "CountryInfoServiceSoapBinding")
+        .add(AppConstants.OPERATION_CONFIG_NAME, "CapitalCity")
+        .add(AppConstants.WSDL_CONFIG_NAME,
+            "http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl")
+        .add("emitSoapFault", true)
+        .add("auth",
+            Json.createObjectBuilder().add("type", "No Auth")
+                .add("basic", Json.createObjectBuilder().add("username", "")
+                    .add("password", "")
+                    .build())
+        )
+        .build();
+
+    CallAction callAction = new CallAction();
+    InitParameters initParameters = new InitParameters.Builder().configuration(cfg).build();
+    callAction.init(initParameters);
+
+    Message msg = new Message.Builder().body(body).build();
+
+    ExecutionParameters executionParameters = new ExecutionParameters.Builder(msg, eventEmitter)
+        .configuration(cfg).build();
+    callAction.execute(executionParameters);
+
+    String expectedJson = "{\"CapitalCityResponse\":{\"CapitalCityResult\":\"Washington\"}}";
+
+    assertEquals(0, onError.getCalls().size());
+    assertEquals(1, onData.getCalls().size());
+    assertEquals(expectedJson, ((Message) onData.getCalls().get(0)).getBody().toString());
   }
 }

@@ -59,7 +59,11 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             final ObjectNode propertiesType = factory.objectNode();
             propertiesType.set("type", factory.textNode("object"));
             propertiesType.set("properties", properties);
-            final JsonNode classNameNode = factory.objectNode().set(message.getParts().get(0).getName(), propertiesType);
+            String rootElementName = getElementName(message);
+            if (rootElementName == null) {
+                rootElementName = message.getParts().get(0).getName();
+            }
+            final JsonNode classNameNode = factory.objectNode().set(rootElementName, propertiesType);
             final JsonNode result = schema.set("properties", classNameNode);
             deepRemoveKey(result.fields(), "id");
             deepRemoveNull(result.fields());
@@ -117,7 +121,7 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
             final String portTypeName = wsdl.getBinding(bindingName).getPortType().getName();
             final Operation operation = wsdl.getOperation(operationName, portTypeName);
             final JsonObject in = generateSchema(operation.getInput().getMessage(), operationName, wsdlUrl);
-            final JsonObject out = generateSchema(operation.getInput().getMessage(), operationName, wsdlUrl);
+            final JsonObject out = generateSchema(operation.getOutput().getMessage(), operationName, wsdlUrl);
             final JsonObject result = Json.createObjectBuilder()
                     .add("in", in)
                     .add("out", out)

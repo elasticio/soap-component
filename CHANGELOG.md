@@ -1,4 +1,4 @@
-# 1.2.11 (August 31, 2025)
+# 1.2.11 (May 15, 2026)
 * Fixed [issue-22](https://github.com/elasticio/soap-component/issues/22) in document type WSDLs
 
 # 1.2.10 (November 21, 2024)

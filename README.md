@@ -52,27 +52,23 @@ As a robust integration platform, OIH provides the capability to invoke SOAP Web
 
 #### Step 1
 Locate and select the SOAP component from the component repository.
-![Step 1](https://user-images.githubusercontent.com/13310949/43515103-5de72b58-958a-11e8-88ce-5870003867a1.png)
+![Step 1](https://github.com/user-attachments/assets/734085c0-a145-4de2-82d3-01a72ace929a)
 
 #### Step 2
 Create new credentials or select an existing set.
-![Step 2](https://user-images.githubusercontent.com/13310949/43514620-3c2b9efa-9589-11e8-9d9e-c82b1d66e5eb.png)
+![Step 2](https://github.com/user-attachments/assets/a6379d02-e831-4ee5-88eb-a88ba704d35a)
 
 #### Step 3
 Specify the WSDL URL, then select the binding and operation. **The sequence of selection is critical.**
-![Step 3](https://user-images.githubusercontent.com/13310949/43522182-365e9fbe-95a1-11e8-8226-3e3679afbe17.png)
+![Step 3](https://github.com/user-attachments/assets/9a81948e-c66c-46a9-8219-b48a25ff2801)
 
 #### Step 4
 Configure the input data and click "Continue".
-![Step 4](https://user-images.githubusercontent.com/13310949/43514773-9036472a-9589-11e8-83d6-95759f1a2cc9.png)
+![Step 4](https://github.com/user-attachments/assets/3ae0829d-418f-433c-8195-539c300e1dd8)
 
 #### Step 5
-Retrieve a sample response or add one manually.
-![Step 5: Retrieve sample](https://user-images.githubusercontent.com/13310949/43514839-bace8e16-9589-11e8-92d2-e54890472dbb.png)
-
-#### Step 6
 Review the retrieved sample result.
-![Step 6: Retrieve sample result](https://user-images.githubusercontent.com/13310949/43515232-aca5be76-958a-11e8-95a0-c723f9323e4f.png)
+![Step 5](https://github.com/user-attachments/assets/d0bd6fa8-b000-401d-b2ba-6d730984fa05)
 
 ### Requirements
 The component supports the following SOAP protocol versions:

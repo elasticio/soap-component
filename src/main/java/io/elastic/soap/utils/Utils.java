@@ -60,6 +60,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -352,13 +353,14 @@ public final class Utils {
         }
         final HttpEntity entity = response.getEntity();
         if (entity != null) {
-          try (InputStream is = entity.getContent();
-               FileOutputStream fos = new FileOutputStream(localFile)) {
-            byte[] buffer = new byte[4096];
-            int n;
-            while (-1 != (n = is.read(buffer))) {
-              fos.write(buffer, 0, n);
-            }
+          String wsdlContent = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+          // Remove problematic <s:element ref="s:schema" /> that causes JAXB-RI to fail in Axis2
+          // This is a common issue with .NET DataSets in JAXB.
+          wsdlContent = wsdlContent.replaceAll("<[a-zA-Z0-9]+:element\\s+ref=\"[a-zA-Z0-9]+:schema\"\\s*/>", "");
+          wsdlContent = wsdlContent.replaceAll("<element\\s+ref=\"schema\"\\s*/>", "");
+
+          try (FileOutputStream fos = new FileOutputStream(localFile)) {
+            fos.write(wsdlContent.getBytes(StandardCharsets.UTF_8));
           }
         }
       }
@@ -370,7 +372,7 @@ public final class Utils {
       final SoapBodyDescriptor soapBodyDescriptor) {
     try {
       String wsdlUrl = getWsdlUrl(configuration);
-      if (isBasicAuth(configuration)) {
+      if (wsdlUrl.startsWith("http")) {
         wsdlUrl = loadWsdlLocally(configuration);
       }
       final String binding = Utils.getBinding(configuration);

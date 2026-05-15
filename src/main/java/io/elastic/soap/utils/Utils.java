@@ -337,6 +337,9 @@ public final class Utils {
     final String wsdlUrl = getWsdlUrl(configuration);
     final String fileName = "wsdl_" + Integer.toHexString(wsdlUrl.hashCode()) + ".xml";
     final File localFile = new File(AppConstants.GENERATED_RESOURCES_DIR, fileName);
+    if (!localFile.getParentFile().exists()) {
+        localFile.getParentFile().mkdirs();
+    }
 
     try (final CloseableHttpClient client = HttpClients.custom()
             .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")

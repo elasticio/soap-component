@@ -86,7 +86,7 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
     try {
       LOGGER.info("Start creating meta data for component");
       String wsdlUrl = Utils.getWsdlUrl(configuration);
-      if (wsdlUrl.startsWith("http")) {
+      if (Utils.isBasicAuth(configuration)) {
           wsdlUrl = Utils.loadWsdlLocally(configuration);
       }
       final String bindingName = Utils.getBinding(configuration);

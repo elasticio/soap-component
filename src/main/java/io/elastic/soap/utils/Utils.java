@@ -370,7 +370,7 @@ public final class Utils {
       final SoapBodyDescriptor soapBodyDescriptor) {
     try {
       String wsdlUrl = getWsdlUrl(configuration);
-      if (wsdlUrl.startsWith("http")) {
+      if (isBasicAuth(configuration)) {
         wsdlUrl = loadWsdlLocally(configuration);
       }
       final String binding = Utils.getBinding(configuration);

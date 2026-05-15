@@ -1,7 +1,7 @@
 {
   "title": "SOAP V2",
   "service": "request-reply",
-  "version": "1.2.11-dev.1",
+  "version": "1.2.11-dev.2",
   "description": "Generic SOAP / WebServices integration Component",
   "docsUrl": "https://docs.elastic.io/components/soap/",
   "credentials": {
@@ -15,8 +15,8 @@
   "triggers": {
     "receive": {
       "title": "Receive SOAP Request",
-      "help":  {
-        "description":  "Receive SOAP Request",
+      "help": {
+        "description": "Receive SOAP Request",
         "link": "/components/soap/triggers#receive-soap-request"
       },
       "main": "io.elastic.soap.triggers.ReceiveRequest",
@@ -35,7 +35,9 @@
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
-          "require": ["wsdlURI"],
+          "require": [
+            "wsdlURI"
+          ],
           "model": "io.elastic.soap.providers.BindingModelProvider",
           "prompt": "Choose a Binding [Service/Port]"
         },
@@ -44,21 +46,23 @@
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
-          "require": ["binding"],
+          "require": [
+            "binding"
+          ],
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Choose an Operation [Service/Port]"
         },
-        "validation" : {
+        "validation": {
           "order": 96,
-          "label" : "Validation",
-          "prompt" : "Enabled",
-          "required" : false,
-          "viewClass" : "SelectView",
-          "model" : {
-            "enabled" : "Enabled",
-            "disabled" : "Disabled"
+          "label": "Validation",
+          "prompt": "Enabled",
+          "required": false,
+          "viewClass": "SelectView",
+          "model": {
+            "enabled": "Enabled",
+            "disabled": "Disabled"
           },
-          "note" : "Validation is enabled by default"
+          "note": "Validation is enabled by default"
         }
       }
     }
@@ -85,7 +89,9 @@
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
-          "require": ["wsdlURI"],
+          "require": [
+            "wsdlURI"
+          ],
           "model": "io.elastic.soap.providers.BindingModelProvider",
           "prompt": "Choose a Binding [Service/Port]"
         },
@@ -94,7 +100,9 @@
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
-          "require": ["binding"],
+          "require": [
+            "binding"
+          ],
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Choose an Operation [Service/Port]"
         },
@@ -114,7 +122,7 @@
     },
     "soapReplyAction": {
       "title": "SOAP Reply",
-      "help" : {
+      "help": {
         "description": "Returns SOAP response to client",
         "link": "/components/soap/actions#soap-reply"
       },
@@ -133,7 +141,9 @@
           "viewClass": "SelectView",
           "label": "Binding",
           "required": true,
-          "require": ["wsdlURI"],
+          "require": [
+            "wsdlURI"
+          ],
           "model": "io.elastic.soap.providers.BindingModelProvider",
           "prompt": "Choose a Binding [Service/Port]"
         },
@@ -142,21 +152,23 @@
           "viewClass": "SelectView",
           "label": "Operation",
           "required": true,
-          "require": ["binding"],
+          "require": [
+            "binding"
+          ],
           "model": "io.elastic.soap.providers.OperationModelProvider",
           "prompt": "Choose an Operation [Service/Port]"
         },
-        "validation" : {
+        "validation": {
           "order": 96,
-          "label" : "Validation",
-          "required" : false,
-          "viewClass" : "SelectView",
+          "label": "Validation",
+          "required": false,
+          "viewClass": "SelectView",
           "prompt": "Enabled",
-          "model" : {
-            "enabled" : "Enabled",
-            "disabled" : "Disabled"
+          "model": {
+            "enabled": "Enabled",
+            "disabled": "Disabled"
           },
-          "note" : "Validation is enabled by default"
+          "note": "Validation is enabled by default"
         }
       },
       "dynamicMetadata": "io.elastic.soap.providers.ReplyBodyMetaProvider"

@@ -15,4 +15,6 @@ public interface WSDLService {
      * @throws IOException if it happens.
      */
     Definitions getWSDL(final JsonObject config) throws IOException;
+
+    Definitions getWSDL(final String wsdlUrl) throws IOException;
 }

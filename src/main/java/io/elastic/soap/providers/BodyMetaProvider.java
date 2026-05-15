@@ -109,13 +109,12 @@ public class BodyMetaProvider implements DynamicMetadataProvider {
         try {
             LOGGER.info("Start creating metadata for component");
             String wsdlUrl = Utils.getWsdlUrl(configuration);
-            final String bindingName = Utils.getBinding(configuration);
-            final String operationName = Utils.getOperation(configuration);
-            final Definitions wsdl = wsdlService.getWSDL(configuration);
-
-            if (Utils.isBasicAuth(configuration)) {
+            if (wsdlUrl.startsWith("http")) {
                 wsdlUrl = Utils.loadWsdlLocally(configuration);
             }
+            final String bindingName = Utils.getBinding(configuration);
+            final String operationName = Utils.getOperation(configuration);
+            final Definitions wsdl = wsdlService.getWSDL(wsdlUrl);
 
             JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
             final String portTypeName = wsdl.getBinding(bindingName).getPortType().getName();

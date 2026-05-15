@@ -55,7 +55,11 @@ import javax.xml.ws.soap.SOAPFaultException;
 import javax.xml.xpath.*;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -327,35 +331,43 @@ public final class Utils {
 
   /**
    * Loads WSDL file locally and parses it from the FS. Is a workaround for the basic auth case when
-   * Server fault: too many redirects (20)
+   * Server fault: too many redirects (20) and for network instability issues.
    */
   public static String loadWsdlLocally(final JsonObject configuration) throws IOException {
-    final String username = Utils.getUsername(configuration);
-    final String password = Utils.getPassword(configuration);
-    final URL url = new URL(Utils.getWsdlUrl(configuration));
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    final String auth = username + ":" + password;
-    byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
-    String authHeaderValue = "Basic " + new String(encodedAuth);
-    connection.setRequestProperty("Authorization", authHeaderValue);
+    final String wsdlUrl = getWsdlUrl(configuration);
+    final String fileName = "wsdl_" + Integer.toHexString(wsdlUrl.hashCode()) + ".xml";
+    final File localFile = new File(AppConstants.GENERATED_RESOURCES_DIR, fileName);
 
-    InputStream is = connection.getInputStream();
-    FileOutputStream fos = new FileOutputStream(new File(AppConstants.WSDL_LOCAL_PATH));
-    byte[] buffer = new byte[4096];
-    int n = 0;
-    while (-1 != (n = is.read(buffer))) {
-      fos.write(buffer, 0, n);
+    try (final CloseableHttpClient client = HttpClients.custom()
+            .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+            .build()) {
+      final HttpGet get = createGet(configuration);
+      try (final CloseableHttpResponse response = client.execute(get)) {
+        final int code = response.getStatusLine().getStatusCode();
+        if (code != 200) {
+          throw new IOException(String.format("Invalid response code: %d, for url: %s", code, getWsdlUrl(configuration)));
+        }
+        final HttpEntity entity = response.getEntity();
+        if (entity != null) {
+          try (InputStream is = entity.getContent();
+               FileOutputStream fos = new FileOutputStream(localFile)) {
+            byte[] buffer = new byte[4096];
+            int n;
+            while (-1 != (n = is.read(buffer))) {
+              fos.write(buffer, 0, n);
+            }
+          }
+        }
+      }
     }
-    is.close();
-    fos.close();
-    return AppConstants.WSDL_LOCAL_PATH;
+    return localFile.getAbsolutePath();
   }
 
   public static SoapBodyDescriptor loadClasses(final JsonObject configuration,
       final SoapBodyDescriptor soapBodyDescriptor) {
     try {
       String wsdlUrl = getWsdlUrl(configuration);
-      if (isBasicAuth(configuration)) {
+      if (wsdlUrl.startsWith("http")) {
         wsdlUrl = loadWsdlLocally(configuration);
       }
       final String binding = Utils.getBinding(configuration);

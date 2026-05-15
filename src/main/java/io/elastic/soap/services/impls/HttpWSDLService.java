@@ -33,4 +33,10 @@ public class HttpWSDLService implements WSDLService {
             return reader.parse(is);
         }
     }
+
+    @Override
+    public Definitions getWSDL(final String wsdlUrl) throws IOException {
+        final WSDLParser reader = new WSDLParser();
+        return reader.parse(wsdlUrl);
+    }
 }

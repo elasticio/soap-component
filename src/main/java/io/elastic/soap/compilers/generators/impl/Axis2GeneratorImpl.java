@@ -36,6 +36,7 @@ public class Axis2GeneratorImpl implements IJaxbGenerator {
                                       final Map<String, String> wsdlCompiledClassesCacheMap) throws Exception {
         LOGGER.info("About to start generating JAXB structure. javax.xml.accessExternalSchema will be enabled...");
         System.setProperty("javax.xml.accessExternalSchema", "all");
+        // Use a modern User-Agent to prevent 'Connection reset' from servers that block default Java clients
         System.setProperty("http.agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
         String path = wsdlCompiledClassesCacheMap.get(wsdlUrl);
         if (path == null) {

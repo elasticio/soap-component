@@ -16,5 +16,12 @@ public interface WSDLService {
      */
     Definitions getWSDL(final JsonObject config) throws IOException;
 
-    Definitions getWSDL(final String wsdlUrl) throws IOException;
+    /**
+   * Fetches the WSDL from the provided URL or local path.
+   *
+   * @param wsdlUrl WSDL URL or local path.
+   * @return {@link Definitions} object representing the WSDL.
+   * @throws IOException if WSDL can't be fetched.
+   */
+  Definitions getWSDL(final String wsdlUrl) throws IOException;
 }

@@ -354,8 +354,7 @@ public final class Utils {
         final HttpEntity entity = response.getEntity();
         if (entity != null) {
           String wsdlContent = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-          // Remove problematic <s:element ref="s:schema" /> that causes JAXB-RI to fail in Axis2
-          // This is a common issue with .NET DataSets in JAXB.
+          // Workaround for .NET DataSets: remove ref="s:schema" which causes JAXB-RI to crash in Axis2
           wsdlContent = wsdlContent.replaceAll("<[a-zA-Z0-9]+:element\\s+ref=\"[a-zA-Z0-9]+:schema\"\\s*/>", "");
           wsdlContent = wsdlContent.replaceAll("<element\\s+ref=\"schema\"\\s*/>", "");
 

@@ -1,4 +1,4 @@
-# 1.2.11 (May 15, 2026)
+# 1.2.11 (May 18, 2026)
 * Fixed [issue-22](https://github.com/elasticio/soap-component/issues/22) in document type WSDLs
 * Fixed "Connection reset" error during metadata generation by implementing robust WSDL downloading and setting a User-Agent.
 * Fixed "Unable to generate code using jaxbri" error for .NET services by sanitizing problematic schema references in the WSDL.

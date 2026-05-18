@@ -33,4 +33,13 @@ public class HttpWSDLService implements WSDLService {
             return reader.parse(is);
         }
     }
+
+    /**
+     * Parses the WSDL from the provided URL or local path.
+     */
+    @Override
+    public Definitions getWSDL(final String wsdlUrl) throws IOException {
+        final WSDLParser reader = new WSDLParser();
+        return reader.parse(wsdlUrl);
+    }
 }

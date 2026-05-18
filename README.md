@@ -1,165 +1,143 @@
 [![CircleCI](https://circleci.com/gh/elasticio/soap-component.svg?style=svg)](https://circleci.com/gh/elasticio/soap-component)
 # SOAP Component
+
 ## Table of Contents
 * [Description](#description)
-   * [Purpose](#purpose)
-   * [Completeness Matrix](#completeness-matrix)
-   * [How it works](#how-it-works)
-        * [Step 1](#step-1)
-        * [Step 2](#step-2)
-        * [Step 3](#step-3)
-        * [Step 4](#step-4)
-        * [Step 5](#step-5)
-        * [Step 6](#step-6)
-   * [Requirements](#requirements)
-   * [Environment variables](#environment-variables)
+* [Core Concepts: Server vs Client](#core-concepts-server-vs-client)
+* [Requirements](#requirements)
+* [How it Works](#how-it-works)
 * [Credentials](#credentials)
-    * [Type](#type)
-    * [Username](#username-basic-auth-type)
-    * [Password](#password-basic-auth-type)
-* [Triggers](#actions)
-   * [Receive SOAP Request](#receive-soap-request)
-     * [Input fields description](#input-fields-description)
-     * [Example of usage](#example-of-usage)
-     * [Known Limitations](#known-limitations)
+* [Triggers](#triggers)
+    * [Receive SOAP Request](#receive-soap-request)
 * [Actions](#actions)
-   * [Call](#call)
-     * [Input fields description](#input-fields-description)
-     * [SOAP Fault](#soap-fault)
-     * [Input Json Schema](#input-json-schema)
-     * [Output Json Schema](#output-json-schema)
-     * [Additional info](#additional-info)
-   * [Soap Reply](#soap-reply)
-     * [Input fields description](#input-fields-description)
-     * [Input json schema](#input-json-schema)
-     * [Output json schema](#output-json-schema)
-     * [Current limitations](#current-limitations))
+    * [Call](#call)
+    * [Soap Reply](#soap-reply)
+* [Known Limitations](#known-limitations)
 * [API and Documentation links](#api-and-documentation-links)
 * [License](#license)
 
 ## Description
-The SOAP Component provides the SOAP Web Services work opportunity within a open integration hub flow.
-
-### Purpose
-As an integration platform, open integration hub should has an opportunity to invoke SOAP Web services over HTTP.
+The SOAP Component enables seamless integration with SOAP-based Web Services. It supports both consuming external services and exposing your own SOAP endpoints.
 
 ### Completeness Matrix
 ![image](https://user-images.githubusercontent.com/36419533/65602890-eddfab80-dfa4-11e9-8d76-bd758aafa403.png)
 
-[SOAP component completeness matrix](https://docs.google.com/spreadsheets/d/1bNDN_E9kBgeKrSu-NWDp3Zsrf6V7ud8hi2HPKlPCmcQ)
+---
 
-### How it works
-#### Step 1
-Find and select SOAP component in the component repository
-![Step 1](https://user-images.githubusercontent.com/13310949/43515103-5de72b58-958a-11e8-88ce-5870003867a1.png)
-#### Step 2
-Create new or select existing credentials
-![Step 2](https://user-images.githubusercontent.com/13310949/43514620-3c2b9efa-9589-11e8-9d9e-c82b1d66e5eb.png)
-#### Step 3
-Specify WSDL URL, then choose binding and operation consecutively. **The order matters!**
-![Step 3](https://user-images.githubusercontent.com/13310949/43522182-365e9fbe-95a1-11e8-8226-3e3679afbe17.png)
-#### Step 4
-Configure an input data and click "Continue"
-![Step 4](https://user-images.githubusercontent.com/13310949/43514773-9036472a-9589-11e8-83d6-95759f1a2cc9.png)
-#### Step 5
-Retrieve sample or add sample manually
-![Step 5: Retrieve sample](https://user-images.githubusercontent.com/13310949/43514839-bace8e16-9589-11e8-92d2-e54890472dbb.png)
-#### Step 6
-Retrieve sample result
-![Step 6: Retrieve sample result](https://user-images.githubusercontent.com/13310949/43515232-aca5be76-958a-11e8-95a0-c723f9323e4f.png)
+## Core Concepts: Server vs Client
 
-### Requirements
-The platform supports next SOAP protocol versions:
+Understanding how to use this component depends on whether you want to **call** a service or **provide** a service.
+
+| Feature | Role | Purpose | Typical Usage |
+| :--- | :--- | :--- | :--- |
+| **Trigger: Receive SOAP Request** | **Server** | Exposes a Webhook URL that accepts SOAP XML. | Acting as a SOAP endpoint for external systems. |
+| **Action: Call** | **Client** | Sends a SOAP request to an external WSDL URI. | Fetching data from a 3rd party SOAP service. |
+| **Action: Soap Reply** | **Responder** | Sends the HTTP response back to the Trigger caller. | Returning a "Result" to the system that called your flow. |
+
+---
+
+## Requirements
+The component supports the following SOAP protocol versions:
 * SOAP 1.1
 * SOAP 1.2
 
-Component supports next wsdl styles:
+The component supports the following WSDL styles:
 * RPC/Literal
 * Document/Encoded
 * Document/Literal
 
 #### Environment variables
-``` EIO_REQUIRED_RAM_MB - recommended value of allocated memory is 2048MB ```
+* `EIO_REQUIRED_RAM_MB` - The recommended value for allocated memory is `2048MB`.
+
+---
+
+## How it Works
+
+### Acting as a SOAP Client (Calling an external service)
+1.  Locate and select the SOAP component and choose the **Call** action.
+2.  Provide the WSDL URL (e.g., `http://dneonline.com/calculator.asmx?WSDL`).
+3.  Select the **Binding** and **Operation** in that exact order.
+4.  Map your JSON data to the generated input fields.
+5.  The component converts your JSON to XML, sends it to the server, and returns the response as JSON.
+
+### Acting as a SOAP Server (Exposing your own endpoint)
+1.  Use the **Receive SOAP Request** trigger. This provides a Webhook URL for your flow.
+2.  Provide a WSDL. The trigger uses this as a **Contract** to know what XML structure to expect.
+3.  Select the **Binding** and **Operation** in that exact order.
+4.  When an external system sends XML to your Webhook, the trigger validates it and converts it to JSON.
+5.  Use the **Soap Reply** action at the end of your flow to return a response to the original caller.
+
+---
 
 ## Credentials
 
-### Type
-Call action supports next authorization type:
-* **No Auth**
-* **Basic Auth**
-### Username (Basic auth type)
-Username for Basic authorization header in the SOAP request
-### Password (Basic auth type)
-Password for Basic authorization header in the SOAP request
+The component functionally supports:
+*   **No Auth**
+*   **Basic Auth**
 
-NOTE: Error would not be thrown on invalid credentials, as credenteals does not contain WSDL url.
-In case of invalid credentials error expected on sample retrieve step: Unexprected reponse from server satus code: 401 Anunthorized
+### Username (Basic Auth)
+The username required for the Basic authorization header in the SOAP request.
+
+### Password (Basic Auth)
+The password required for the Basic authorization header in the SOAP request.
+
+> [!IMPORTANT]
+> Although the UI may display additional authentication types such as API Key or HMAC, these are **not supported** for outgoing calls in the current version.
+
+---
+
 ## Triggers
+
 ### Receive SOAP Request
-Webhook that validates input body over WSDL.
-#### Input fields description
-* **WSDL URI** - Public URL address of the WSDL
-* **Binding** - One of the bindings available and described in the WSDL, which you want to use for a SOAP call
-* **Operation** - One of the operations available for the binding you have selected above.
-* **Validation** - If `Enabled` validate the SOAP Body over wsdl, if `Disabled` does not validate a SOAP Input Body
-#### Example of usage
-##### Configuration:
-* **WSDL URI** - `http://www.dneonline.com/calculator.asmx?wsdl`
-* **Binding** - `CalculatorSoap12`
-* **Operation** - `Add`
-* **Validation** - `Enabled`
-##### Request Body:
+A webhook trigger that receives SOAP requests and validates the message body against the provided WSDL.
+
+#### Input Field Descriptions
+* **WSDL URI** - Publicly accessible URL of the WSDL.
+* **Binding** - Select one of the bindings described in the WSDL.
+* **Operation** - Select an operation available for the chosen binding.
+* **Validation** - If `Enabled`, the SOAP body is validated against the WSDL schema.
+
+#### Example Usage
+**WSDL URI:** `http://www.dneonline.com/calculator.asmx?wsdl` | **Operation:** `Add`
+
+**Incoming XML from User:**
 ```xml
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <Add xmlns="http://tempuri.org/">
-      <intA>1</intA>
-      <intB>1</intB>
+      <intA>10</intA>
+      <intB>20</intB>
     </Add>
   </soap:Body>
 </soap:Envelope>
 ```
-##### Output:
-```JSON
-{
-  "Add": {
-    "intA": "1",
-    "intB": "1"
-  }
-}
-```
-#### Current Limitations
-1. Namespaces ignored and SOAP Body with 2 tags that have the same name but in different namespaces would be invalid
-2. SOAP Headers not supported yet
-3. Retrieve Sample does not represent actual behaviour of component 
 
-## Actions
-### Call
-Makes a call to SOAP service over HTTP using public WSDL URL.
-Call action supports Basic Authorization, choose Basic Authorization type in credentials and provide credentials for WSDL.
-
-#### Input fields description
-* **WSDL URI** - Public URL address of the WSDL
-* **Binding** - One of the bindings available and described in the WSDL, which you want to use for a SOAP call
-* **Operation** - One of the operations available for the binding you have selected above.
-* **Request timeout** - Timeout period in milliseconds (1-1140000) while component waiting for server response. Defaults to 60000 (60 sec).
-
-#### SOAP Fault
-A SOAP fault is used to carry error information within a SOAP message. The component handles SOAP faults and emits platform exception in this case.
-SOAP Fault should comply with the [W3C SOAP Fault standard](https://www.w3.org/TR/soap12-part1/#soapfault).
-
-Example of the SOAP 1.1 Fault:
+**Trigger Output (JSON):**
 ```json
 {
-  "Fault": {
-    "faultcode": "S:Server",
-    "faultstring": "Server error java.lang.NullPointerException",
-    "faultactor": null
+  "Add": {
+    "intA": 10,
+    "intB": 20
   }
 }
 ```
 
-Example of the SOAP 1.2 Fault:
+---
+
+## Actions
+
+### Call
+Executes a call to an external SOAP service over HTTP.
+
+#### Input Field Descriptions
+* **WSDL URI** - Publicly accessible URL of the WSDL.
+* **Binding** - Select one of the bindings described in the WSDL.
+* **Operation** - Select an operation available for the chosen binding.
+* **Request Timeout** - The timeout period in milliseconds (1-1,140,000). Defaults to `60,000`.
+
+#### SOAP Fault Handling
+If the server returns a SOAP Fault, the component emits a platform exception by default. 
+Example of a SOAP 1.2 Fault converted to JSON:
 ```json
 {
   "Fault": {
@@ -169,78 +147,46 @@ Example of the SOAP 1.2 Fault:
 }
 ```
 
-#### Input json schema
-The component does not have static input json schema as it is dynamically generated for every wsdl/binding/operation specified in the process of configuration the component input fields.
-[Apache Axis2](http://axis.apache.org/axis2/java/core/) and [FasterXML JsonSchemaGenerator](https://github.com/FasterXML/jackson-module-jsonSchema) tools are used by the component internally to generate an input metadata.
-You can refer these tools documentation in order to get deeper understanding about the product.
-
-#### Output json schema
-Output json schema is generated dynamically the same as for the input (see above).
-
-## Additional info
-<span style="color:red">You should specify input fields exactly in the order below. You'll get an error otherwise</span>.
-1. WSDL URI
-2. Binding
-3. Operation
+---
 
 ### Soap Reply
-Wraps and returns input data as SOAP response by provided SOAP metadata
+Sends an HTTP response back to the original caller of the **Receive SOAP Request** trigger.
 
-#### Input fields description
-* **WSDL URI** - Public URL address of the WSDL
-* **Binding** - One of the bindings available and described in the WSDL, which you want to use for a SOAP call
-* **Operation** - One of the operations available for the binding you have selected above.
-
-#### Input json schema
-The component does not have static input json schema as it is dynamically generated for every wsdl/binding/operation specified in the process of configuration the component input fields.
-[Apache Axis2](http://axis.apache.org/axis2/java/core/) and [FasterXML JsonSchemaGenerator](https://github.com/FasterXML/jackson-module-jsonSchema) tools are used by the component internally to generate an input metadata.
-You can refer these tools documentation in order to get deeper understanding about the product.
-
-#### Output json schema
-Output json schema is generated dynamically the same as for the input (see above).
-
-#### Input data example:
+#### Input Data Example:
+If your flow calculated a sum of `30`, you would map it to the **Soap Reply** input:
 ```json
 {
   "AddResponse": {
-    "AddResult": 3
+    "AddResult": 30
   }
 }
 ```
 
-#### Output data example:
+#### Output Data Example (XML sent back to caller):
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
     <soap:Body>
-        <AddResponse xmlns="http://example.org/">
-            <AddResult>3</AddResult>
+        <AddResponse xmlns="http://tempuri.org/">
+            <AddResult>30</AddResult>
         </AddResponse>
     </soap:Body>
 </soap:Envelope>
 ```
 
-### Known limitations
-The following are limitations of this connector:
+---
 
-* RPC/SOAP-Encoded styles are not supported.
-
->All major frameworks for web services support Document/literal messages. Most of the popular frameworks also have some support for rpc/encoded, so developers can still use it to create encoded-only services.
-As a result it is hard to estimate how many web services, in production use, work only with SOAP encoded messages.
-However there is a tendency to move away from RPC/encoded towards Document/literal.
-This is so, because the SOAP encoding specification does not guarantee 100% interoperability and there are vendor deviations in the implementation of RPC/encoded.
-
-* Only self-containing WSDLs are supported now. This means that WSDL containing external XSD schemas will not work in this version of the component.
-* WS-Security header isn`t supported.
-* WS-Addressing isn`t supported.
-* Custom SOAP headers can not be added.
-* The WSDL and associated schemas must be accessible via a publicly accessible URL. File upload of the WSDL and/or XSD schemas is not supported.
-* Component does not support multipart format of message in the SOAP request element. Only first part of request element will be processed in the current component version.
-* 'Emit SOAP Faults Instead of Throwing an Error' feature of the 'CallAction' action was not fully tested against all the possible SOAP faults.
+## Known Limitations
+*   **WSDL Support:** This version includes improved support for complex WSDLs and external XSD schemas via network-based fetching.
+*   **Unsupported Styles:** RPC/SOAP-Encoded styles are not supported.
+*   **Namespaces:** Namespaces are currently ignored during JSON conversion.
+*   **SOAP Headers:** Custom SOAP headers are not yet supported.
+*   **Message Format:** Multipart message formats are not supported; only the first part is processed.
+*   **Sample Retrieval:** The "Retrieve Sample" feature may not always represent actual runtime behavior.
 
 ## API and Documentation links
 * [Apache Axis2](http://axis.apache.org/axis2/java/core/)
 * [FasterXML JsonSchemaGenerator](https://github.com/FasterXML/jackson-module-jsonSchema)
 
 ## License
- © [Elastic.io GmbH](https://elastic.io)
+© [Elastic.io GmbH](https://elastic.io)

@@ -86,14 +86,12 @@ public class ReplyBodyMetaProvider implements DynamicMetadataProvider {
     try {
       LOGGER.info("Start creating meta data for component");
       String wsdlUrl = Utils.getWsdlUrl(configuration);
-      if (Utils.isBasicAuth(configuration)) {
-        final String username = Utils.getUsername(configuration);
-        final String password = Utils.getPassword(configuration);
-        wsdlUrl = Utils.addAuthToURL(wsdlUrl, username, password);
+      if (wsdlUrl.startsWith("http")) {
+          wsdlUrl = Utils.loadWsdlLocally(configuration);
       }
       final String bindingName = Utils.getBinding(configuration);
       final String operationName = Utils.getOperation(configuration);
-      final Definitions wsdl = wsdlService.getWSDL(configuration);
+      final Definitions wsdl = wsdlService.getWSDL(wsdlUrl);
       JaxbCompiler.generateAndLoadJaxbStructure(wsdlUrl);
       final String portTypeName = wsdl.getBinding(bindingName).getPortType().getName();
       final Operation operation = wsdl.getOperation(operationName, portTypeName);
